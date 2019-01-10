@@ -31,30 +31,31 @@ class GenerationPie {
       type: 'pie',
       options: {
         legend: {
-          labels: {
-            fontColor: "white",
-            fontStyle: "bold",
-            fontSize: 14,
-          }
-        },
-        responsive: false,
-        plugins: {
-          labels: [{
-            render: 'label',
-            position: 'border',
-            fontSize: 16,
-            overlap: false,
-            fontStyle: 'bold',
-            fontColor: 'white'
-          },
-          {
-            render: 'percentage',
-            fontColor: 'white',
-            fontSize: 14,
-            fontStyle: 'bold',
-            overlap: false,
-          }]
-        },  
+           display: false,
+           labels: {
+             fontColor: "white",
+             fontStyle: "bold",
+             fontSize: 14,
+           }
+         },
+         responsive: false,
+         plugins: {
+           labels: [{
+             render: 'label',
+             position: 'border',
+             fontSize: 10,
+             overlap: false,
+             fontStyle: 'bold',
+             fontColor: 'white'
+           },
+           {
+             render: 'percentage',
+             fontColor: 'white',
+             fontSize: 8,
+             fontStyle: 'bold',
+             overlap: false,
+           }]
+         },
       },
       data: {
         labels: labels,
