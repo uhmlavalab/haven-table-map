@@ -29,7 +29,7 @@ class Map {
 
   }
 
-  addGeoJsonLayer(fileUrl, layerName, year, color) {
+  addGeoJsonLayer(fileUrl, layerName, year, fillColor, lineColor, lineWidth) {
     d3.json(`${fileUrl}`, (error, geoData) => {
       const bounds = [this.projection(this.rasterBounds[0]), this.projection(this.rasterBounds[1])];
       const scale = 1 / Math.max((bounds[1][0] - bounds[0][0]) / this.width, (bounds[1][1] - bounds[0][1]) / this.height);
@@ -45,7 +45,9 @@ class Map {
       const layer = {
         enabled: true,
         parcels: [],
-        color: color,
+        fillColor: fillColor,
+        lineColor: lineColor,
+        lineWidth: lineWidth,
         year: year
       }
 
@@ -63,10 +65,10 @@ class Map {
           }
           else {
             d3.select(this)
-              .style('fill', color)
+              .style('fill', fillColor)
               .style('opacity', 0.5)
-              .style('stroke', '#ffffff')
-              .style('stroke-width', '.5px')
+              .style('stroke', lineColor)
+              .style('stroke-width', lineWidth + 'px')
           }
         }).call(() => {
           this.layers[layerName] = layer;
@@ -85,17 +87,17 @@ class Map {
       this.layers['solar'].parcels.forEach(el => {
         if (solarTotal > 0) {
           d3.select(el.path)
-            .style('fill', this.layers['solar'].color)
+            .style('fill', this.layers['solar'].fillColor)
             .style('opacity', 0.5)
-            .style('stroke', '#ffffff')
-            .style('stroke-width', '.5px');
+            .style('stroke', this.layers['solar'].lineColor)
+            .style('stroke-width', this.layers['solar'].lineWidth + 'px');
           solarTotal -= el.value;
         } else {
           d3.select(el.path)
-            .style('fill', '#ffffff')
+            .style('fill', 'transparent')
             .style('opacity', 0.5)
-            .style('stroke', '#ffffff')
-            .style('stroke-width', '.5px')
+            .style('stroke', this.layers['solar'].lineColor)
+            .style('stroke-width', this.layers['solar'].lineWidth + 'px');
         }
       })
     }

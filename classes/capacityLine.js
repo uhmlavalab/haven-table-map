@@ -7,12 +7,12 @@ class CapacityLine {
     this.chartData = [];
     this.labels = [];
     const color = {
-      Fossil: 'rgba(255, 99, 132, 1.0)',
-      Bio: 'rgba(75, 192, 192, 1.0)',
-      Wind: 'rgba(153, 102, 255, 1.0)',
-      DGPV: 'rgba(255, 159, 64, 1.0)',
-      PV: 'rgba(255, 206, 86, 1.0)',
-      Battery: 'rgba(54, 162, 235, 1.0)'
+      Fossil: 'rgba(255, 99, 132, 0.8)',
+      Bio: 'rgba(75, 192, 192, 0.8)',
+      Wind: 'rgba(153, 102, 255, 0.8)',
+      DGPV: 'rgba(255, 159, 64, 0.8)',
+      UtilityPV: 'rgba(255, 206, 86, 0.8)',
+      Battery: 'rgba(54, 162, 235, 0.8)'
     };
     d3.csv(dataUrl, (data) => {
       this.data = data;
@@ -22,16 +22,20 @@ class CapacityLine {
         if (!trace) {
           trace = {
             data: [],
+            postaprildata: [],
+            e3genmoddata: [],
             label: el.technology,
             backgroundColor: color[el.technology],
             borderColor: color[el.technology],
-            fill: false,
-            pointRadius: 0
+            fill: false
           }
           this.chartData.push(trace);
         }
         this.labels.push(Number(el.year));
-        trace.data.push(el.value);
+        trace.postaprildata.push(el.postapril);
+        trace.e3genmoddata.push(el.e3genmod);
+        trace.data.push(el.postapril);
+
       })
       this.labels = [...new Set(this.labels)];
       this.createChart();
@@ -67,7 +71,7 @@ class CapacityLine {
           labels: {
             fontColor: "white",
             fontStyle: "bold",
-            fontSize: 10
+            fontSize: 14
           }
         },
         scales: {
@@ -78,16 +82,17 @@ class CapacityLine {
               color: "#FFFFFF",
             },
             ticks: {
-              fontSize: 10,
+              fontSize: 14,
               fontStyle: 'bold',
               fontColor: "white",
+
             },
             scaleLabel: {
               display: true,
-              fontSize: 14,
+              fontSize: 18,
               fontStyle: 'bold',
               fontColor: "#FFFFFF",
-              labelString: 'Year'
+              labelString: 'Capacity'
             }
           }],
           yAxes: [{
@@ -97,16 +102,17 @@ class CapacityLine {
               color: "#FFFFFF",
             },
             ticks: {
-              fontSize: 10,
+              fontSize: 14,
               fontStyle: 'bold',
               fontColor: "white",
+              max: 3000
             },
             scaleLabel: {
               display: true,
-              fontSize: 14,
+              fontSize: 18,
               fontStyle: 'bold',
               fontColor: "#FFFFFF",
-              labelString: 'Capacity (MW)'
+              labelString: 'Capacity'
             }
           }]
         }
@@ -118,8 +124,18 @@ class CapacityLine {
     });
   }
 
-  updateChart(year) {
+  updateChart(year, scenario) {
     this.year = year;
+    if(scenario.toLowerCase() == 'postapril') {
+      this.chartData.forEach(el => {
+        el.data = el.postaprildata;
+      })
+    }
+    if(scenario.toLowerCase() == 'e3genmod') {
+      this.chartData.forEach(el => {
+        el.data = el.e3genmoddata;
+      })
+    }
     this.myChart.options.annotation.annotations[0].value = Number(this.year);
     this.myChart.options.annotation.annotations[0].label.content = this.year;
     this.myChart.update();

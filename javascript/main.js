@@ -57,13 +57,15 @@ function setUp() {
 
   map = new Map('mapDiv', '../basemaps/oahu-border.png', 3613, 2794, 0.242);
 
-  pieChart = new GenerationPie('pieChart', '../data/generation.csv', 2020, 400, 400);
-  lineChart = new CapacityLine('lineChart', '../data/capacity.csv', 2020, 400, 400);
+  pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, 400, 400);
+  lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, 400, 400);
 
-  map.addGeoJsonLayer('../layers/existing_re.json', 'dod', null, '#ff7f00');
-  map.addGeoJsonLayer('../layers/dod.json', 'existing_re', null, '#377eb8');
-  map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#4daf4a');
-  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020, '#e41a1c');
+  map.addGeoJsonLayer('../layers/existing_re.json', 'dod', null, '#ff7f00', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/dod.json', 'existing_re', null, '#377eb8', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#4daf4a', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/Hawaii_Transmission.json', 'transmission', null, 'transparent', '#ccff00', 2.5 );
+
 
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
@@ -240,6 +242,9 @@ function calcYear(m) {
 
 }
 
+function changeScenario(scenario) {
+  mainDisplay.setScenario(scenario);
+}
 
 
 

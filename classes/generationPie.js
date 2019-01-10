@@ -16,7 +16,7 @@ class GenerationPie {
     const newData = [];
     this.data.forEach(element => {
       if (element.year == this.year) {
-        newData.push({ 'label': element.technology, 'value': element.value });
+        newData.push({ 'label': element.technology, 'postapril': element.postapril, 'e3genmod': element.e3genmod });
       }
     });
     this.chartData = newData;
@@ -24,14 +24,13 @@ class GenerationPie {
     const values = [];
     this.chartData.forEach(el => {
       labels.push(el.label);
-      values.push(el.value)
+      values.push(el.postapril)
     })
     this.ctx = this.pieDiv.getContext('2d');
     this.myChart = new Chart(this.ctx , {
       type: 'pie',
       options: {
         legend: {
-          display: false,
           labels: {
             fontColor: "white",
             fontStyle: "bold",
@@ -43,7 +42,7 @@ class GenerationPie {
           labels: [{
             render: 'label',
             position: 'border',
-            fontSize: 10,
+            fontSize: 16,
             overlap: false,
             fontStyle: 'bold',
             fontColor: 'white'
@@ -51,11 +50,11 @@ class GenerationPie {
           {
             render: 'percentage',
             fontColor: 'white',
-            fontSize: 8,
+            fontSize: 14,
             fontStyle: 'bold',
             overlap: false,
           }]
-        },
+        },  
       },
       data: {
         labels: labels,
@@ -78,18 +77,18 @@ class GenerationPie {
             'rgba(255, 255, 255, 1)',
             'rgba(255, 255, 255, 1)'
           ],
-          borderWidth: 2
+          borderWidth: 4
         }]
       },
     });
   }
 
-  updateChart(year) {
+  updateChart(year, scenario) {
     this.year = year;
     const newData = [];
     this.data.forEach(element => {
       if (element.year == this.year) {
-        newData.push({ 'label': element.technology, 'value': element.value });
+        newData.push({ 'label': element.technology, 'value': element[scenario.toLowerCase()] });
       }
     });
     this.chartData = newData;

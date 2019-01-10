@@ -13,6 +13,7 @@ class MainDisplay {
     this.prevState = -1;
     this.displayCams = false;
     this.curYear = 2017;
+    this.curScenario = 'postapril';
     this.windowWidth = 0;
     this.windowHeight = 0;
     this.loadSound = new Sound("sounds/mac.mp3");
@@ -345,13 +346,19 @@ class MainDisplay {
       this.curYear = year;
       this.clickSound.play();
       //this.clickSounds[this.getCurYear() - 2018].play();
-      pieChart.updateChart(year);
-      lineChart.updateChart(year);
+      pieChart.updateChart(this.curYear , this.curScenario);
+      lineChart.updateChart(this.curYear , this.curScenario);
       this.timer = 20;
       this.runTimer = true;
 
     }
 
     document.getElementById("largeYearText").innerHTML = this.curYear;
+  }
+
+  setScenario(scenario) {
+    this.curScenario = scenario;
+    pieChart.updateChart(this.curYear , this.curScenario);
+    lineChart.updateChart(this.curYear , this.curScenario);
   }
 }
