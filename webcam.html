@@ -1,0 +1,251 @@
+<html>
+
+<head>
+  <title>Haven Oahu 3d Map</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <script src="javascript/d3.v3.min.js"></script>
+
+  <script src="javascript/Chart.min.js"></script>
+  <script src="javascript/chartjs-plugin-labels.js"></script>
+  <script src="javascript/chartjs-plugin-annotation.js"></script>
+
+  <script type="text/javascript" src="libs/polyfill.js"></script>
+  <script type="text/javascript" src="javascript/cv.js"></script>
+  <script type="text/javascript" src="javascript/aruco.js"></script>
+
+
+</head>
+
+<body>
+  <img src="http://lava.manoa.hawaii.edu/wp-content/uploads/2014/06/LAVAlogo.png" style="width: 275px; position: absolute; top: calc(100% - 185px); left: 10px;" alt="">
+
+  <div id="tracking-wrapper">
+    <div id="tracking-circle">
+      <div id="tracking-year"></div>
+    </div>
+  </div>
+
+  <div id="webcam-wrapper" class="webcam-wrapper">
+    <div id="canvas3-wrapper">
+      <video id="video-2" autoplay="true"></video>
+      <canvas id="canvas3"></canvas>
+    </div>
+    <div id="canvas1-wrapper">
+      <video id="video" autoplay="true"></video>
+      <canvas id="canvas"></canvas>
+    </div>
+
+  </div>
+  <!-- End of the Upper section -->
+
+  <!-- Lower section containing the large canvas that displays the main images-->
+  <div id="lower-section-wrapper" class="one-hundred-container">
+
+    <div id="mapDiv" class="map"></div>
+    <div class="right-background"></div>
+
+    <div id="landing-screen-wrapper">
+      <div class="left">
+        <div id="start-circle"></div>
+        <p>Place Puck To Begin</p>
+      </div>
+    </div>
+
+    <div class="add-remove-wrapper" id="add-remove-wrapper">
+
+      <div class="add-box" id="add-box">
+        <h3>Add</h3>
+      </div>
+      <div class="remove-box" id="remove-box">
+        <h3>Remove</h3>
+      </div>
+      <p>Place a marker inside a box to add or remove elements from the map.</p>
+    </div>
+
+    <div id="legend" class="legend">
+      <table class="main-legend-table">
+        <tr>
+          <td class="icon" id="solar-icon">
+            <img src="images/icons/solar-icon.png">
+          </td>
+          <td class="legend-wrapper" id="solar-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="unused-solar"></td>
+                <td class="legend-text" id="unused-solar-text">Usable Solar</td>
+              </tr>
+              <tr>
+                <td class="legend-color" id="used-solar"></td>
+                <td class="legend-text" id="used-solar-text">Used Solar</td>
+
+              </tr>
+            </table>
+          </td>
+
+          <td class="icon" id="sea-level-icon">
+            <img src="images/icons/sea-level-rise-icon.png">
+          </td>
+          <td class="legend-wrapper" id="slr-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="slr-color"></td>
+                <td class="legend-text" id="slr-text">Sea Level</td>
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+
+
+        <tr>
+          <td class="icon" id="transmission-icon">
+            <img src="images/icons/transmission-icon.png">
+          </td>
+          <td class="legend-wrapper" id="transmission-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="transmission"></td>
+                <td class="legend-text" id="transmission-text">Transmission Lines</td>
+              </tr>
+            </table>
+          </td>
+
+          <td class="icon" id="urban-icon">
+            <img src="images/icons/urban-icon.png">
+          </td>
+          <td class="legend-wrapper" id="urban-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="urban-color"></td>
+                <td class="legend-text" id="urban-text">Urban Areas</td>
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+
+        <tr>
+          <td class="icon" id="park-icon">
+            <img src="images/icons/campFire.png">
+          </td>
+          <td class="legend-wrapper" id="park-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="park-color"></td>
+                <td class="legend-text" id="park-text">Park Lands</td>
+              </tr>
+            </table>
+          </td>
+
+          <td class="icon" id="existing-icon">
+            <img src="images/icons/z-icon.png">
+          </td>
+          <td class="legend-wrapper" id="existing-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="existing-color"></td>
+                <td class="legend-text" id="existing-text">Existing</td>
+              </tr>
+            </table>
+          </td>
+
+
+        </tr>
+
+        <tr>
+          <td class="icon" id="ial-icon">
+            <img src="images/icons/pineapple-icon.png">
+          </td>
+          <td class="legend-wrapper" id="ial-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="ial-color"></td>
+                <td class="legend-text" id="ial-text">Important AG</td>
+              </tr>
+            </table>
+          </td>
+          <td class="icon" id="dod-icon">
+            <img src="images/icons/dod-icon.png">
+          </td>
+          <td class="legend-wrapper" id="dod-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="dod-color"></td>
+                <td class="legend-text" id="dod-text">DOD Lands</td>
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="icon" id="ag-icon">
+            <img src="images/icons/agriculture-icon.png">
+          </td>
+          <td class="legend-wrapper" id="ag-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="ag-color"></td>
+                <td class="legend-text" id="ag-text">AG Lands</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+      </td>
+      </tr>
+
+
+
+      </table>
+    </div>
+
+    <div id="largeYear" class="large-year">
+      <h1 id="largeYearText"></h1>
+    </div>
+
+    <div id="loading">
+      <h4>Loading...</h4>
+    </div>
+
+    <div id="location-title">
+      <h1>Oahu, Hi<br/>USA</h1>
+    </div>
+
+    <div id="scenerio-title">
+      <h2>Scenerio EA28B</h2>
+    </div>
+    <canvas id="lineChart" width="325" height="325" style="position: absolute; left: calc(100% - 335px);"></canvas>
+    <svg viewBox="0 0 500 500" id="generation-title">
+      <path id="curve" fill="transparent" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />
+      <text width="500">
+        <textPath xlink:href="#curve" id="generation-title-text">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Energy Generation
+        </textPath>
+      </text>
+    </svg>
+    <canvas id="pieChart" width="200" height="200"></canvas>
+
+  </div>
+
+  <!-- End of the Lower Section -->
+  <script src="./classes/sounds.js"></script>
+  <script src="./classes/map.js"></script>
+  <script src="./classes/generationPie.js"></script>
+  <script src="./classes/capacityLine.js"></script>
+  <script src="./classes/mainDisplay.js"></script>
+  <script src="./classes/layers.js"></script>
+  <script src="./classes/markers.js"></script>
+  <script src="./classes/videoElement.js"></script>
+  <script type="text/javascript" src="javascript/initializeScript.js"></script>
+  <script type="text/javascript" src="javascript/main.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,697 @@
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+.one-hundred-container {
+  width: 100%;
+  position: relative;
+}
+
+.webcam-wrapper {
+  width: 22vw;
+  height: 100vh;
+  position: absolute;
+}
+
+#canvas1-wrapper {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 50vh;
+  z-index: 1;
+}
+
+#canvas3-wrapper {
+  display: none;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+#video {
+  width: 0;
+  height: 0;
+}
+
+#video-2 {
+  width: 0;
+  height: 0;
+}
+
+#details {
+  width: 65%;
+  display: none;
+  float: left;
+}
+
+.cam-text {
+  background-color: black;
+  position: absolute;
+  left: 70vw;
+  width: 25vw;
+  height: 50vh;
+  top: 25vh;
+  color: white;
+  z-index: 2;
+}
+
+#lower-section-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#help-wrapper {
+  display: none;
+}
+
+/* The map-Images are the actual map images */
+.map-image-wrapper {
+  left: 25vw;
+  top: 0;
+  width: 75vw;
+  height: 100%;
+  position: absolute;
+  z-index: -2;
+}
+
+/* The css code for the landing screen */
+#landing-screen-wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  display: none;
+  background-color: #000000;
+  z-index: -10;
+}
+
+#landing-screen-wrapper>.left {
+  width: 24vw;
+  height: 100vh;
+  float: left;
+  background-color: #FFFFFF;
+}
+
+#landing-screen-wrapper>.left>p {
+  position: absolute;
+  color: #000000;
+  top: 90vh;
+  width: 22vw;
+  text-align: center;
+}
+
+/* The add-remove boxes begin with display none.  They become active When
+the user places a marker on the landing screen and starts the map.*/
+.add-remove-wrapper {
+  display: none;
+  position: absolute;
+  width: 24vw;
+  height: 30vh;
+  top: 0vh;
+  padding-top: 2vh;
+  text-align: center;
+}
+
+.add-remove-wrapper>div {
+  width: 45%;
+  height: 100%;
+  border: 0.5vw solid #000000;
+  display: inline-block;
+  position: relative;
+}
+
+.add-remove-wrapper>.add-box {
+  color: rgb(0, 0, 0);
+  border: 0.5vw solid rgb(0, 0, , 0);
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.add-remove-wrapper>.remove-box {
+  color: rgb(0, 0, 0);
+  border: 0.5vw solid rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0);
+}
+
+/**
+Shows the icons that are currently active
+*/
+#displaying-icons-wrapper {
+  display: none;
+  position: absolute;
+  left: 26vw;
+  top: 83vh;
+  width: 60vw;
+  height: 3vh;
+  z-index: 2;
+}
+
+#displaying-icons-wrapper>h1 {
+  font-variant: small-caps;
+  font-size: 20px;
+  padding-left: 2vw;
+  color: #FFFFFF;
+}
+
+#displaying-icons-wrapper>.icon-card {
+  width: 7%;
+  padding: 1%;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  z-index: 2;
+}
+
+#displaying-icons-wrapper>.icon-card>img {
+  width: 65%;
+  padding: 2%;
+  vertical-align: middle;
+  z-index: 2;
+}
+
+#displaying-icons-wrapper>.icon-card>h1 {
+  font-size: 12px;
+  color: #FFFFFF;
+}
+
+/* Legend explainin the colors on the map.  The colors and table rows
+are added dynamically*/
+.legend {
+  left: 27vw;
+  top: 2vh;
+  width: 26vw;
+  position: absolute;
+  display: none;
+  color:#FFFFFF;
+}
+
+.legend>.main-legend-table {
+  width: 100%;
+}
+
+.icon {
+  width: 9%;
+  height: 4vh;
+  opacity: 0.3;
+  transition:opacity 0.3s ease-out;
+}
+
+.icon>img {
+  width: 100%;
+  height: 100%;
+}
+
+.legend-wrapper {
+  width: 35%;
+}
+
+.legend-color {
+  width: 1%;
+  height: 2vh;
+  background-color: green;
+  display: none;
+  transition: width 0.3s ease-out;
+}
+.legend-text {
+  color:#FFFFFF;
+  width:70%;
+  font-size:10px;
+}
+
+#transmission {
+  background-color:rgba(153, 102, 255, 1.0);
+}
+#used-solar {
+  background-color: rgba(255, 206, 86, 1.0);
+}
+#unused-solar {
+  background-color: #FFFFFF;
+}
+
+
+.sub-legend-table {
+  width:100%;
+}
+
+#solar-usable-legend {
+  background-color: rgb(255, 220, 160);
+}
+
+#solar-used-legend {
+  background-color: rgb(132, 94, 29);
+}
+
+#slr-color {
+  background-color: rgb(0, 87, 181);
+}
+
+#ag-color {
+  background-color: rgb(158, 6, 31);
+}
+
+#ial-color {
+  background-color: rgb(86, 160, 106);
+}
+
+#urban-color {
+  background-color: rgb(134, 85, 214);
+}
+#transmission-color {
+  background-color: rgb(89, 71, 247);
+}
+
+#dod-color {
+  background-color: rgb(150, 40, 0);
+}
+
+#existing-color {
+  background-color:rgb(255, 150, 81);
+}
+#largeYear {
+  position: absolute;
+  z-index: 1000;
+  left: 56vw;
+  top: 83vh;
+  width: 10vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+}
+
+#largeYear>h1 {
+  font-size: 65px;
+}
+
+#loading {
+  position:absolute;
+  z-index: 1000;
+  left:56vw;
+  top:84vh;
+  width:10vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:none;
+}
+
+#location-title {
+  position:absolute;
+  z-index: 1000;
+  left:89vw;
+  top:55vh;
+  width:10vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:block;
+}
+
+#scenerio-title {
+  position:absolute;
+  z-index: 1000;
+  left:82vw;
+  top:45vh;
+  width:20vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:block;
+}
+.adjust-map-wrapper {
+  position: absolute;
+  left: 2vw;
+  top: 50vh;
+  width: 20vw;
+  height: 40vh;
+  display: block;
+  padding: 0;
+  text-align: center;
+  display: none;
+}
+
+.adjust-map-table {
+  width: 100%;
+  height: 100%;
+}
+
+.adjust-map-table>tbody>tr>td {
+  width: 44%;
+  padding: 2%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  transition: background-color 0.2s ease-out;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.adjust-map-table>tbody>tr>td:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.base-img {
+  position: relative;
+  width: 99.6%;
+  height: 99.3%;
+  left: 4vw;
+  z-index: 1;
+  background-color: #000000;
+  display: none;
+}
+
+.right-background {
+  z-index: -1000;
+  background-color: #000000;
+  position: absolute;
+  left: 24vw;
+  height: 100vh;
+  top: 0;
+  width: 76vw;
+  display: block;
+}
+
+/*///////////////////
+/////////////////////
+/ INITIALIZE SCREEN
+////////////////////
+////////////////////
+//////////////////*/
+.initialize-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 1);
+  display: none;
+}
+
+.loading-wrapper {
+  position: absolute;
+  width: 100%;
+  top: 34%;
+  text-align: center;
+}
+
+.loading-wrapper>h1 {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 60px;
+  letter-spacing: 12px;
+  padding-left: 12px;
+}
+
+.start-button {
+  width: 14vw;
+  left: 43vw;
+  height: 4vw;
+  border: 2px solid white;
+  text-align: center;
+  display: none;
+  position: relative;
+  transition: background-color 0.2s ease-out;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.start-button:hover>p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.start-button>p {
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  display: block;
+  vertical-align: center;
+  font-size: 24px;
+  margin-top: 1.8vh;
+  font-weight: bold;
+  font-variant: small-caps;
+}
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.lds-ellipsis div {
+  position: absolute;
+  top: 54px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+  left: 12px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+  left: 12px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+  left: 52px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+  left: 90px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(28px, 0);
+  }
+}
+
+.choose-island {
+  display: none;
+  position: absolute;
+  top: 10vw;
+  left: 4vw;
+  cursor: pointer;
+}
+
+.choose-island>h2 {
+  color: rgba(255, 255, 255, 1);
+}
+
+.choose-island>.choose-island-button {
+  color: rgba(255, 255, 255, 1);
+}
+
+.choose-island>.choose-island-button:hover {
+  text-decoration: underline;
+}
+
+.confirm-button {
+  width: 60%;
+  position: relative;
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  transition: background-color 0.3s ease-out;
+}
+
+.confirm-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.confirm-button:hover>p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-button>p {
+  font-size: 14px;
+}
+
+#oahu-base {
+  display: none;
+  width: 75%;
+  left: 25%;
+  position: absolute;
+}
+
+#oahu-base-img {
+  position: relative;
+  width: 96%;
+  height: 100%;
+  left: -1vw;
+  z-index: 1;
+}
+
+.align-island {
+  display: none;
+  position: absolute;
+  top: 10vw;
+  left: 4vw;
+  width: 20vw;
+  text-align: center;
+}
+
+.align-island>table {
+  color: rgba(255, 255, 255, 1);
+  width: 100%;
+}
+
+.align-island>table>tbody>tr>td {
+  width: 40%;
+  height: 4vh;
+  border: 1px solid white;
+  padding: 5%;
+  text-align: center;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease-out;
+  cursor: pointer;
+}
+
+.align-island>table>tbody>tr>td:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.align-island>table>tbody>tr>td:hover>p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.align-island>h2 {
+  color: rgba(255, 255, 255, 1);
+}
+
+.start-program-button {
+  width: 40%;
+  left: 30%;
+  position: relative;
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  transition: background-color 0.3s ease-out;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.start-program-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.start-program-button:hover>p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.start-program-button>p {
+  font-size: 14px;
+}
+
+.chart-wrapper {
+  position: absolute;
+  left: 78vw;
+  top: 12vh;
+  width: 19vw;
+  height: 26vh;
+  background-color: black;
+  z-index: 2;
+  display: none;
+}
+
+.chart-wrapper>img {
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+#chart-overlay {
+  position: absolute;
+  left: 0;
+  background-color: black;
+  z-index: 1;
+  height: 100%;
+  width: 1%;
+  top: 0;
+  opacity: 0.5;
+  transition: width 0.3s;
+}
+
+#tracking-wrapper {
+  z-index: 1000;
+  left: 12vw;
+  top: 40vh;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  display: none;
+}
+
+#tracking-circle {
+  width: 100%;
+  height: 100%;
+  background: red;
+  border-radius: 50%;
+}
+
+.map {
+  left: 29vw;
+  top: 3vh;
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  display: block;
+  background-color: black;
+}
+
+#pieChart {
+  position: absolute;
+  left: 28vw;
+  top: 69.5vh;
+}
+
+#generation-title-text {
+  fill: white;
+
+}
+#generation-title {
+  width: 40%;
+  top: 61vh;
+  left: 16vw;
+  position: absolute;
+}
