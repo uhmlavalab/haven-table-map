@@ -313,7 +313,7 @@ are added dynamically*/
   display:block;
 }
 
-#scenerio-title {
+#scenario-title {
   position:absolute;
   z-index: 1000;
   left:82vw;
@@ -694,4 +694,25 @@ are added dynamically*/
   top: 61vh;
   left: 16vw;
   position: absolute;
+}
+
+.change-scenario {
+  width: 15vw;
+  height: 15vw;
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 50vh;
+  left:4vw;
+  display: none;
+  border-radius: 50%;
+  border: 2px solid black;
+}
+
+#change-scenario-instructions {
+  display:none;
+}
+
+#currentScenarioDisplay {
+  width:100%;
+  text-align:center;
 }

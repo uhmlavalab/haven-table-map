@@ -22,8 +22,8 @@
 <body>
   <img src="http://lava.manoa.hawaii.edu/wp-content/uploads/2014/06/LAVAlogo.png" style="width: 275px; position: absolute; top: calc(100% - 185px); left: 10px;" alt="">
 
-  <button onclick="changeScenario('e3genmod')">ChangeScenarioE3</button>
-  <button onclick="changeScenario('postapril')">PostApril</button>
+  <!--<button onclick="changeScenario('e3genmod')">ChangeScenarioE3</button>
+  <button onclick="changeScenario('postapril')">PostApril</button>-->
 
   <div id="tracking-wrapper">
     <div id="tracking-circle">
@@ -60,12 +60,17 @@
     <div class="add-remove-wrapper" id="add-remove-wrapper">
 
       <div class="add-box" id="add-box">
-        <h3>Add</h3>
+        <h3 id="add-text">Add</h3>
       </div>
       <div class="remove-box" id="remove-box">
-        <h3>Remove</h3>
+        <h3 id="remove-text">Remove</h3>
       </div>
-      <p>Place a marker inside a box to add or remove elements from the map.</p>
+      <p id="normal-instructions">Place a marker inside a box to add or remove elements from the map.</p>
+      <p id="change-scenario-instructions">Rotate Marker inside Circle to select Scenario.</p>
+    </div>
+
+    <div class="change-scenario" id="change-scenario-area">
+      <p id="currentScenarioDisplay"></p>
     </div>
 
     <div id="legend" class="legend">
@@ -215,11 +220,11 @@
     </div>
 
     <div id="location-title">
-      <h1>Oahu, Hi<br/>USA</h1>
+      <h1>Oahu, HI<br/>USA</h1>
     </div>
 
-    <div id="scenerio-title">
-      <h2>Scenerio EA28B</h2>
+    <div id="scenario-title">
+      <h2>Scenario: <span id="scenario-insert">Post April</span></h2>
     </div>
     <canvas id="lineChart" width="325" height="325" style="position: absolute; left: calc(100% - 335px);"></canvas>
     <svg viewBox="0 0 500 500" id="generation-title">

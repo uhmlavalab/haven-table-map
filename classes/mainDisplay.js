@@ -17,12 +17,15 @@ class MainDisplay {
     this.windowWidth = 0;
     this.windowHeight = 0;
     this.loadSound = new Sound("sounds/mac.mp3");
-    this.clickSound = new Sound("sounds/click3.mp3");
+    //this.clickSound = new Sound("sounds/click3.mp3");
     this.loadingElem = document.getElementById("loading");
-  /*  this.clickSounds = [];
-    for (let i = 2018; i < 2046; i++) {
-      this.clickSounds.push(new Sound("sounds/blockTones/" + i + ".wav"));
-    }*/
+    this.changeScenarioActive = false;
+    this.activeScenario = 'e3genmod';
+
+    this.clickSounds = [];
+      for (let i = 2018; i < 2046; i++) {
+        this.clickSounds.push(new Sound("sounds/blockTones/" + i + ".wav"));
+      }
     this.timer = 0;
     this.runTimer = false;
   }
@@ -79,7 +82,7 @@ class MainDisplay {
 
 
   /**
-   * Checks the section of the clear plastic for any new markers.  If they are found,
+   * Checks the section of the translucent plastic for any new markers.  If they are found,
    * this layer becomes active, displaying the icon and the legend. */
   checkAdd() {
 
@@ -103,12 +106,12 @@ class MainDisplay {
   addLayer(m) {
 
 
+      if (m.layerActive) {
+        return;
+      } else {
+        m.layerActive = true;
+      }
 
-    if (m.layerActive) {
-      return;
-    } else {
-      m.layerActive = true;
-    }
 
     let id = -1;
 
@@ -123,11 +126,12 @@ class MainDisplay {
         id = 1
         map.showLayer('dod');
         break;
-
+/*
       case 384:
         id = 4;
         map.showLayer("parks");
         break;
+        */
 
       case 832:
         id = 3;
@@ -170,7 +174,8 @@ class MainDisplay {
 
   removeLayer(m) {
 
-    if (!m.layerActive) {
+
+    if (!m.layerActive || !this.changeScenarioActive) {
       return;
     } else {
 
@@ -187,12 +192,12 @@ class MainDisplay {
           id = 1;
           hideLayer("dod");
           break;
-
+/*
         case 384:
           id = 4;
           map.hideLayer("parks");
           break;
-
+*/
         case 832:
           id = 3;
           map.hideLayer('existing_re');
@@ -231,6 +236,25 @@ class MainDisplay {
 
     }
   };
+
+  /* Script executes when the main marker is placed in the add section
+  of the map.  It allows the user to switch between scenarios. */
+  changeScenario() {
+    let addBox = document.getElementById('add-box');
+    addBox.style.opacity = 0;
+    let removeText = document.getElementById('remove-text');
+    removeText.innerHTML = "Place Marker to confirm scenario";
+    let regInst = document.getElementById("normal-instructions");
+    let scenInst = document.getElementById("change-scenario-instructions");
+    regInst.style.display = "none";
+    scenInst.style.display = "block";
+    document.getElementById('change-scenario-area').style.display = "block";
+
+  }
+
+  confirmChangeScenario() {
+
+  }
 
   /** Starting from intromode, this funciton changes the map to full screen by
    *   removing the intro slider and the intro map layer.
@@ -335,19 +359,21 @@ class MainDisplay {
 
     if (this.getCurYear() === year && this.timer <= 0) {
       this.loadingElem.style.display = "block";
-      map.setSolarParcelsColor(year);
-      setTimeout(function(){ mainDisplay.loadingElem.style.display = "none"; }, 400);
+      map.setSolarParcelsColor(year, this.curScenario);
+      setTimeout(function() {
+        mainDisplay.loadingElem.style.display = "none";
+      }, 400);
       this.timer = 20;
       this.runTimer = false;
     } else if (this.getCurYear() === year && this.timer > 0 && this.runTimer) {
       this.timer--;
-    } else if (this.getCurYear() !== year){
+    } else if (this.getCurYear() !== year) {
 
       this.curYear = year;
-      this.clickSound.play();
-      //this.clickSounds[this.getCurYear() - 2018].play();
-      pieChart.updateChart(this.curYear , this.curScenario);
-      lineChart.updateChart(this.curYear , this.curScenario);
+      //this.clickSound.play();
+      this.clickSounds[this.getCurYear() - 2018].play();
+      pieChart.updateChart(this.curYear, this.curScenario);
+      lineChart.updateChart(this.curYear, this.curScenario);
       this.timer = 20;
       this.runTimer = true;
 
@@ -358,7 +384,26 @@ class MainDisplay {
 
   setScenario(scenario) {
     this.curScenario = scenario;
-    pieChart.updateChart(this.curYear , this.curScenario);
-    lineChart.updateChart(this.curYear , this.curScenario);
+    pieChart.updateChart(this.curYear, this.curScenario);
+    lineChart.updateChart(this.curYear, this.curScenario);
+    map.setSolarParcelsColor(this.curYear, this.curScenario)
+
   }
+
+  selectScenario(m) {
+    let scenarioInsert = document.getElementById("scenario-insert");
+    if ((m.getRotation() >= 0 && m.getRotation() < 90) || (m.getRotation() >= 180 && m.getRotation() < 270)) {
+
+      scenarioInsert.innerHTML = "E3";
+      this.activeScenario = 'e3genmod';
+    } else {
+
+      scenarioInsert.innerHTML = "Post April";
+      this.activeScenario = 'postapril';
+
+    }
+
+    this.setScenario(this.activeScenario);
+  }
+
 }

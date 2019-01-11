@@ -62,9 +62,10 @@ function setUp() {
 
   map.addGeoJsonLayer('../layers/existing_re.json', 'dod', null, '#ff7f00', '#ffffff', 0.5);
   map.addGeoJsonLayer('../layers/dod.json', 'existing_re', null, '#377eb8', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#4daf4a', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/Hawaii_Transmission.json', 'transmission', null, 'transparent', '#ccff00', 2.5 );
+  map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#8b4513', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.2);
+  map.addGeoJsonLayer('../layers/Hawaii_Transmission.json', 'transmission', null, 'transparent', '#ccff00', 1.0 );
+  map.addGeoJsonLayer('../layers/State_Land_Use_Districts_AG.json', 'agriculture', null, '#4daf4a', '#ffffff', 0.5);
 
 
   setVW(); // Set Visual Width multiplier

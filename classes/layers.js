@@ -27,6 +27,7 @@ class TransmissionLayer extends Layer {
     super();
     this.iconPath = "images/icons/transmission-icon.png";
     this.iconText = "Transmission";
+    this.iconTag = "transmission-icon";
     this.classTag = "transmission";
     this.legendTags = ["Transmission Lines"];
     this.colors = ["green"];
@@ -41,6 +42,7 @@ class SeaLevelLayer extends Layer {
     super();
     this.iconPath = "images/icons/sea-level-rise-icon.png";
     this.iconText = "Sea Level";
+    this.iconTag = "sea-level-rise-icon";
     this.classTag = "seaLevel";
     this.legendTags = ["Sea Level Rise"];
     this.colors = ["blue"];

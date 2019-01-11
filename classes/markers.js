@@ -257,7 +257,10 @@ function executeMarkerFunction(m) {
       } else if (mainDisplay.state === FULLSCREEN) {
         //m.track();
         m.setRotation();
-        mainDisplay.setCurYear(calcYear(m));
+
+          mainDisplay.setCurYear(calcYear(m));
+
+
 
         //map.addGeoJsonLayer('../layers/solar.json', 'solar', mainDisplay.getCurYear(), '#e41a1c');
 
@@ -266,6 +269,12 @@ function executeMarkerFunction(m) {
 
     case 64:
       m.updateXY();
+      break;
+
+      case 384:
+      m.updateXY();
+      mainDisplay.selectScenario(m);
+      m.setRotation();
       break;
 
     case 832:
