@@ -209,7 +209,7 @@ class Map {
         .attr('class', layerName)
         .each(function (d) {
           if (layerName == 'solar') {
-            const cf = d.properties.cf;
+            const cf = d.properties.cf_1;
             const capacity = d.properties.capacity;
             const value = cf * capacity * 8760;
             layer.parcels.push({ 'path': this, 'value': value });

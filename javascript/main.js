@@ -50,7 +50,7 @@ function setUp() {
    */
 
 
-  let loadMarkerArray = [1, 12, 64, 192, 256, 384, 832];
+  let loadMarkerArray = [1, 2, 10, 11, 12, 64, 192, 256, 384, 832];
   createAllMarkers(loadMarkerArray);
 
   mainDisplay = new MainDisplay(); // New map
@@ -60,10 +60,10 @@ function setUp() {
   pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, 400, 400);
   lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, 400, 400);
 
-  map.addGeoJsonLayer('../layers/existing_re.json', 'dod', null, '#ff7f00', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/dod.json', 'existing_re', null, '#377eb8', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/existing_re.json', 'existing_re', null, '#ff7f00', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/dod.json', 'dod', null, '#377eb8', '#ffffff', 0.5);
   map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#8b4513', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.2);
+  map.addGeoJsonLayer('../layers/solar_clean.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.2);
   map.addGeoJsonLayer('../layers/Hawaii_Transmission.json', 'transmission', null, 'transparent', '#ccff00', 1.0 );
   map.addGeoJsonLayer('../layers/State_Land_Use_Districts_AG.json', 'agriculture', null, '#4daf4a', '#ffffff', 0.5);
 
@@ -167,6 +167,7 @@ function tick() {
       imageData.width *= 4;
       imageData.height *= 4;
       let markers = detector.detect(imageData);
+      console.log(markers);
       videoArray[i].updateMarkers(markers);
       updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
     }
@@ -253,12 +254,18 @@ function hideLayer() {
   map.hideLayer('dod');
   map.hideLayer('existing_re');
   map.hideLayer('parks');
+  map.hideLayer('transmission');
+  map.hideLayer('solar');
+  map.hideLayer('agriculture');
 }
 
 function showLayer() {
   map.showLayer('dod');
   map.showLayer('existing_re');
   map.showLayer('parks');
+  map.showLayer('transmission');
+  map.showLayer('solar');
+  map.showLayer('agriculture');
 }
 
 function updateSolarYear(year) {
@@ -313,6 +320,7 @@ function buildLayers() {
   layers.push(new DODLayer());
   layers.push(new ParksLayer());
   layers.push(new TransmissionLayer());
+  layers.push(new WindLayer());
 
 
 }

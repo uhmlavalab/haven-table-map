@@ -30,6 +30,7 @@ class TransmissionLayer extends Layer {
     this.iconTag = "transmission-icon";
     this.classTag = "transmission";
     this.legendTags = ["Transmission Lines"];
+    this.legendColorTags = ["transmission-color"];
     this.colors = ["green"];
     this.numLegendRows = 1;
   }
@@ -93,4 +94,20 @@ class ExistingLayer extends Layer {
     this.colors = ["green"];
     this.numLegendRows = 1;
   }
+}
+
+class WindLayer extends Layer {
+
+  constructor() {
+  super();
+    this.iconPath = "images/icons/wind-icon.png";
+    this.iconText = "wind";
+    this.classTag = "wind";
+    this.legendTags = ["Unused Wind Land", "Used Wind Land"];
+    this.legendColorTags = ["unused-wind", "used-wind"];
+    this.iconTag = "wind-icon";
+    this.colors = ["red", "yellow"];
+    this.numLegendRows = 2;
+  }
+
 }

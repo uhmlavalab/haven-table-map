@@ -92,15 +92,19 @@
               </tr>
             </table>
           </td>
-
-          <td class="icon" id="sea-level-icon">
-            <img src="images/icons/sea-level-rise-icon.png">
+          <td class="icon" id="wind-icon">
+            <img src="images/icons/wind-icon.png">
           </td>
-          <td class="legend-wrapper" id="slr-legend">
+          <td class="legend-wrapper" id="wind-legend">
             <table class="sub-legend-table">
               <tr>
-                <td class="legend-color" id="slr-color"></td>
-                <td class="legend-text" id="slr-text">Sea Level</td>
+                <td class="legend-color" id="unused-wind"></td>
+                <td class="legend-text" id="unused-wind-text">Usable Wind</td>
+              </tr>
+              <tr>
+                <td class="legend-color" id="used-wind"></td>
+                <td class="legend-text" id="used-wind-text">Used Wind</td>
+
               </tr>
             </table>
           </td>
@@ -109,35 +113,19 @@
 
 
         <tr>
-          <td class="icon" id="transmission-icon">
-            <img src="images/icons/transmission-icon.png">
+          <td class="icon" id="existing-icon">
+            <img src="images/icons/z-icon.png">
           </td>
-          <td class="legend-wrapper" id="transmission-legend">
+          <td class="legend-wrapper" id="existing-legend">
             <table class="sub-legend-table">
               <tr>
-                <td class="legend-color" id="transmission"></td>
-                <td class="legend-text" id="transmission-text">Transmission Lines</td>
+                <td class="legend-color" id="existing-color"></td>
+                <td class="legend-text" id="existing-text">Existing</td>
               </tr>
             </table>
           </td>
-
-          <td class="icon" id="urban-icon">
-            <img src="images/icons/urban-icon.png">
-          </td>
-          <td class="legend-wrapper" id="urban-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="urban-color"></td>
-                <td class="legend-text" id="urban-text">Urban Areas</td>
-              </tr>
-            </table>
-          </td>
-
-        </tr>
-
-        <tr>
           <td class="icon" id="park-icon">
-            <img src="images/icons/campFire.png">
+            <img src="images/icons/park-icon.png">
           </td>
           <td class="legend-wrapper" id="park-legend">
             <table class="sub-legend-table">
@@ -148,14 +136,29 @@
             </table>
           </td>
 
-          <td class="icon" id="existing-icon">
-            <img src="images/icons/z-icon.png">
+        </tr>
+
+        <tr>
+
+          <td class="icon" id="ag-icon">
+            <img src="images/icons/agriculture-icon.png">
           </td>
-          <td class="legend-wrapper" id="existing-legend">
+          <td class="legend-wrapper" id="ag-legend">
             <table class="sub-legend-table">
               <tr>
-                <td class="legend-color" id="existing-color"></td>
-                <td class="legend-text" id="existing-text">Existing</td>
+                <td class="legend-color" id="ag-color"></td>
+                <td class="legend-text" id="ag-text">AG Lands</td>
+              </tr>
+            </table>
+          </td>
+          <td class="icon" id="transmission-icon">
+            <img src="images/icons/transmission-icon.png">
+          </td>
+          <td class="legend-wrapper" id="transmission-legend">
+            <table class="sub-legend-table">
+              <tr>
+                <td class="legend-color" id="transmission-color"></td>
+                <td class="legend-text" id="transmission-text">Transmission Lines</td>
               </tr>
             </table>
           </td>
@@ -188,19 +191,7 @@
           </td>
 
         </tr>
-        <tr>
-          <td class="icon" id="ag-icon">
-            <img src="images/icons/agriculture-icon.png">
-          </td>
-          <td class="legend-wrapper" id="ag-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="ag-color"></td>
-                <td class="legend-text" id="ag-text">AG Lands</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+
 
       </table>
       </td>

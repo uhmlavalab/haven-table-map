@@ -160,6 +160,7 @@ function initialize() {
     document.getElementById("initialize-wrapper").style.display = "none";
     document.getElementById("landing-screen-wrapper").style.display = "block";
     //document.getElementById("tracking-wrapper").style.display = "block";
+    hideLayer();
 
     mainDisplay.setState(INTROMODE);
 

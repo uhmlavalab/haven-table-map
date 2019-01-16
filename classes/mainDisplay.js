@@ -23,9 +23,9 @@ class MainDisplay {
     this.activeScenario = 'e3genmod';
 
     this.clickSounds = [];
-      for (let i = 2018; i < 2046; i++) {
-        this.clickSounds.push(new Sound("sounds/blockTones/" + i + ".wav"));
-      }
+    for (let i = 2018; i < 2046; i++) {
+      this.clickSounds.push(new Sound("sounds/blockTones/" + i + ".wav"));
+    }
     this.timer = 0;
     this.runTimer = false;
   }
@@ -93,8 +93,8 @@ class MainDisplay {
       return;
     } else {
       for (let m of v.activeMarkers) {
-
-        if (m.getCenterX() > 113) {
+        console.log(m.getCenterX());
+        if (m.getCenterX() > 130) {
           this.addLayer(m);
         } else {
           this.removeLayer(m);
@@ -106,11 +106,11 @@ class MainDisplay {
   addLayer(m) {
 
 
-      if (m.layerActive) {
-        return;
-      } else {
-        m.layerActive = true;
-      }
+    if (m.layerActive) {
+      return;
+    } else {
+      m.layerActive = true;
+    }
 
 
     let id = -1;
@@ -122,21 +122,35 @@ class MainDisplay {
         map.showLayer('solar');
         break;
 
+        case 11:
+        id=6;
+        break;
+
+        case 10:
+        id=5;
+        map.showLayer('transmission');
+        break;
+
       case 64:
-        id = 1
+        id = 3;
         map.showLayer('dod');
         break;
-/*
-      case 384:
-        id = 4;
-        map.showLayer("parks");
-        break;
-        */
+        /*
+              case 384:
+                id = 4;
+                map.showLayer("parks");
+                break;
+                */
 
       case 832:
-        id = 3;
+        id = 1;
         map.showLayer("existing_re");
         break;
+
+        case 2:
+          id = 8;
+          map.showLayer('agriculture');
+          break;
 
     }
 
@@ -174,8 +188,7 @@ class MainDisplay {
 
   removeLayer(m) {
 
-
-    if (!m.layerActive || !this.changeScenarioActive) {
+    if (!m.layerActive) {
       return;
     } else {
 
@@ -188,20 +201,35 @@ class MainDisplay {
           map.hideLayer('solar');
           break;
 
+          case 10:
+          id=5;
+          map.hideLayer('transmission');
+          break;
+
         case 64:
-          id = 1;
-          hideLayer("dod");
-          break;
-/*
-        case 384:
-          id = 4;
-          map.hideLayer("parks");
-          break;
-*/
-        case 832:
           id = 3;
+          map.hideLayer('dod');
+          break;
+
+          case 2:
+            id = 8;
+            map.hideLayer('agriculture');
+            break;
+          /*
+                  case 384:
+                    id = 4;
+                    map.hideLayer("parks");
+                    break;
+          */
+        case 832:
+          id = 1;
           map.hideLayer('existing_re');
           break;
+
+          case 11:
+          id=6;
+          break;
+
 
       }
 
