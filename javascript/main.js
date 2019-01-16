@@ -20,6 +20,47 @@ let detector;
 
 
 let layers = [];
+// #7F3C8D,#11A579,#3969AC,#F2B701,#E73F74,#80BA5A,#E68310,#008695,#CF1C90,#f97b72,#4b4b8f,#A5AA99
+
+let chartColors = {
+  DGPV: '#E17C05',
+  PV: '#EDAD08',
+  Fossil: '#CC503E',
+  Bio: '#73AF48',
+  Battery: '#5F4690',
+  Wind: '#38A6A5',
+}
+
+let mapLayerColors = {
+  Solar: {
+    fill: chartColors.DGPV,
+    border: 'white',
+  },
+  Dod: {
+    fill: '#6F4070',
+    border: 'white',
+  },
+  Wind: {
+    fill: chartColors.Wind,
+    border: 'white',
+  },
+  Existing_RE: {
+    fill: '#38A6A5',
+    border: 'white',
+  },
+  Transmisison: {
+    fill: 'transparent',
+    border: '#ccff00',
+  },
+  Agriculture: {
+    fill: '#0F8554',
+    border: 'white',
+  },
+  Parks: {
+    fill: '#994E95',
+    border: 'white',
+  },
+}
 
 /**
  * This method starts the map.  It is called when by the onload funciton
@@ -55,17 +96,18 @@ function setUp() {
 
   mainDisplay = new MainDisplay(); // New map
 
-  map = new Map('mapDiv', '../basemaps/oahu-border.png', 3613, 2794, 0.242);
+  map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.242);
 
-  pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, 400, 400);
-  lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, 400, 400);
+  pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, chartColors);
+  lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, chartColors);
 
-  map.addGeoJsonLayer('../layers/existing_re.json', 'existing_re', null, '#ff7f00', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/dod.json', 'dod', null, '#377eb8', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/parks.json', 'parks', null, '#8b4513', '#ffffff', 0.5);
-  map.addGeoJsonLayer('../layers/solar_clean.json', 'solar', 2020, '#e41a1c', '#ffffff', 0.2);
-  map.addGeoJsonLayer('../layers/Hawaii_Transmission.json', 'transmission', null, 'transparent', '#ccff00', 1.0 );
-  map.addGeoJsonLayer('../layers/State_Land_Use_Districts_AG.json', 'agriculture', null, '#4daf4a', '#ffffff', 0.5);
+  map.addGeoJsonLayer('../layers/existing_re.json', 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5);
+  map.addGeoJsonLayer('../layers/dod.json', 'dod', null,  mapLayerColors.Dod.fill, mapLayerColors.Dod.border, 0.5);
+  map.addGeoJsonLayer('../layers/parks.json', 'parks', null,  mapLayerColors.Parks.fill, mapLayerColors.Parks.border, 0.5);
+  map.addGeoJsonLayer('../layers/transmission.json', 'transmission', null,  mapLayerColors.Transmisison.fill, mapLayerColors.Transmisison.border, 1.0 );
+  map.addGeoJsonLayer('../layers/agriculture.json', 'agriculture', null,  mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5);
+
+  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020,  mapLayerColors.Solar.fill, mapLayerColors.Solar.border, 0.2);
 
 
   setVW(); // Set Visual Width multiplier
@@ -167,7 +209,6 @@ function tick() {
       imageData.width *= 4;
       imageData.height *= 4;
       let markers = detector.detect(imageData);
-      console.log(markers);
       videoArray[i].updateMarkers(markers);
       updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
     }

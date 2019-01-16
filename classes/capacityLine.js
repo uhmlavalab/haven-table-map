@@ -1,19 +1,12 @@
 
 class CapacityLine {
 
-  constructor(lineDiv, dataUrl, year) {
+  constructor(lineDiv, dataUrl, year, colors) {
     this.lineDiv = document.getElementById(lineDiv);;
     this.year = year;
     this.chartData = [];
     this.labels = [];
-    const color = {
-      Fossil: 'rgba(255, 99, 132, 0.8)',
-      Bio: 'rgba(75, 192, 192, 0.8)',
-      Wind: 'rgba(153, 102, 255, 0.8)',
-      DGPV: 'rgba(255, 159, 64, 0.8)',
-      UtilityPV: 'rgba(255, 206, 86, 0.8)',
-      Battery: 'rgba(54, 162, 235, 0.8)'
-    };
+    const color = colors;
     d3.csv(dataUrl, (data) => {
       this.data = data;
       this.data.sort((a, b) => Number(a.year) - parseFloat(b.year));

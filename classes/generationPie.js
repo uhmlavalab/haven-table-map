@@ -1,10 +1,11 @@
 
 class GenerationPie {
 
-  constructor(pieDiv, dataUrl, year) {
+  constructor(pieDiv, dataUrl, year, colors) {
     this.color = d3.scale.category10();
     this.pieDiv = document.getElementById(pieDiv);
     this.year = year;
+    this.colors = colors;
     this.chartData = null;
     d3.csv(dataUrl, (data) => {
       this.data = data;
@@ -22,10 +23,13 @@ class GenerationPie {
     this.chartData = newData;
     const labels = [];
     const values = [];
+    const backgroundColors = [];
     this.chartData.forEach(el => {
       labels.push(el.label);
+      backgroundColors.push(this.colors[el.label]);
       values.push(el.postapril)
     })
+    console.log(labels);
     this.ctx = this.pieDiv.getContext('2d');
     this.myChart = new Chart(this.ctx , {
       type: 'pie',
@@ -62,14 +66,7 @@ class GenerationPie {
         datasets: [{
           label: 'Generation MWh',
           data: values,
-          backgroundColor: [
-            'rgba(54, 162, 235, 0.8)',
-            'rgba(75, 192, 192, 0.8)',
-            'rgba(255, 159, 64, 0.8)',
-            'rgba(255, 99, 132, 0.8)',
-            'rgba(255, 206, 86, 0.8)',
-            'rgba(153, 102, 255, 0.8)'
-          ],
+          backgroundColor: backgroundColors,
           borderColor: [
             'rgba(255,255,255,1)',
             'rgba(255, 255, 255, 1)',
