@@ -159,6 +159,7 @@ function initialize() {
     map.hideLayer('solar');
     map.hideLayer('agriculture');
     map.hideLayer('transmission');
+    map.hideLayer('wind');
     document.getElementById("initialize-wrapper").style.display = "none";
     document.getElementById("landing-screen-wrapper").style.display = "block";
     //document.getElementById("tracking-wrapper").style.display = "block";

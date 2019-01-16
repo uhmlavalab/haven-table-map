@@ -60,6 +60,12 @@ class Map {
             const capacity = d.properties.capacity;
             const value = cf * capacity * 8760;
             layer.parcels.push({ 'path': this, 'value': value });
+          } 
+          else if (layerName == 'wind') {
+            const cf = 0.2283942;
+            const capacity = d.properties.MWac;
+            const value = cf * capacity * 8760;
+            layer.parcels.push({ 'path': this, 'value': value });
           }
           else {
             d3.select(this)
@@ -73,6 +79,7 @@ class Map {
           if (layerName == 'solar') {
             this.layers[layerName].parcels.sort((a, b) => parseFloat(b.value) - parseFloat(a.value))
             this.setSolarParcelsColor(year, 'postapril');
+            this.setWindParcelsColor(year, 'postapril');
           }
         })
     });
@@ -106,10 +113,41 @@ class Map {
     }
   }
 
+  setWindParcelsColor(year, scenario) {
+    this.layers['wind'].year = year;
+    if (this.layers['wind'].enabled) {
+      let windTotal = 0;
+      windGenYearly.forEach(el => {
+        if (el.year == year) {
+          windTotal = el[scenario];
+        }
+      });
+      this.layers['wind'].parcels.forEach(el => {
+        if (windTotal > 0) {
+          d3.select(el.path)
+            .style('fill', this.layers['wind'].fillColor)
+            .style('opacity', 0.5)
+            .style('stroke', this.layers['wind'].lineColor)
+            .style('stroke-width', this.layers['wind'].lineWidth + 'px');
+            windTotal -= el.value;
+        } else {
+          d3.select(el.path)
+            .style('fill', 'transparent')
+            .style('opacity', 0.5)
+            .style('stroke', this.layers['wind'].lineColor)
+            .style('stroke-width', this.layers['wind'].lineWidth + 'px');
+        }
+      })
+    }
+  }
+
   toggleLayer(layerName) {
     this.layers[layerName].enabled = !this.layers[layerName].enabled;
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
+    }
+    if (layerName == 'wind') {
+      this.setWindParcelsColor(this.layers['wind'].year);
     }
     if (!this.layers[layerName].enabled) {
       this.map.selectAll(`.${layerName}`).style('opacity', 0.0);
@@ -124,6 +162,9 @@ class Map {
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
     }
+    if (layerName == 'wind') {
+      this.setWindParcelsColor(this.layers['wind'].year);
+    }
       this.map.selectAll(`.${layerName}`).style('opacity', 0.0);
   }
 
@@ -131,6 +172,9 @@ class Map {
     this.layers[layerName].enabled = true;
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
+    }
+    if (layerName == 'wind') {
+      this.setWindParcelsColor(this.layers['wind'].year);
     }
       this.map.selectAll(`.${layerName}`).style('opacity', 0.5);
   }

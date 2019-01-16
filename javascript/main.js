@@ -108,6 +108,7 @@ function setUp() {
   map.addGeoJsonLayer('../layers/agriculture.json', 'agriculture', null,  mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5);
 
   map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020,  mapLayerColors.Solar.fill, mapLayerColors.Solar.border, 0.2);
+  map.addGeoJsonLayer('../layers/wind.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.2);
 
 
   setVW(); // Set Visual Width multiplier
