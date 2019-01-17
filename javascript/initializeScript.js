@@ -156,10 +156,10 @@ function initialize() {
     map.hideLayer('dod');
     map.hideLayer('parks');
     map.hideLayer('existing_re');
-    map.hideLayer('solar');
+  //  map.hideLayer('solar');
     map.hideLayer('agriculture');
     map.hideLayer('transmission');
-    map.hideLayer('wind');
+  //  map.hideLayer('wind');
     document.getElementById("initialize-wrapper").style.display = "none";
     document.getElementById("landing-screen-wrapper").style.display = "block";
     //document.getElementById("tracking-wrapper").style.display = "block";
