@@ -17,7 +17,7 @@ class MainDisplay {
     this.windowWidth = 0;
     this.windowHeight = 0;
     this.loadSound = new Sound("sounds/mac.mp3");
-    //this.clickSound = new Sound("sounds/click3.mp3");
+    this.clickSound = new Sound("sounds/click3.mp3");
     this.loadingElem = document.getElementById("loading");
     this.changeScenarioActive = false;
     this.activeScenario = 'e3genmod';
@@ -117,17 +117,19 @@ class MainDisplay {
 
     switch (m.markerId) {
 
-      case 256:
+      case 3:
         id = 0;
         map.showLayer('solar');
+        map.setSolarParcelsColor(this.year, this.curScenario);
         break;
 
-        case 11:
-        id=6;
+      case 10:
+        id = 6;
+        map.showLayer('wind');
         break;
 
-        case 10:
-        id=5;
+      case 2:
+        id = 5;
         map.showLayer('transmission');
         break;
 
@@ -135,48 +137,47 @@ class MainDisplay {
         id = 3;
         map.showLayer('dod');
         break;
-        /*
-              case 384:
-                id = 4;
-                map.showLayer("parks");
-                break;
-                */
+      case 5:
+        id = 4;
+        map.showLayer("parks");
+        break;
 
-      case 832:
+      case 6:
         id = 1;
         map.showLayer("existing_re");
         break;
 
-        case 2:
-          id = 8;
-          map.showLayer('agriculture');
-          break;
+      case 4:
+        id = 7;
+        map.showLayer('agriculture');
+        break;
 
     }
 
     let iconTagString = layers[id].iconTag;
     document.getElementById(iconTagString).style.opacity = 1;
+
     for (let i = 0; i < layers[id].legendColorTags.length; i++) {
-      let idString = layers[id].legendColorTags[i];
-      document.getElementById(idString).style.display = "block";
-      document.getElementById(idString).style.width = 80 + '%';
+      let elem = document.getElementById(layers[id].legendColorTags[i]);
+      elem.style.display = "block";
+      elem.style.width = 80 + '%';
     }
 
     m.addSound.play();
     /* Flash Green */
     let addBox = document.getElementById("add-box");
-
     let i = 1;
-
     let fadeBox = setInterval(fadeAddBox, 1);
 
     function fadeAddBox() {
       addBox.style.backgroundColor = `rgba(26, 119, 5, ${i})`;
-      i -= 0.07;
+      i -= 0.3;
 
       if (i <= 0) {
         clearInterval(fadeBox);
+        addBox.style.backgroundColor = 'rgb(174, 180, 191)';
       }
+
 
     };
     if (layers[id].active) {
@@ -196,13 +197,13 @@ class MainDisplay {
 
       switch (m.markerId) {
 
-        case 256:
+        case 3:
           id = 0;
           map.hideLayer('solar');
           break;
 
-          case 10:
-          id=5;
+        case 2:
+          id = 5;
           map.hideLayer('transmission');
           break;
 
@@ -211,34 +212,38 @@ class MainDisplay {
           map.hideLayer('dod');
           break;
 
-          case 2:
-            id = 8;
-            map.hideLayer('agriculture');
-            break;
-          /*
-                  case 384:
-                    id = 4;
-                    map.hideLayer("parks");
-                    break;
-          */
-        case 832:
+        case 4:
+          id = 7;
+          map.hideLayer('agriculture');
+          break;
+
+
+        case 5:
+          id = 4;
+          map.hideLayer("parks");
+          break;
+
+        case 6:
           id = 1;
           map.hideLayer('existing_re');
           break;
 
-          case 11:
-          id=6;
+        case 10:
+          id = 6;
+          map.hideLayer('wind');
           break;
 
 
       }
 
       let iconTagString = layers[id].iconTag;
+
       document.getElementById(iconTagString).style.opacity = 0.3;
       for (let i = 0; i < layers[id].legendColorTags.length; i++) {
-        let idString = layers[id].legendColorTags[i];
-        document.getElementById(idString).style.display = "none";
-        document.getElementById(idString).style.width = 0 + '%';
+        let elem = document.getElementById(layers[id].legendColorTags[i]);
+        elem.style.display = "none";
+        elem.style.width = 0 + '%';
+
       }
 
       m.removeSound.play();
@@ -250,10 +255,11 @@ class MainDisplay {
 
       function fadeRemoveBox() {
         removeBox.style.backgroundColor = `rgba(114, 17, 0, ${i})`;
-        i -= 0.07;
+        i -= 0.3;
 
         if (i <= 0) {
           clearInterval(fadeBoxR);
+          removeBox.style.backgroundColor = 'rgb(174, 180, 191)';
         }
 
       };
@@ -387,7 +393,10 @@ class MainDisplay {
 
     if (this.getCurYear() === year && this.timer <= 0) {
       this.loadingElem.style.display = "block";
-      map.setSolarParcelsColor(year, this.curScenario);
+      if (layers[0].active) {
+        map.setSolarParcelsColor(year, this.curScenario);
+      }
+      //map.setWindParcelsColor(year, this.curScenario);
       setTimeout(function() {
         mainDisplay.loadingElem.style.display = "none";
       }, 400);
@@ -398,8 +407,8 @@ class MainDisplay {
     } else if (this.getCurYear() !== year) {
 
       this.curYear = year;
-      //this.clickSound.play();
-      this.clickSounds[this.getCurYear() - 2018].play();
+      this.clickSound.play();
+      //this.clickSounds[this.getCurYear() - 2018].play();
       pieChart.updateChart(this.curYear, this.curScenario);
       lineChart.updateChart(this.curYear, this.curScenario);
       this.timer = 20;

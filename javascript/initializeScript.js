@@ -152,16 +152,21 @@ function initialize() {
   }
 
 
-  function finishIntro() {
-    map.hideLayer('dod');
+  function finishIntro(){    /*    map.hideLayer('dod');
     map.hideLayer('parks');
     map.hideLayer('existing_re');
-  //  map.hideLayer('solar');
+    map.hideLayer('solar');
     map.hideLayer('agriculture');
     map.hideLayer('transmission');
-  //  map.hideLayer('wind');
+    map.hideLayer('wind');*/
+
+    hideLayer(); // Hides all layers
+
     document.getElementById("initialize-wrapper").style.display = "none";
     document.getElementById("landing-screen-wrapper").style.display = "block";
+    document.getElementById("location-title").style.display = "block";
+    document.getElementById("scenario-title").style.display = "block";
+    document.getElementById("lower-section-wrapper").style.cursor = "none";
     //document.getElementById("tracking-wrapper").style.display = "block";
 
     mainDisplay.setState(INTROMODE);

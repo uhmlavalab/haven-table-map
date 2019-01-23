@@ -89,27 +89,23 @@ function setUp() {
    *  that you wish to use are loaded into this array by ID number.  They will then be initialized
    *  for use.  If they are not in the array, they will not have functionality when the program is run.
    */
-
-
-  let loadMarkerArray = [1, 2, 10, 11, 12, 64, 192, 256, 384, 832];
+  let loadMarkerArray = [1, 2, 3, 4, 5, 6, 10, 11, 12, 64, 192, 256, 384, 832];
   createAllMarkers(loadMarkerArray);
 
   mainDisplay = new MainDisplay(); // New map
-
   map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.242);
-
   pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, chartColors);
   lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, chartColors);
 
+  /* Add All of the Layers
+  * They are hidden at the end of the initialization script */
   map.addGeoJsonLayer('../layers/existing_re.json', 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5);
   map.addGeoJsonLayer('../layers/dod.json', 'dod', null,  mapLayerColors.Dod.fill, mapLayerColors.Dod.border, 0.5);
   map.addGeoJsonLayer('../layers/parks.json', 'parks', null,  mapLayerColors.Parks.fill, mapLayerColors.Parks.border, 0.5);
   map.addGeoJsonLayer('../layers/transmission.json', 'transmission', null,  mapLayerColors.Transmisison.fill, mapLayerColors.Transmisison.border, 1.0 );
   map.addGeoJsonLayer('../layers/agriculture.json', 'agriculture', null,  mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5);
-
   map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020,  mapLayerColors.Solar.fill, mapLayerColors.Solar.border, 0.2);
-  map.addGeoJsonLayer('../layers/wind.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.2);
-
+  map.addGeoJsonLayer('../layers/wind.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25);
 
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
@@ -129,18 +125,12 @@ function setUp() {
   function gotDevices(deviceInfos) {
     for (var i = 0; i !== deviceInfos.length; ++i) {
       var deviceInfo = deviceInfos[i];
-
       if (deviceInfo.kind === 'videoinput') {
-
         videoSources.push(deviceInfo.deviceId);
-
-
       } else {
         //  console.log('Found one other kind of source/device: ', deviceInfo);
       }
     }
-
-    console.log(videoSources);
   }
 
   function getStream() {
@@ -203,13 +193,14 @@ function tick() {
   for (let i = 0; i < videoArray.length; i++) {
 
     if (videoArray[i].video.readyState === videoArray[i].video.HAVE_ENOUGH_DATA) {
-
       let imageData = snapshot(videoArray[i]);
 
       // Blow the pictures up to make them easier to identify the markers.
       imageData.width *= 4;
       imageData.height *= 4;
+
       let markers = detector.detect(imageData);
+      console.log(markers);
       videoArray[i].updateMarkers(markers);
       updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
     }
@@ -299,6 +290,7 @@ function hideLayer() {
   map.hideLayer('transmission');
   map.hideLayer('solar');
   map.hideLayer('agriculture');
+  map.hideLayer('wind');
 }
 
 function showLayer() {
@@ -308,14 +300,47 @@ function showLayer() {
   map.showLayer('transmission');
   map.showLayer('solar');
   map.showLayer('agriculture');
-}
-
-function updateSolarYear(year) {
-  map.setSolarParcelsColor(year);
+  map.showLayer('wind');
 }
 
 function convertRadiansToDegrees(angle) {
   return angle * 180 / Math.PI;
+}
+
+/** Takes and input in pixels are returns it in VW values
+ * @param size -> size to convert
+ * @return -> Converted value in VW */
+function conertToVW(size) {
+  return size / VW;
+}
+
+
+/** Takes and input in pixels are returns it in VH values
+ * @param size -> size to convert
+ * @return -> Converted value in VH */
+function conertToVH(size) {
+  return size / VH;
+}
+
+/* This loads the various layer objects into the layers array*/
+function buildLayers() {
+  layers.push(new SolarLayer());
+  layers.push(new ExistingLayer());
+  layers.push(new SeaLevelLayer());
+  layers.push(new DODLayer());
+  layers.push(new ParksLayer());
+  layers.push(new TransmissionLayer());
+  layers.push(new WindLayer());
+  layers.push(new AgricultureLayer());
+}
+
+/**
+ * Populates the video array with n number of video input feeds.
+ * @param n The number of video elements to create.
+ */
+function buildVideoArray(n) {
+  videoArray.push(new VideoElement(0, 22, 50));
+  videoArray.push(new VideoElement(1, 22, 25));
 }
 
 let VW, VH; // WIDTH AND HEIGHT VARIABLES
@@ -335,47 +360,6 @@ function setVW() {
 
 function setVH() {
   VH = window.innerHeight / 100;
-}
-
-
-/** Takes and input in pixels are returns it in VW values
- * @param size -> size to convert
- * @return -> Converted value in VW */
-function conertToVW(size) {
-  return size / VW;
-}
-
-
-/** Takes and input in pixels are returns it in VH values
- * @param size -> size to convert
- * @return -> Converted value in VH */
-function conertToVH(size) {
-  return size / VH;
-}
-
-/* This loads the various layer objects into the layers array*/
-function buildLayers() {
-
-  layers.push(new SolarLayer());
-  layers.push(new ExistingLayer());
-  layers.push(new SeaLevelLayer());
-  layers.push(new DODLayer());
-  layers.push(new ParksLayer());
-  layers.push(new TransmissionLayer());
-  layers.push(new WindLayer());
-
-
-}
-
-/**
- * Populates the video array with n number of video input feeds.
- * @param n The number of video elements to create.
- */
-function buildVideoArray(n) {
-
-  videoArray.push(new VideoElement(0, 22, 50));
-  videoArray.push(new VideoElement(1, 22, 25));
-
 }
 
 /*****************************************************************

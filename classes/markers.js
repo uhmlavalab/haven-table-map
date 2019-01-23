@@ -260,10 +260,6 @@ function executeMarkerFunction(m) {
 
           mainDisplay.setCurYear(calcYear(m));
 
-
-
-        //map.addGeoJsonLayer('../layers/solar.json', 'solar', mainDisplay.getCurYear(), '#e41a1c');
-
       }
       break;
 
@@ -272,9 +268,8 @@ function executeMarkerFunction(m) {
       break;
 
       case 384:
-      m.updateXY();
-      mainDisplay.selectScenario(m);
       m.setRotation();
+      mainDisplay.selectScenario(m);
       break;
 
     case 832:

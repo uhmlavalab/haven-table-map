@@ -60,7 +60,7 @@ class Map {
             const capacity = d.properties.capacity;
             const value = cf * capacity * 8760;
             layer.parcels.push({ 'path': this, 'value': value });
-          } 
+          }
           else if (layerName == 'wind') {
             const cf = 0.2283942;
             const capacity = d.properties.MWac;
@@ -117,7 +117,7 @@ class Map {
     this.layers['wind'].year = year;
     if (this.layers['wind'].enabled) {
       let windTotal = 0;
-      windGenYearly.forEach(el => {
+      solarGenYearly.forEach(el => {
         if (el.year == year) {
           windTotal = el[scenario];
         }

@@ -3,20 +3,30 @@ class Layer {
   constructor() {
     this.active = false;
   }
+
+  updateColor() {
+
+    let id = 0;
+
+    for (let i = 0; i < this.legendColorTags.length; i++) {
+    document.getElementById(this.legendColorTags[i]).style.backgroundColor = this.colors[i];
+  }
+  }
 }
 
 class SolarLayer extends Layer {
 
   constructor() {
-  super();
+    super();
     this.iconPath = "images/icons/solar-icon.png";
     this.iconText = "Solar";
     this.classTag = "solar";
     this.legendTags = ["Unused Solar Land", "Used Solar Land"];
     this.legendColorTags = ["unused-solar", "used-solar"];
     this.iconTag = "solar-icon";
-    this.colors = ["red", "yellow"];
+    this.colors = ["white", mapLayerColors.Solar.fill];
     this.numLegendRows = 2;
+    this.updateColor();
   }
 
 }
@@ -31,8 +41,9 @@ class TransmissionLayer extends Layer {
     this.classTag = "transmission";
     this.legendTags = ["Transmission Lines"];
     this.legendColorTags = ["transmission-color"];
-    this.colors = ["green"];
+    this.colors = [mapLayerColors.Transmisison.border];
     this.numLegendRows = 1;
+    this.updateColor();
   }
 
 }
@@ -61,8 +72,9 @@ class DODLayer extends Layer {
     this.legendTags = ["DOD Land"];
     this.legendColorTags = ["dod-color"];
     this.iconTag = "dod-icon";
-    this.colors = ["orange"];
+    this.colors = [mapLayerColors.Dod.fill];
     this.numLegendRows = 1;
+    this.updateColor();
   }
 }
 
@@ -76,8 +88,9 @@ class ParksLayer extends Layer {
     this.legendTags = ["Park Lands"];
     this.legendColorTags = ["park-color"];
     this.iconTag = "park-icon";
-    this.colors = ["green"];
+    this.colors = [mapLayerColors.Parks.fill];
     this.numLegendRows = 1;
+    this.updateColor();
   }
 }
 
@@ -91,23 +104,41 @@ class ExistingLayer extends Layer {
     this.legendTags = ["Existing"];
     this.legendColorTags = ["existing-color"];
     this.iconTag = "existing-icon";
-    this.colors = ["green"];
+    this.colors = [mapLayerColors.Existing_RE.fill];
     this.numLegendRows = 1;
+    this.updateColor();
   }
 }
 
 class WindLayer extends Layer {
 
   constructor() {
-  super();
+    super();
     this.iconPath = "images/icons/wind-icon.png";
     this.iconText = "wind";
     this.classTag = "wind";
     this.legendTags = ["Unused Wind Land", "Used Wind Land"];
     this.legendColorTags = ["unused-wind", "used-wind"];
     this.iconTag = "wind-icon";
-    this.colors = ["red", "yellow"];
+    this.colors = ["white", mapLayerColors.Wind.fill];
     this.numLegendRows = 2;
+    this.updateColor();
   }
 
+}
+
+class AgricultureLayer extends Layer {
+
+  constructor() {
+    super();
+    this.iconPath = "images/icons/agriculture-icon.png";
+    this.iconText = "Ag Lands";
+    this.iconTag = "ag-icon";
+    this.classTag = "agriculture";
+    this.legendTags = ["Agriculture"];
+    this.legendColorTags = ["ag-color"];
+    this.colors = [mapLayerColors.Agriculture.fill];
+    this.numLegendRows = 1;
+    this.updateColor();
+  }
 }

@@ -20,6 +20,7 @@ class CapacityLine {
             label: el.technology,
             backgroundColor: color[el.technology],
             borderColor: color[el.technology],
+            pointRadius: 0,
             fill: false
           }
           this.chartData.push(trace);
