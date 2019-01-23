@@ -59,7 +59,8 @@ class Map {
             const cf = d.properties.cf_1;
             const capacity = d.properties.capacity;
             const value = cf * capacity * 8760;
-            layer.parcels.push({ 'path': this, 'value': value });
+            const ial = (d.properties.IAL == "Y") ? true : false;
+            layer.parcels.push({ 'path': this, 'value': value, 'ial': ial });
           }
           else if (layerName == 'wind') {
             const cf = 0.2283942;
@@ -95,7 +96,14 @@ class Map {
         }
       });
       this.layers['solar'].parcels.forEach(el => {
-        if (solarTotal > 0) {
+        if (el.ial) {
+          d3.select(el.path)
+          .style('fill', "#000000")
+          .style('opacity', 0.5)
+          .style('stroke', this.layers['solar'].lineColor)
+          .style('stroke-width', this.layers['solar'].lineWidth + 'px');
+        }
+        else if (solarTotal > 0) {
           d3.select(el.path)
             .style('fill', this.layers['solar'].fillColor)
             .style('opacity', 0.5)

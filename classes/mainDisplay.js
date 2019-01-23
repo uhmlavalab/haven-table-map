@@ -411,6 +411,7 @@ class MainDisplay {
       //this.clickSounds[this.getCurYear() - 2018].play();
       pieChart.updateChart(this.curYear, this.curScenario);
       lineChart.updateChart(this.curYear, this.curScenario);
+      barChart.updateChart(this.curYear, this.curScenario);
       this.timer = 20;
       this.runTimer = true;
 

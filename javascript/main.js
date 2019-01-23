@@ -14,6 +14,7 @@ let mainDisplay = null; // Map Object
 let map = null;
 let pieChart = null;
 let lineChart = null;
+let barChart = null;
 
 // Aruco.js marker detector
 let detector;
@@ -94,8 +95,10 @@ function setUp() {
 
   mainDisplay = new MainDisplay(); // New map
   map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.242);
-  pieChart = new GenerationPie('pieChart', '../data/generation_revised.csv', 2020, chartColors);
-  lineChart = new CapacityLine('lineChart', '../data/capacity_revised.csv', 2020, chartColors);
+  pieChart = new GenerationPie('pieChart', '../data/generation.csv', 2020, chartColors);
+  lineChart = new CapacityLine('lineChart', '../data/capacity.csv', 2020, chartColors);
+  barChart = new BatteryBar('barChart', '../data/battery.csv', 2020, chartColors);
+
 
   /* Add All of the Layers
   * They are hidden at the end of the initialization script */
@@ -200,7 +203,7 @@ function tick() {
       imageData.height *= 4;
 
       let markers = detector.detect(imageData);
-      console.log(markers);
+      // console.log(markers);
       videoArray[i].updateMarkers(markers);
       updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
     }

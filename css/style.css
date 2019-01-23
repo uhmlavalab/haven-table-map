@@ -684,6 +684,14 @@ are added dynamically*/
   top: 69.5vh;
 }
 
+#barChart {
+  position: absolute;
+  left: 20vw;
+  top: 45vh;
+  width: 200px !important;
+  height: 200px !important;
+}
+
 #generation-title-text {
   fill: white;
 
