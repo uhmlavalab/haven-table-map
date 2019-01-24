@@ -19,7 +19,6 @@ class BatteryBar {
     this.data.forEach(element => {
       powerVals.push(element[`${this.scenario}_power`]);
       if (element.year == this.year) {
-        console.log(element);
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
         power -= utilization;
@@ -32,6 +31,19 @@ class BatteryBar {
     this.myChart = new Chart(this.ctx, {
       type: 'bar',
       data: this.chartData,
+      data: {
+        labels: [this.chartData[0].x, this.chartData[1].x],
+        datasets: [{
+          label: 'Battery Utilization',
+          data: [this.chartData[0].y, this.chartData[1].y],
+          backgroundColor: [this.color, this.color],
+          borderColor: [
+            'rgba(255,255,255,1)',
+            'rgba(255, 255, 255, 1)',
+          ],
+          borderWidth: 4
+        }]
+      },
       options: {
         legend: {
           display: false,
@@ -44,9 +56,9 @@ class BatteryBar {
         scales: {
           yAxes: [{
             ticks: {
-              suggestedMin: max,
+              max: max,
               beginAtZero: true,
-              fontSize: 14,
+              fontSize: 40,
               fontStyle: 'bold',
               fontColor: "white",
             },
@@ -56,6 +68,9 @@ class BatteryBar {
               display: true,
               color: "#FFFFFF",
             },
+          }],
+          xAxes: [{
+            stacked: true,
           }]
         }
       }
@@ -70,7 +85,6 @@ class BatteryBar {
     this.data.forEach(element => {
       powerVals.push(element[`${this.scenario}_power`]);
       if (element.year == this.year) {
-        console.log(element);
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
         power -= utilization;
@@ -79,8 +93,9 @@ class BatteryBar {
     });
     const max = Math.max(...powerVals);
     this.chartData = newData;
-    this.myChart.data = this.chartData;
-    this.options.scales.yAxes[0].suggestedMin = max;
+    this.myChart.data.labels = [this.chartData[0].x, this.chartData[1].x];
+    this.myChart.data.datasets[0].data = [this.chartData[0].y, this.chartData[1].y];
+    this.myChart.options.scales.yAxes[0].ticks.max = max;
     this.myChart.update();
   }
 

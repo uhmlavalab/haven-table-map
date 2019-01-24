@@ -79,7 +79,6 @@ class CapacityLine {
               fontSize: 14,
               fontStyle: 'bold',
               fontColor: "white",
-
             },
             scaleLabel: {
               display: true,

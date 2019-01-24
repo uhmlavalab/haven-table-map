@@ -98,7 +98,7 @@ class Map {
       this.layers['solar'].parcels.forEach(el => {
         if (el.ial) {
           d3.select(el.path)
-          .style('fill', "#000000")
+          .style('fill', "#FFFFFF")
           .style('opacity', 0.5)
           .style('stroke', this.layers['solar'].lineColor)
           .style('stroke-width', this.layers['solar'].lineWidth + 'px');

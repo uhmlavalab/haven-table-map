@@ -93,7 +93,7 @@ class MainDisplay {
       return;
     } else {
       for (let m of v.activeMarkers) {
-        console.log(m.getCenterX());
+        // console.log(m.getCenterX());
         if (m.getCenterX() > 130) {
           this.addLayer(m);
         } else {
