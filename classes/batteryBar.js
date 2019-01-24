@@ -22,7 +22,7 @@ class BatteryBar {
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
         power -= utilization;
-        newData = [{ x: 'Power', y: power }, { x: 'Utilization', y: utilization }]
+        newData = [power, utilization]
       }
     });
     const max = Math.max(...powerVals);
@@ -32,11 +32,11 @@ class BatteryBar {
       type: 'bar',
       data: this.chartData,
       data: {
-        labels: [this.chartData[0].x, this.chartData[1].x],
+        labels: ['Power', 'Utilization'],
         datasets: [{
           label: 'Battery Utilization',
-          data: [this.chartData[0].y, this.chartData[1].y],
-          backgroundColor: [this.color, this.color],
+          data: this.chartData,
+          backgroundColor: [this.color, '#994E95'],
           borderColor: [
             'rgba(255,255,255,1)',
             'rgba(255, 255, 255, 1)',
@@ -47,37 +47,34 @@ class BatteryBar {
       options: {
         legend: {
           display: false,
-          labels: {
-            fontColor: "white",
-            fontStyle: "bold",
-            fontSize: 14,
-          }
         },
         scales: {
           yAxes: [{
+            stacked: true,
+            display: true,
             ticks: {
               max: max,
-              beginAtZero: true,
-              fontSize: 40,
+              min: 0,
+              fontSize: 110,
               fontStyle: 'bold',
               fontColor: "white",
             },
-            stacked: true,
-            display: true,
             gridLines: {
               display: true,
-              color: "#FFFFFF",
+              color: 'white',
+              lineWidth: 5,
+              drawBorder: true,
+              zeroLineColor: 'white'
             },
           }],
-          xAxes: [{
-            stacked: true,
-          }]
         }
       }
     });
+    this.updateChart(this.year, this.scenario);
   }
 
   updateChart(year, scenario) {
+    console.log(year, scenario)
     this.year = year;
     this.scenario = scenario;
     let newData = [];
@@ -88,15 +85,23 @@ class BatteryBar {
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
         power -= utilization;
-        newData = [{ x: 'Power', y: power }, { x: 'Utilization', y: utilization }]
+        newData = [power, utilization]
       }
     });
     const max = Math.max(...powerVals);
     this.chartData = newData;
-    this.myChart.data.labels = [this.chartData[0].x, this.chartData[1].x];
-    this.myChart.data.datasets[0].data = [this.chartData[0].y, this.chartData[1].y];
+    this.myChart.data.labels = ['Power', 'Utilization'];
+    this.myChart.data.datasets[0].data = this.chartData;
     this.myChart.options.scales.yAxes[0].ticks.max = max;
     this.myChart.update();
+  }
+
+  hideElement() {
+    this.barDiv.style.display = 'none';
+  }
+
+  showElement() {
+    this.barDiv.style.display = 'block';
   }
 
 }

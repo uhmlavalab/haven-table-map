@@ -81,6 +81,12 @@ function startMap() {
 
 }
 
+document.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    if (event.keyCode === 37) { showBarChart(); }
+    if (event.keyCode === 39) { showPieChart(); }
+});
+
 /*Set Up the navigator
 This function was part of the sample code downloaded with the Library
 and I have not made any changes to the code. */
@@ -116,6 +122,8 @@ function setUp() {
   updateWindowData(100 * VW, 100 * VH);
   buildVideoArray(2); // Set up the video inputs
   buildLayers();
+
+  showPieChart();
 
   const videoElement = videoArray[0].video;
   const videoElement2 = videoArray[1].video;
@@ -186,6 +194,8 @@ function setUp() {
   function handleError(error) {
     console.error('Error: ', error);
   }
+
+
 }
 
 /* Detects the Markers and makes the changes in the program */
@@ -284,6 +294,23 @@ function changeScenario(scenario) {
   mainDisplay.setScenario(scenario);
 }
 
+function showPieChart() {
+  document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;Energy Generation`;
+  barChart.hideElement();
+  pieChart.showElement();
+}
+
+function showBarChart() {
+  document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;Battery Utilization`;
+  pieChart.hideElement();
+  barChart.showElement();
+}
 
 
 function hideLayer() {

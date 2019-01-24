@@ -424,6 +424,7 @@ class MainDisplay {
     this.curScenario = scenario;
     pieChart.updateChart(this.curYear, this.curScenario);
     lineChart.updateChart(this.curYear, this.curScenario);
+    barChart.updateChart(this.curYear, this.curScenario);
     map.setSolarParcelsColor(this.curYear, this.curScenario)
 
   }

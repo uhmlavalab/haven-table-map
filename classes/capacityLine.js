@@ -134,4 +134,12 @@ class CapacityLine {
     this.myChart.update();
   }
 
+  hideElement() {
+    this.lineDiv.style.display = 'none';
+  }
+
+  showElement() {
+    this.lineDiv.style.display = 'block';
+  }
+
 }

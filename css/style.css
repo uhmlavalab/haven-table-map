@@ -686,15 +686,18 @@ are added dynamically*/
 
 #barChart {
   position: absolute;
-  left: 25vw;
-  top: 30vh;
+  left: 28vw;
+  top: 69.5vh;
   width: 200px !important;
   height: 200px !important;
 }
 
 #generation-title-text {
   fill: white;
+}
 
+#chartTitle {
+  fill: white;
 }
 #generation-title {
   width: 40%;

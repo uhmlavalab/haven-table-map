@@ -101,4 +101,12 @@ class GenerationPie {
     this.myChart.update();
   }
 
+  hideElement() {
+    this.pieDiv.style.display = 'none';
+  }
+
+  showElement() {
+    this.pieDiv.style.display = 'block';
+  }
+
 }
