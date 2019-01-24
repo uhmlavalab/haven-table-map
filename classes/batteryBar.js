@@ -21,7 +21,7 @@ class BatteryBar {
       if (element.year == this.year) {
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
-        power -= utilization;
+        // power -= utilization;
         newData = [power, utilization]
       }
     });
@@ -55,14 +55,14 @@ class BatteryBar {
             ticks: {
               max: max,
               min: 0,
-              fontSize: 110,
+              fontSize: 100,
               fontStyle: 'bold',
               fontColor: "white",
             },
             gridLines: {
               display: true,
               color: 'white',
-              lineWidth: 5,
+              lineWidth: 7,
               drawBorder: true,
               zeroLineColor: 'white'
             },
@@ -74,7 +74,6 @@ class BatteryBar {
   }
 
   updateChart(year, scenario) {
-    console.log(year, scenario)
     this.year = year;
     this.scenario = scenario;
     let newData = [];
@@ -84,7 +83,7 @@ class BatteryBar {
       if (element.year == this.year) {
         let power = element[`${this.scenario}_power`];
         const utilization = element[`${this.scenario}_utilization`] * power;
-        power -= utilization;
+        // power -= utilization;
         newData = [power, utilization]
       }
     });

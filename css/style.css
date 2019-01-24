@@ -686,9 +686,9 @@ are added dynamically*/
 
 #barChart {
   position: absolute;
-  left: 28vw;
-  top: 69.5vh;
-  width: 200px !important;
+  left: 27vw;
+  top: 70vh;
+  width: 190px !important;
   height: 200px !important;
 }
 

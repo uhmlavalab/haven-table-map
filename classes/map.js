@@ -125,11 +125,14 @@ class Map {
     this.layers['wind'].year = year;
     if (this.layers['wind'].enabled) {
       let windTotal = 0;
-      solarGenYearly.forEach(el => {
+      windGenYearly.forEach(el => {
+
         if (el.year == year) {
           windTotal = el[scenario];
+                  console.log(year, el);
         }
       });
+      console.log(windTotal)
       this.layers['wind'].parcels.forEach(el => {
         if (windTotal > 0) {
           d3.select(el.path)

@@ -126,6 +126,7 @@ class MainDisplay {
       case 10:
         id = 6;
         map.showLayer('wind');
+        map.setWindParcelsColor(this.year, this.curScenario);
         break;
 
       case 2:
@@ -395,6 +396,7 @@ class MainDisplay {
       this.loadingElem.style.display = "block";
       if (layers[0].active) {
         map.setSolarParcelsColor(year, this.curScenario);
+        map.setWindParcelsColor(year, this.curScenario);
       }
       //map.setWindParcelsColor(year, this.curScenario);
       setTimeout(function() {
@@ -426,7 +428,7 @@ class MainDisplay {
     lineChart.updateChart(this.curYear, this.curScenario);
     barChart.updateChart(this.curYear, this.curScenario);
     map.setSolarParcelsColor(this.curYear, this.curScenario)
-
+    map.setWindParcelsColor(this.curYear, this.curScenario);
   }
 
   selectScenario(m) {
