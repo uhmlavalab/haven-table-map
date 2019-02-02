@@ -22,9 +22,6 @@ class MapMarker {
     this.trackCountDown = 0;
     this.currentRotation = 0;
 
-    this.removeSound = new Sound("sounds/water-low.mp3");
-    this.addSound = new Sound("sounds/water-high.mp3");
-
 
     /* Specific location of the corners while in active state */
     this.corners = [{
@@ -46,6 +43,17 @@ class MapMarker {
    * Returns the current marker's Rotation
    */
   setRotation() {
+    let found = false;
+    let v = videoArray[0];
+
+    for (let m of v.activeMarkers) {
+      if (this.markerId === m.markerId) {
+        found = true;
+      }
+    }
+
+    if (!found)
+      return;
 
     let x = this.corners[0].x;
     let y = this.corners[0].y;
@@ -258,22 +266,24 @@ function executeMarkerFunction(m) {
         //m.track();
         m.setRotation();
 
-          mainDisplay.setCurYear(calcYear(m));
+        mainDisplay.setCurYear(calcYear(m));
 
       }
       break;
 
-    case 64:
-      m.updateXY();
+    case 4:
+      m.setRotation();
+      mainDisplay.updateAddRemove(m);
       break;
 
-      case 384:
+    case 10:
       m.setRotation();
       mainDisplay.selectScenario(m);
       break;
 
-    case 832:
-      m.updateXY();
+    case 2:
+      m.setRotation();
+      mainDisplay.toggleChart(m);
       break;
 
   }

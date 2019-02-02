@@ -85,7 +85,7 @@ class CapacityLine {
               fontSize: 18,
               fontStyle: 'bold',
               fontColor: "#FFFFFF",
-              labelString: 'Capacity'
+              labelString: 'Year'
             }
           }],
           yAxes: [{
@@ -98,14 +98,14 @@ class CapacityLine {
               fontSize: 14,
               fontStyle: 'bold',
               fontColor: "white",
-              max: 3000
+              max: 2500
             },
             scaleLabel: {
               display: true,
               fontSize: 18,
               fontStyle: 'bold',
               fontColor: "#FFFFFF",
-              labelString: 'Capacity'
+              labelString: 'Capacity (MW)'
             }
           }]
         }

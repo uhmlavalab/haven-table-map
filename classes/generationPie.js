@@ -29,7 +29,6 @@ class GenerationPie {
       backgroundColors.push(this.colors[el.label]);
       values.push(el.postapril)
     })
-    console.log(labels);
     this.ctx = this.pieDiv.getContext('2d');
     this.myChart = new Chart(this.ctx , {
       type: 'pie',

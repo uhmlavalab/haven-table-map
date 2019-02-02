@@ -6,8 +6,11 @@ class Map {
     this.width = mapImageWidth * this.scale;
     this.height = mapImageHeight * this.scale;
     this.rasterBounds = [[-158.281, 21.710], [-157.647, 21.252]];
+    this.curYear = null;
+    this.curScenario = null;
 
     this.layers = {};
+    this.IAL = false;
 
     this.projection = d3.geo.mercator()
       .scale(1)
@@ -66,7 +69,8 @@ class Map {
             const cf = 0.2283942;
             const capacity = d.properties.MWac;
             const value = cf * capacity * 8760;
-            layer.parcels.push({ 'path': this, 'value': value });
+            const type = d.properties.type;
+            layer.parcels.push({ 'path': this, 'value': capacity, 'type': type });
           }
           else {
             d3.select(this)
@@ -78,8 +82,11 @@ class Map {
         }).call(() => {
           this.layers[layerName] = layer;
           if (layerName == 'solar') {
-            this.layers[layerName].parcels.sort((a, b) => parseFloat(b.value) - parseFloat(a.value))
+            this.layers[layerName].parcels.sort((a, b) => parseFloat(b.value) - parseFloat(a.value));
             this.setSolarParcelsColor(year, 'postapril');
+          }
+          if (layerName == 'wind') {
+            this.layers[layerName].parcels.sort((a, b) => parseFloat(b.type) - parseFloat(a.type) || parseFloat(b.value) - parseFloat(a.value));
             this.setWindParcelsColor(year, 'postapril');
           }
         })
@@ -87,6 +94,8 @@ class Map {
   }
 
   setSolarParcelsColor(year, scenario) {
+    this.curYear = year;
+    this.curScenario = scenario;
     this.layers['solar'].year = year;
     if (this.layers['solar'].enabled) {
       let solarTotal = 0;
@@ -96,11 +105,11 @@ class Map {
         }
       });
       this.layers['solar'].parcels.forEach(el => {
-        if (el.ial) {
+        if (el.ial && this.IAL) {
           d3.select(el.path)
-          .style('fill', "#FFFFFF")
-          .style('opacity', 0.5)
-          .style('stroke', this.layers['solar'].lineColor)
+          .style('fill', "#000000")
+          .style('opacity', 1.0)
+          .style('stroke', "#000000")// this.layers['solar'].lineColor)
           .style('stroke-width', this.layers['solar'].lineWidth + 'px');
         }
         else if (solarTotal > 0) {
@@ -121,23 +130,26 @@ class Map {
     }
   }
 
+  toggleIAL() {
+    this.IAL = !this.IAL;
+    this.setSolarParcelsColor(this.curYear, this.curScenario);
+  }
+
   setWindParcelsColor(year, scenario) {
     this.layers['wind'].year = year;
     if (this.layers['wind'].enabled) {
       let windTotal = 0;
       windGenYearly.forEach(el => {
-
         if (el.year == year) {
-          windTotal = el[scenario];
-                  console.log(year, el);
+          windTotal = el[scenario] - 99;
+
         }
       });
-      console.log(windTotal)
       this.layers['wind'].parcels.forEach(el => {
         if (windTotal > 0) {
           d3.select(el.path)
             .style('fill', this.layers['wind'].fillColor)
-            .style('opacity', 0.5)
+            .style('opacity', 1.0)
             .style('stroke', this.layers['wind'].lineColor)
             .style('stroke-width', this.layers['wind'].lineWidth + 'px');
             windTotal -= el.value;

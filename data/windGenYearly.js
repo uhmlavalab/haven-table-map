@@ -1,152 +1,182 @@
 const windGenYearly = [
   {
+    "technology": "Wind",
     "year": 2016,
-    "postapril": 0,
-    "e3genmod": 0
+    "postapril": 99,
+    "e3genmod": 99
   },
   {
+    "technology": "Wind",
     "year": 2017,
-    "postapril": 0,
-    "e3genmod": 0
+    "postapril": 99,
+    "e3genmod": 99
   },
   {
+    "technology": "Wind",
     "year": 2018,
-    "postapril": 0,
-    "e3genmod": 19969
+    "postapril": 133,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2019,
-    "postapril": 0,
-    "e3genmod": 19983
+    "postapril": 133,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2020,
-    "postapril": 447717.72,
-    "e3genmod": 20220
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2021,
-    "postapril": 662406.6,
-    "e3genmod": 20042
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2022,
-    "postapril": 834771.96,
-    "e3genmod": 19900
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2023,
-    "postapril": 963398.64,
-    "e3genmod": 19953
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2024,
-    "postapril": 1049779.9,
-    "e3genmod": 20009
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2025,
-    "postapril": 1135673.5,
-    "e3genmod": 19977
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2026,
-    "postapril": 1222027.08,
-    "e3genmod": 20190
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2027,
-    "postapril": 1307855.1,
-    "e3genmod": 19903
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2028,
-    "postapril": 1393967.4,
-    "e3genmod": 19960
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2029,
-    "postapril": 1436682.24,
-    "e3genmod": 19941
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2030,
-    "postapril": 1479858.9,
-    "e3genmod": 19961
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2031,
-    "postapril": 1522925.68,
-    "e3genmod": 20190
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2032,
-    "postapril": 1566355.1,
-    "e3genmod": 20072
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2033,
-    "postapril": 1609360.92,
-    "e3genmod": 19900
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2034,
-    "postapril": 1651892.08,
-    "e3genmod": 19901
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2035,
-    "postapril": 1694855.16,
-    "e3genmod": 19973
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2036,
-    "postapril": 1738284.24,
-    "e3genmod": 20013
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2037,
-    "postapril": 1781430.6,
-    "e3genmod": 20190
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2038,
-    "postapril": 1824213.9,
-    "e3genmod": 20042
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2039,
-    "postapril": 1867557.24,
-    "e3genmod": 19911
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2040,
-    "postapril": 1910193.72,
-    "e3genmod": 19990
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2041,
-    "postapril": 1910141.9,
-    "e3genmod": 19972
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2042,
-    "postapril": 1910177.86,
-    "e3genmod": 19975
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2043,
-    "postapril": 1910523.72,
-    "e3genmod": 20209
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2044,
-    "postapril": 1910688.1,
-    "e3genmod": 15314
+    "postapril": 163,
+    "e3genmod": 133
   },
   {
+    "technology": "Wind",
     "year": 2045,
-    "postapril": 1910077.12,
-    "e3genmod": 59751
+    "postapril": 163,
+    "e3genmod": 163
   }
 ]

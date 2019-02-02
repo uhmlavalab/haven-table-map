@@ -18,7 +18,7 @@ let barChart = null;
 
 // Aruco.js marker detector
 let detector;
-
+let timer = 0;
 
 let layers = [];
 // #7F3C8D,#11A579,#3969AC,#F2B701,#E73F74,#80BA5A,#E68310,#008695,#CF1C90,#f97b72,#4b4b8f,#A5AA99
@@ -30,6 +30,7 @@ let chartColors = {
   Bio: '#73AF48',
   Battery: '#5F4690',
   Wind: '#38A6A5',
+  Offshore: '#5F4690',
 }
 
 let mapLayerColors = {
@@ -38,7 +39,7 @@ let mapLayerColors = {
     border: 'white',
   },
   Dod: {
-    fill: '#6F4070',
+    fill: '#CC503E',
     border: 'white',
   },
   Wind: {
@@ -83,8 +84,8 @@ function startMap() {
 
 document.addEventListener("keyup", (event) => {
     event.preventDefault();
-    if (event.keyCode === 37) { showBarChart(); }
-    if (event.keyCode === 39) { showPieChart(); }
+    if (event.keyCode === 40) { toggleIAL(); }
+    if (event.keyCode === 38) { toggleIAL(); }
 });
 
 /*Set Up the navigator
@@ -100,7 +101,17 @@ function setUp() {
   createAllMarkers(loadMarkerArray);
 
   mainDisplay = new MainDisplay(); // New map
-  map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.242);
+
+  /**************************************
+  ******
+  *
+  *      Last paramater of the map constructor is the scale.  Changte it slightly, 0.002 or so
+         at a time to make adjustments
+  ************
+  ****************************/
+  map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.237);
+
+
   pieChart = new GenerationPie('pieChart', '../data/generation.csv', 2020, chartColors);
   lineChart = new CapacityLine('lineChart', '../data/capacity.csv', 2020, chartColors);
   barChart = new BatteryBar('barChart', '../data/battery.csv', 2020, chartColors);
@@ -108,18 +119,18 @@ function setUp() {
 
   /* Add All of the Layers
   * They are hidden at the end of the initialization script */
-  map.addGeoJsonLayer('../layers/existing_re.json', 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5);
+  map.addGeoJsonLayer('../layers/existing_re_2.json', 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5);
   map.addGeoJsonLayer('../layers/dod.json', 'dod', null,  mapLayerColors.Dod.fill, mapLayerColors.Dod.border, 0.5);
   map.addGeoJsonLayer('../layers/parks.json', 'parks', null,  mapLayerColors.Parks.fill, mapLayerColors.Parks.border, 0.5);
   map.addGeoJsonLayer('../layers/transmission.json', 'transmission', null,  mapLayerColors.Transmisison.fill, mapLayerColors.Transmisison.border, 1.0 );
   map.addGeoJsonLayer('../layers/agriculture.json', 'agriculture', null,  mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5);
   map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020,  mapLayerColors.Solar.fill, mapLayerColors.Solar.border, 0.2);
-  map.addGeoJsonLayer('../layers/wind.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25);
+  map.addGeoJsonLayer('../layers/wind_2.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25);
 
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
 
-  updateWindowData(100 * VW, 100 * VH);
+  updateWindowData(100 * VW, 90 * VH);
   buildVideoArray(2); // Set up the video inputs
   buildLayers();
 
@@ -213,13 +224,13 @@ function tick() {
       imageData.height *= 4;
 
       let markers = detector.detect(imageData);
-      // console.log(markers);
       videoArray[i].updateMarkers(markers);
       updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
     }
   }
 
-  if (mainDisplay.getState() !== INITIALIZE) {
+  runMainTimer();
+  if (mainDisplay.getState() !== INITIALIZE && (timer % 2 === 0)) {
     mainDisplay.runMap(markerArray);
   }
 
@@ -278,11 +289,16 @@ function track(m) {
   e.style.top = m.y + 15 * VW;
 }
 
+function runMainTimer() {
+  timer++;
+}
+
 
 function calcYear(m) {
 
+  let years = 2052 - 2016 + 1
   let rot = (360 - m.getRotation());
-  let year = Math.trunc(rot / 12.3 + 2018);
+  let year = Math.trunc((rot / (360/years)) + 2012);
   if (year === 2046) {
     year = 2045;
   }
@@ -294,22 +310,41 @@ function changeScenario(scenario) {
   mainDisplay.setScenario(scenario);
 }
 
+function toggleIAL() {
+  map.toggleIAL();
+}
+
 function showPieChart() {
+
+  if (mainDisplay.activeChart === 'pie') {
+    return;
+  }
   document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;Energy Generation`;
+
+  mainDisplay.activeChart = 'pie';
   barChart.hideElement();
   pieChart.showElement();
+  mainDisplay.chartSound.play();
 }
 
 function showBarChart() {
+
+  {
+    if (mainDisplay.activeChart === 'bar') {
+      return;
+    }
+  }
   document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      &nbsp;&nbsp;&nbsp;&nbsp;Battery Utilization`;
+  mainDisplay.activeChart = 'bar';
   pieChart.hideElement();
   barChart.showElement();
+  mainDisplay.chartSound.play();
 }
 
 
@@ -356,12 +391,12 @@ function conertToVH(size) {
 function buildLayers() {
   layers.push(new SolarLayer());
   layers.push(new ExistingLayer());
-  layers.push(new SeaLevelLayer());
   layers.push(new DODLayer());
   layers.push(new ParksLayer());
   layers.push(new TransmissionLayer());
   layers.push(new WindLayer());
   layers.push(new AgricultureLayer());
+  layers.push(new IALLayer());
 }
 
 /**

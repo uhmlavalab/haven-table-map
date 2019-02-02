@@ -5,27 +5,42 @@
 class MainDisplay {
 
   constructor() {
-    this.addRemove = document.getElementById('add-remove-wrapper');
-    this.icons = document.getElementById('displaying-icons-wrapper');
-    this.legend = document.getElementById('legend');
-    this.mapElement = document.getElementById('mapDiv');
+
     this.state = INITIALIZE; // Map state is initialized to INTROMODE
     this.prevState = -1;
-    this.displayCams = false;
     this.curYear = 2017;
     this.curScenario = 'postapril';
     this.windowWidth = 0;
     this.windowHeight = 0;
-    this.loadSound = new Sound("sounds/mac.mp3");
+    this.loadSound = new Sound("sounds/bestIntro.m4a");
     this.clickSound = new Sound("sounds/click3.mp3");
-    this.loadingElem = document.getElementById("loading");
     this.changeScenarioActive = false;
-    this.activeScenario = 'e3genmod';
 
-    this.clickSounds = [];
-    for (let i = 2018; i < 2046; i++) {
-      this.clickSounds.push(new Sound("sounds/blockTones/" + i + ".wav"));
-    }
+    this.activeChart = null;
+
+    this.addNext = null;
+    this.addNextLayerId = -999;
+
+    this.artMax = 7; // Add remove timer max time
+    this.addRemoveTimer = this.artMax; // Set the addRemoveTimer to max
+
+    this.addRemoveOptionText = document.getElementById("addRemoveOption");
+    this.addLayerOptionText = document.getElementById("addLayerOption");
+    this.addRemove = document.getElementById('add-remove-wrapper');
+    this.icons = document.getElementById('displaying-icons-wrapper');
+    this.legend = document.getElementById('legend');
+    this.mapElement = document.getElementById('mapDiv');
+    this.addBox = document.getElementById("add-box");
+    this.largeYearDisplay = document.getElementById("largeYear");
+    this.largeYearDisplayText = document.getElementById("largeYearText");
+    this.updateText = document.getElementById("remove-text");
+    this.addRemoveImage = document.getElementById("addRemoveImage");
+
+
+    this.removeSound = new Sound("sounds/water-low.mp3");
+    this.addSound = new Sound("sounds/water-high.mp3");
+    this.layerSound = new Sound("sounds/click3.wav");
+    this.chartSound = new Sound("sounds/tick.mp3");
     this.timer = 0;
     this.runTimer = false;
   }
@@ -64,7 +79,6 @@ class MainDisplay {
 
   /** Main execution function.  Detects map state and executes functions accoridngly */
   runMap(markerArray) {
-
     for (let m of markerArray) {
       if (m.getActive()) {
         executeMarkerFunction(m);
@@ -85,7 +99,10 @@ class MainDisplay {
    * Checks the section of the translucent plastic for any new markers.  If they are found,
    * this layer becomes active, displaying the icon and the legend. */
   checkAdd() {
-
+    if (this.addRemoveTimer > 0) {
+      this.addRemoveTimer--;
+      return;
+    }
     // Camera 0 covers the upper section of the map
     let v = videoArray[1];
 
@@ -93,203 +110,13 @@ class MainDisplay {
       return;
     } else {
       for (let m of v.activeMarkers) {
-        // console.log(m.getCenterX());
-        if (m.getCenterX() > 130) {
-          this.addLayer(m);
-        } else {
-          this.removeLayer(m);
+
+        if (m.markerId === 4) {
+          this.addRemoveNextLayer();
         }
       }
     }
   };
-
-  addLayer(m) {
-
-
-    if (m.layerActive) {
-      return;
-    } else {
-      m.layerActive = true;
-    }
-
-
-    let id = -1;
-
-    switch (m.markerId) {
-
-      case 3:
-        id = 0;
-        map.showLayer('solar');
-        map.setSolarParcelsColor(this.year, this.curScenario);
-        break;
-
-      case 10:
-        id = 6;
-        map.showLayer('wind');
-        map.setWindParcelsColor(this.year, this.curScenario);
-        break;
-
-      case 2:
-        id = 5;
-        map.showLayer('transmission');
-        break;
-
-      case 64:
-        id = 3;
-        map.showLayer('dod');
-        break;
-      case 5:
-        id = 4;
-        map.showLayer("parks");
-        break;
-
-      case 6:
-        id = 1;
-        map.showLayer("existing_re");
-        break;
-
-      case 4:
-        id = 7;
-        map.showLayer('agriculture');
-        break;
-
-    }
-
-    let iconTagString = layers[id].iconTag;
-    document.getElementById(iconTagString).style.opacity = 1;
-
-    for (let i = 0; i < layers[id].legendColorTags.length; i++) {
-      let elem = document.getElementById(layers[id].legendColorTags[i]);
-      elem.style.display = "block";
-      elem.style.width = 80 + '%';
-    }
-
-    m.addSound.play();
-    /* Flash Green */
-    let addBox = document.getElementById("add-box");
-    let i = 1;
-    let fadeBox = setInterval(fadeAddBox, 1);
-
-    function fadeAddBox() {
-      addBox.style.backgroundColor = `rgba(26, 119, 5, ${i})`;
-      i -= 0.3;
-
-      if (i <= 0) {
-        clearInterval(fadeBox);
-        addBox.style.backgroundColor = 'rgb(174, 180, 191)';
-      }
-
-
-    };
-    if (layers[id].active) {
-      return;
-    } else {
-      layers[id].active = true;
-    }
-  };
-
-  removeLayer(m) {
-
-    if (!m.layerActive) {
-      return;
-    } else {
-
-      let id = -1;
-
-      switch (m.markerId) {
-
-        case 3:
-          id = 0;
-          map.hideLayer('solar');
-          break;
-
-        case 2:
-          id = 5;
-          map.hideLayer('transmission');
-          break;
-
-        case 64:
-          id = 3;
-          map.hideLayer('dod');
-          break;
-
-        case 4:
-          id = 7;
-          map.hideLayer('agriculture');
-          break;
-
-
-        case 5:
-          id = 4;
-          map.hideLayer("parks");
-          break;
-
-        case 6:
-          id = 1;
-          map.hideLayer('existing_re');
-          break;
-
-        case 10:
-          id = 6;
-          map.hideLayer('wind');
-          break;
-
-
-      }
-
-      let iconTagString = layers[id].iconTag;
-
-      document.getElementById(iconTagString).style.opacity = 0.3;
-      for (let i = 0; i < layers[id].legendColorTags.length; i++) {
-        let elem = document.getElementById(layers[id].legendColorTags[i]);
-        elem.style.display = "none";
-        elem.style.width = 0 + '%';
-
-      }
-
-      m.removeSound.play();
-
-      /* Flash Green */
-      let removeBox = document.getElementById("remove-box");
-      let i = 1;
-      let fadeBoxR = setInterval(fadeRemoveBox, 1);
-
-      function fadeRemoveBox() {
-        removeBox.style.backgroundColor = `rgba(114, 17, 0, ${i})`;
-        i -= 0.3;
-
-        if (i <= 0) {
-          clearInterval(fadeBoxR);
-          removeBox.style.backgroundColor = 'rgb(174, 180, 191)';
-        }
-
-      };
-
-      m.setActive(false);
-      m.layerActive = false;
-      layers[id].active = false;
-
-    }
-  };
-
-  /* Script executes when the main marker is placed in the add section
-  of the map.  It allows the user to switch between scenarios. */
-  changeScenario() {
-    let addBox = document.getElementById('add-box');
-    addBox.style.opacity = 0;
-    let removeText = document.getElementById('remove-text');
-    removeText.innerHTML = "Place Marker to confirm scenario";
-    let regInst = document.getElementById("normal-instructions");
-    let scenInst = document.getElementById("change-scenario-instructions");
-    regInst.style.display = "none";
-    scenInst.style.display = "block";
-    document.getElementById('change-scenario-area').style.display = "block";
-
-  }
-
-  confirmChangeScenario() {
-
-  }
 
   /** Starting from intromode, this funciton changes the map to full screen by
    *   removing the intro slider and the intro map layer.
@@ -298,7 +125,6 @@ class MainDisplay {
 
     this.setState(FULLSCREEN);
 
-
     // Change from the landing screen to main
     document.getElementById("landing-screen-wrapper").style.display = "none"; // Hide the landing screen
 
@@ -306,8 +132,8 @@ class MainDisplay {
     mainDisplay.addRemove.style.display = "block";
 
     // Display the Active marker icon
-    document.getElementById("largeYear").style.display = "block";
-    document.getElementById("legend").style.display = "block";
+    this.largeYearDisplay.style.display = "block";
+    this.legend.style.display = "block";
 
   };
 
@@ -388,21 +214,20 @@ class MainDisplay {
 
     if (year > 2045) {
       year = 2045;
-    } else if (year < 2018) {
-      year = 2018;
+    } else if (year < 2016) {
+      year = 2016;
     }
 
     if (this.getCurYear() === year && this.timer <= 0) {
-      this.loadingElem.style.display = "block";
+
       if (layers[0].active) {
         map.setSolarParcelsColor(year, this.curScenario);
+      }
+      if (layers[6].active) {
         map.setWindParcelsColor(year, this.curScenario);
       }
-      //map.setWindParcelsColor(year, this.curScenario);
-      setTimeout(function() {
-        mainDisplay.loadingElem.style.display = "none";
-      }, 400);
-      this.timer = 20;
+
+      this.timer = 8;
       this.runTimer = false;
     } else if (this.getCurYear() === year && this.timer > 0 && this.runTimer) {
       this.timer--;
@@ -419,10 +244,11 @@ class MainDisplay {
 
     }
 
-    document.getElementById("largeYearText").innerHTML = this.curYear;
+    this.largeYearDisplayText.innerHTML = this.curYear;
   }
 
   setScenario(scenario) {
+    this.chartSound.play();
     this.curScenario = scenario;
     pieChart.updateChart(this.curYear, this.curScenario);
     lineChart.updateChart(this.curYear, this.curScenario);
@@ -433,18 +259,188 @@ class MainDisplay {
 
   selectScenario(m) {
     let scenarioInsert = document.getElementById("scenario-insert");
-    if ((m.getRotation() >= 0 && m.getRotation() < 90) || (m.getRotation() >= 180 && m.getRotation() < 270)) {
 
-      scenarioInsert.innerHTML = "E3";
-      this.activeScenario = 'e3genmod';
-    } else {
+    let number = 360 / 8;
+    let rotation = m.getRotation();
 
-      scenarioInsert.innerHTML = "Post April";
-      this.activeScenario = 'postapril';
+    for (let i = 0; i < 8; i++) {
 
+      let min = number * i;
+      let max = number * (i + 1)
+
+      if ((rotation >= min) && (rotation < max)) {
+        if (i % 2 === 0) {
+          if (this.curScenario === 'e3genmod') {
+            return;
+          } else {
+            this.showE3(scenarioInsert);
+          }
+        } else {
+          if (this.curScenario === 'postapril') {
+            return;
+          } else {
+            this.showPostApril(scenarioInsert)
+          }
+        }
+        break;
+      }
     }
 
-    this.setScenario(this.activeScenario);
+    this.setScenario(this.curScenario);
   }
 
+  showE3(scenarioInsert) {
+    scenarioInsert.innerHTML = "E3";
+    this.curScenario = 'e3genmod';
+  }
+
+  showPostApril(scenarioInsert) {
+    scenarioInsert.innerHTML = "Post April";
+    this.curScenario = 'postapril';
+
+  }
+
+  updateAddRemove(m) {
+    let number = 360 / layers.length;
+    let id = -999
+    let rotation = m.getRotation();
+    for (let i = 0; i < layers.length; i++) {
+      if (i < layers.length - 1) {
+        let min = number * i;
+        let max = number * (i + 1)
+        if ((rotation >= min) && (rotation < max)) {
+          id = i;
+          break;
+        }
+      } else {
+        id = layers.length - 1;
+      }
+    }
+
+    if (id >= 0) {
+      if (this.addNextLayerId !== id) {
+        this.addNextLayerId = id;
+        this.layerSound.play();
+      }
+      this.updateAddRemoveData(id);
+    }
+  }
+
+  updateAddRemoveData(id) {
+
+    this.addNext = layers[id];
+    this.updateText.innerHTML = this.addNext.layerName;
+    this.addRemoveImage.src = this.addNext.iconPath;
+
+    if (!(this.addNext.active)) {
+      this.addRemoveOptionText.innerHTML = "add";
+    } else {
+      this.addRemoveOptionText.innerHTML = "remove";
+    }
+
+    if (this.addNext.active) {
+      document.getElementById("add-box").style.border = `10px solid ${this.addNext.color}`;
+    } else {
+      document.getElementById("add-box").style.border = `10px solid #FFFFFF`;
+    }
+    this.addLayerOptionText.innerHTML = this.addNext.layerName;
+  }
+
+  addRemoveNextLayer() {
+    let layer = this.addNext;
+    if (layer.active) {
+      this.removeALayer(layer);
+      this.layerSound.play();
+    } else {
+      this.addALayer(layer);
+    }
+  }
+
+  addALayer(layer) {
+    // Add The Layer
+    layer.active = true;
+    this.startARTimer();
+    if (layer.layerName === "Important Ag" ) {
+      toggleIAL();
+    } else {
+      map.showLayer(layer.classTag);
+    }
+
+    this.lightUpLayerBorder(layer);
+    if (layer.classTag === 'solar' || layer.classTag === 'wind') {
+      this.initializeParcels(layer);
+    }
+    this.showLegend(layer);
+    this.addSound.play();
+  }
+
+  removeALayer(layer) {
+    layer.active = false;
+    this.removeBorderColor();
+    this.startARTimer();
+    if (layer.layerName === "Important Ag") {
+      toggleIAL();
+    } else {
+      map.hideLayer(layer.classTag);
+    }
+    this.hideLegend(layer);
+    this.removeSound.play();
+  }
+
+  startARTimer() {
+    /* When an item is added or removed, the timer starts so that
+    it is not immediately removed by mistake */
+    this.addRemoveTimer = this.artMax;
+  }
+
+  /* Lights Up the border of this layer in the Add/Remove Box */
+  lightUpLayerBorder(layer) {
+    this.addBox.style.border = `10px solid ${this.addNext.color}`;
+  }
+
+  removeBorderColor(layer) {
+    this.addBox.style.border = `10px solid #FFFFFF`;
+  }
+
+  initializeParcels(layer) {
+    if (layer.classTag === 'solar') {
+      map.setSolarParcelsColor(this.curYear, this.curScenario);
+    } else if (layer.classTag === 'wind') {
+      map.setWindParcelsColor(this.cuYyear, this.curScenario);
+    }
+  }
+
+  showLegend(layer) {
+    document.getElementById(layer.iconTag).style.opacity = 1;
+
+    let elem = document.getElementById(layer.legendColorTag);
+    elem.style.display = "block";
+    elem.style.width = 80 + '%';
+  }
+
+  hideLegend(layer) {
+
+    document.getElementById(layer.iconTag).style.opacity = 0.3;
+    let elem = document.getElementById(layer.legendColorTag);
+    elem.style.display = "none";
+    elem.style.width = 0 + '%';
+  }
+
+  toggleChart(m) {
+
+    let number = 360 / 8;
+    let rotation = m.getRotation();
+
+    for (let i = 0; i < 8; i++) {
+
+      let min = number * i;
+      let max = number * (i + 1)
+
+      if ((rotation >= min) && (rotation < max)) {
+        (i % 2 === 0) ? showPieChart(): showBarChart();
+
+        break;
+      }
+    }
+  }
 }

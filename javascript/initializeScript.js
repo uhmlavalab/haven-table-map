@@ -118,30 +118,23 @@ function initialize() {
     // Draw the overlay rectangles
     let rectangleOverlay = document.createElement('div');
     rectangleOverlay.style.height = "49vh";
-    rectangleOverlay.style.width = "11vw";
+    rectangleOverlay.style.width = "22vw";
     rectangleOverlay.style.zIndex = "3";
     rectangleOverlay.style.border = "5px solid orange";
     rectangleOverlay.style.top = "50vh";
     rectangleOverlay.style.position = "absolute";
 
     let addOverlay = document.createElement('div');
-    addOverlay.style.height = "49vh";
-    addOverlay.style.width = "11vw";
+    addOverlay.style.height = "30vh";
+    addOverlay.style.width = "22vw";
     addOverlay.style.zIndex = "3";
     addOverlay.style.border = "5px solid red";
     addOverlay.style.position = "absolute";
 
-    let removeOverlay = document.createElement('div');
-    removeOverlay.style.height = "49vh";
-    removeOverlay.style.width = "11vw";
-    removeOverlay.style.zIndex = "3";
-    removeOverlay.style.border = "5px solid green";
-    removeOverlay.style.left = "12vw";
-    removeOverlay.style.position = "absolute";
 
     camWrap.appendChild(rectangleOverlay);
     camWrap.appendChild(addOverlay);
-    camWrap.appendChild(removeOverlay);
+
 
     camDoneBut.addEventListener('click', chooseMap);
   }
