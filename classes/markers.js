@@ -1,60 +1,135 @@
 /* Represents an active Marker */
 class MapMarker {
 
-  constructor(id) {
+  constructor(id, name) {
+
+    this.name = name;
     this.markerId = id; // ID number as defined by the Aruco library
-    this.active = false; // Is this marker currently in play?
-    this.layerActive = false;
-    // Initally set to false when markers are created.
+    this.active = false; // Is this marker currently in play
+    this.changed = false; // Was there a change in the position of this marker?
+    this.job = null;
 
     /* Center x and y position of marker while active */
     this.x = 0;
     this.y = 0;
     this.rotation = 0;
+    this.rotationSum = 0;
+    this.direction = 'none';
 
-    this.countdown = 0; // Each marker has a timer that counts down from the
-    // moment it is detected on the map to prevent flickering
-    // from poor detection.
-    this.trackColor = "rgba(226, 13, 31, 0.8)";
-    this.displaying;
-    this.initialY;
     this.acitveCam = -1; // The camera that is designated to track the marker.
-    this.trackCountDown = 0;
-    this.currentRotation = 0;
-
-
     /* Specific location of the corners while in active state */
-    this.corners = [{
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }];
+    this.corners = [];
+    this.maxTime = 300;
+    this.timer = 0;
+
+    this.rotationTimer = 0;
+    this.maxRotationTime = 100;
+    this.initializeCorners();
+  }
+
+  resetRotationTimer() {
+    const d = new Date();
+    this.rotationTimer = d.getTime();
+  }
+
+  checkRotationTimer() {
+    const d = new Date();
+    const curTime = d.getTime();
+    if ((curTime - this.rotationTimer) > this.maxRotationTime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  resetTimer() {
+    const d = new Date();
+    this.timer = d.getTime();
+  }
+
+  timesUp() {
+    const d = new Date();
+    const curTime = d.getTime();
+    if ((curTime - this.timer) > this.maxTime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  initializeCorners() {
+    const emptyCorner = { x: 0, y: 0 };
+    for (let i = 0; i < 4; i++) {
+      this.corners.push(emptyCorner);
+    }
+  }
+
+  setJob(job) {
+    this.job = job;
   }
 
   /**
    * Returns the current marker's Rotation
    */
-  setRotation() {
-    let found = false;
-    let v = videoArray[0];
+  setRotation(rotation) {
+    this.rotation = rotation;
+  }
 
-    for (let m of v.activeMarkers) {
-      if (this.markerId === m.markerId) {
-        found = true;
-      }
+  setDirection(direction) {
+    this.direction = direction;
+  }
+
+  getRotationSum() {
+    return this.rotationSum;
+  }
+
+  setRotationSum(rot) {
+    this.rotationSum = rot;
+  }
+
+  getDirection() {
+    return this.direction;
+  }
+
+  calcDirection() {
+    let direction = 'none';
+
+    let oldRotation = this.getRotation();
+    let newRotation = this.calcRotation();
+
+    let diff = oldRotation - newRotation;
+    if (Math.abs(diff) < 2) {
+      diff = 0;
+    }
+    this.setRotation(newRotation);
+
+    if (Math.abs(diff) <= 100 && Math.abs(diff) > 0) {
+      this.rotationSum += diff;
+    } else {
+      this.rotationSum = 0;
     }
 
-    if (!found)
-      return;
+    if (Math.abs(this.rotationSum) > this.job.getRotationMax()) {
 
+      if (this.rotationSum < 0) {
+        direction = 'left';
+      } else if (this.rotationSum > 0) {
+        direction = 'right';
+      } else {
+        direction = 'none';
+      }
+      this.rotationSum = 0;
+
+    } else {
+      this.direction = 'none';
+      return;
+    }
+
+
+    this.direction = direction;
+  }
+
+  calcRotation() {
     let x = this.corners[0].x;
     let y = this.corners[0].y;
 
@@ -83,35 +158,15 @@ class MapMarker {
     }
     rotation -= Math.PI * 2;
     // Rotation is reversed.  To calculate correct rotation
-    this.rotation = -convertRadiansToDegrees(rotation);
-  };
-
-  clearTracking() {
-    //TODO: figure out what this is.
+    return -convertRadiansToDegrees(rotation);
   }
+
 
   updateXY() {
     this.x = this.getCenterX();
     this.y = this.getCenterY();
   }
 
-
-  /**
-   * Sets the active came.  Called from the vivdeoElement.
-   * @param id The Camera id.
-   */
-  setActiveCam(id) {
-    this.activeCam = id;
-  };
-
-
-  /**
-   * Gets the active cam.
-   * @return The active cam.
-   */
-  getActiveCam() {
-    return this.activeCam;
-  };
 
 
   /**
@@ -123,7 +178,7 @@ class MapMarker {
     let corners = this.corners;
     return (corners[0].x + corners[2].x) * 0.5;
 
-  };
+  }
 
 
   /**
@@ -135,27 +190,60 @@ class MapMarker {
     let corners = this.corners;
     return (corners[0].y + corners[2].y) * 0.5;
 
-  };
+  }
+
+
+
+  clearTracking() {
+    //TODO: figure out what this is.
+  }
+
+  updateXY() {
+    this.x = this.getCenterX();
+    this.y = this.getCenterY();
+  }
+
+  /**
+   * Sets the active came.  Called from the vivdeoElement.
+   * @param id The Camera id.
+   */
+  setActiveCam(id) {
+    this.activeCam = id;
+  }
+
+  /**
+   * Gets the active cam.
+   * @return The active cam.
+   */
+  getActiveCam() {
+    return this.activeCam;
+  }
+
+  /**
+   * Gets the center X position of the marker.
+   * @return x center.
+   */
+  getCenterX() {
+
+    let corners = this.corners;
+    return (corners[0].x + corners[2].x) * 0.5;
+
+  }
+
+  /**
+   * Gets the center Y position of the marker.
+   * @return y center.
+   */
+  getCenterY() {
+
+    let corners = this.corners;
+    return (corners[0].y + corners[2].y) * 0.5;
+
+  }
 
   getRotation() {
     return this.rotation;
   }
-  /***********
-   ****
-   ** Countdown methods
-   ****
-   ***********/
-  resetCountdown() {
-    this.countdown = 120;
-  };
-
-  decrementCountdown() {
-    this.countdown--;
-  };
-
-  getCountDown() {
-    return this.countdown;
-  };
 
   /**
    * Updates the status.  True, on the board, false not on the board.
@@ -176,11 +264,6 @@ class MapMarker {
     return this.markerId;
   };
 
-  setInitialY(y) {
-    this.initialY = y;
-  };
-
-
   /**
    * Updates the position of the marker on the map.  Does deep copy of the
    * corners from the aruco.js object to the marker object.
@@ -189,134 +272,40 @@ class MapMarker {
   updatePosition(c) {
     /* Execute deep copy of the corners array */
     this.corners = Object.assign({}, c);
-
   };
 
+  /**
+   * Updates the position of the marker on the map.  Does deep copy of the
+   * corners from the aruco.js object to the marker object.
+   * @param c Corners to update.
+   */
+  updatePrevPosition(c) {
+    /* Execute deep copy of the corners array */
+    this.prevCorners = Object.assign({}, c);
+  };
 
   /**
    * Resests the corner / position of the marker to 0.
    */
   clearPosition() {
-    /* Specific location of the corners while in active state */
-    this.corners = [{
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }, {
-      x: 0,
-      y: 0
-    }];
-  };
-}
-
-/* This function is called during setup of the Map.  Before it begins, all markers
- * that are used, or can be used during operation are loaded into an array that is
- * publically accessable
- *
- * loadMarkerIds = array holding all markers that will be used during the map operation
- *
- */
-function createAllMarkers(loadMarkerIds) {
-  for (let m of loadMarkerIds) {
-    markerArray.push(new MapMarker(m));
+    this.initializeCorners();
   }
-}
 
-function updateMarkerActive() {
-  clearMarkerActive();
-
-  for (let m of markers) {
-    for (let m1 of markerArray) {
-      if (m.id === m1.markerId) {
-        m1.setActive(true);
-      }
+  doMyJob() {
+    if (this.job == null) {
+      return;
     }
+    this.job.myJob(this);
+
   }
+
 }
 
-function clearMarkerActive() {
-  for (let m of markerArray) {
-    m.setActive(false);
-  }
-}
 
-/**
- * Each marker has a specific function and this function is called based on
- * the id o the marker.
- *
- * @param m The marker who's function is to be executed.
- */
-function executeMarkerFunction(m) {
+/** This function updates the active state of the makers that have been declared*/
+function resetMarkerData(m) {
 
-  let id = m.getId();
+  m.resetTimer();
+  m.setActive(true);
 
-  switch (id) {
-
-    case 1:
-      if (mainDisplay.state === INTROMODE) {
-        mainDisplay.setState(FULLSCREEN);
-        mainDisplay.goFullscreen();
-
-      } else if (mainDisplay.state === FULLSCREEN) {
-        //m.track();
-        m.setRotation();
-
-        mainDisplay.setCurYear(calcYear(m));
-
-      }
-      break;
-
-    case 4:
-      m.setRotation();
-      mainDisplay.updateAddRemove(m);
-      break;
-
-    case 10:
-      m.setRotation();
-      mainDisplay.selectScenario(m);
-      break;
-
-    case 2:
-      m.setRotation();
-      mainDisplay.toggleChart(m);
-      break;
-
-  }
-}
-
-/** This function updates the active state of the makers that have been declared
- *   as in use.
- *   @param markers The array of recently detected markers
- */
-function updateActiveMarkers(markers, vidId) {
-  for (let m of markers) {
-
-    for (let mar of markerArray) {
-
-      if (m.id === mar.markerId) {
-
-        if (m.id === 1) {
-          mainDisplay.yearRotation = mar.getRotation();
-        }
-        mar.setActive(true);
-        mar.resetCountdown(); // Marker is located.  Start timer.
-
-        // Check to see if the marker is being tracked by other cam.
-        if (mar.getActiveCam() === vidId) {
-          mar.updatePosition(m.corners); // Update the position of the marker.
-        }
-      }
-    }
-  }
-
-  for (let m of markerArray) {
-    if (!m.getActive()) {
-      m.clearPosition();
-    }
-  }
 }

@@ -2,91 +2,41 @@
  * Coded by James Hutchison, 2018
  */
 
-// Declare State Constatnts
+// Declare State Constants
+const INITIALIZE = 0;
 const INTROMODE = 1;
 const FULLSCREEN = 2;
-const INITIALIZE = 0;
+const WORK_FROM_HOME_MODE = 3;
 
 let markerArray = []; // Array holding all markers used in the operation of the map.
 let videoArray = []; // Array holding video inputs.
 
-let mainDisplay = null; // Map Object
 let map = null;
 let pieChart = null;
 let lineChart = null;
 let barChart = null;
+let mainDisplay = null;
+let debugData = null;
 
 // Aruco.js marker detector
 let detector;
-let timer = 0;
-
-let layers = [];
-// #7F3C8D,#11A579,#3969AC,#F2B701,#E73F74,#80BA5A,#E68310,#008695,#CF1C90,#f97b72,#4b4b8f,#A5AA99
-
-let chartColors = {
-  DGPV: '#E17C05',
-  PV: '#EDAD08',
-  Fossil: '#CC503E',
-  Bio: '#73AF48',
-  Battery: '#5F4690',
-  Wind: '#38A6A5',
-  Offshore: '#5F4690',
-}
-
-let mapLayerColors = {
-  Solar: {
-    fill: chartColors.DGPV,
-    border: 'white',
-  },
-  Dod: {
-    fill: '#CC503E',
-    border: 'white',
-  },
-  Wind: {
-    fill: chartColors.Wind,
-    border: 'white',
-  },
-  Existing_RE: {
-    fill: '#38A6A5',
-    border: 'white',
-  },
-  Transmisison: {
-    fill: 'transparent',
-    border: '#ccff00',
-  },
-  Agriculture: {
-    fill: '#0F8554',
-    border: 'white',
-  },
-  Parks: {
-    fill: '#994E95',
-    border: 'white',
-  },
-}
+let jobs = null;
 
 /**
  * This method starts the map.  It is called when by the onload funciton
  */
 function start() {
-
   setUp();
   initialize();
   startMap();
-
 }
 
 function startMap() {
-  // Create detector object
+
   detector = new AR.Detector();
   requestAnimationFrame(tick);
 
 }
-
-document.addEventListener("keyup", (event) => {
-    event.preventDefault();
-    if (event.keyCode === 40) { toggleIAL(); }
-    if (event.keyCode === 38) { toggleIAL(); }
-});
 
 /*Set Up the navigator
 This function was part of the sample code downloaded with the Library
@@ -99,48 +49,26 @@ function setUp() {
    */
   let loadMarkerArray = [1, 2, 3, 4, 5, 6, 10, 11, 12, 64, 192, 256, 384, 832];
   createAllMarkers(loadMarkerArray);
-
+  createAllJobs();
+  const activeLayers = ['solar', 'wind', 'existing_re', 'parks', 'transmission', 'agriculture', 'ial', 'dod'];
   mainDisplay = new MainDisplay(); // New map
-
-  /**************************************
-  ******
-  *
-  *      Last paramater of the map constructor is the scale.  Changte it slightly, 0.002 or so
-         at a time to make adjustments
-  ************
-  ****************************/
   map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.237);
-
-
   pieChart = new GenerationPie('pieChart', '../data/generation.csv', 2020, chartColors);
   lineChart = new CapacityLine('lineChart', '../data/capacity.csv', 2020, chartColors);
   barChart = new BatteryBar('barChart', '../data/battery.csv', 2020, chartColors);
 
-
-  /* Add All of the Layers
-  * They are hidden at the end of the initialization script */
-  map.addGeoJsonLayer('../layers/existing_re_2.json', 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5);
-  map.addGeoJsonLayer('../layers/dod.json', 'dod', null,  mapLayerColors.Dod.fill, mapLayerColors.Dod.border, 0.5);
-  map.addGeoJsonLayer('../layers/parks.json', 'parks', null,  mapLayerColors.Parks.fill, mapLayerColors.Parks.border, 0.5);
-  map.addGeoJsonLayer('../layers/transmission.json', 'transmission', null,  mapLayerColors.Transmisison.fill, mapLayerColors.Transmisison.border, 1.0 );
-  map.addGeoJsonLayer('../layers/agriculture.json', 'agriculture', null,  mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5);
-  map.addGeoJsonLayer('../layers/solar.json', 'solar', 2020,  mapLayerColors.Solar.fill, mapLayerColors.Solar.border, 0.2);
-  map.addGeoJsonLayer('../layers/wind_2.json', 'wind', 2020,  mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25);
-
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
 
-  updateWindowData(100 * VW, 90 * VH);
+  updateWindowData(mainDisplay, 100 * VW, 90 * VH);
   buildVideoArray(2); // Set up the video inputs
-  buildLayers();
-
+  buildLayers(activeLayers, mainDisplay);
   showPieChart();
-
   const videoElement = videoArray[0].video;
   const videoElement2 = videoArray[1].video;
 
   navigator.mediaDevices.enumerateDevices()
-    .then(gotDevices).then(getStream).catch(handleError);
+      .then(gotDevices).then(getStream).catch(handleError);
 
   let videoSources = [];
 
@@ -157,7 +85,7 @@ function setUp() {
 
   function getStream() {
     if (window.stream) {
-      window.stream.getTracks().forEach(function(track) {
+      window.stream.getTracks().forEach(function (track) {
         track.stop();
       });
     }
@@ -184,12 +112,9 @@ function setUp() {
       }
     };
 
+    navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(handleError);
 
-    navigator.mediaDevices.getUserMedia(constraints).
-    then(gotStream).catch(handleError);
-
-    navigator.mediaDevices.getUserMedia(constraints2).
-    then(gotStream2).catch(handleError);
+    navigator.mediaDevices.getUserMedia(constraints2).then(gotStream2).catch(handleError);
   }
 
   function gotStream(stream) {
@@ -206,32 +131,29 @@ function setUp() {
     console.error('Error: ', error);
   }
 
-
 }
 
 /* Detects the Markers and makes the changes in the program */
 function tick() {
-
   requestAnimationFrame(tick);
+  if (!(mainDisplay.isDebug())) {
+    _.each(videoArray, videoFeed => {
+      if (videoFeed.video.readyState === videoFeed.video.HAVE_ENOUGH_DATA) {
+        let imageData = snapshot(videoFeed);
 
-  for (let i = 0; i < videoArray.length; i++) {
+        if (videoFeed.id === 1 && mainDisplay.checkAddTimer() || videoFeed.id === 0) {
+          let markers = detector.detect(imageData);
+          if (markers.length > 0) {
+            videoFeed.updateMarkers(markers);
+            mainDisplay.updateLiveMarkers();
+          }
+        }
+      }
+    });
 
-    if (videoArray[i].video.readyState === videoArray[i].video.HAVE_ENOUGH_DATA) {
-      let imageData = snapshot(videoArray[i]);
-
-      // Blow the pictures up to make them easier to identify the markers.
-      imageData.width *= 4;
-      imageData.height *= 4;
-
-      let markers = detector.detect(imageData);
-      videoArray[i].updateMarkers(markers);
-      updateActiveMarkers(markers, videoArray[i].id); // Updates the active markers.
+    if (mainDisplay.getState() !== INITIALIZE) {
+      updateMarkerData(mainDisplay.liveMarkers);
     }
-  }
-
-  runMainTimer();
-  if (mainDisplay.getState() !== INITIALIZE && (timer % 2 === 0)) {
-    mainDisplay.runMap(markerArray);
   }
 
 }
@@ -240,133 +162,21 @@ function tick() {
  * Creates an image from the video feed so that the app can look for markers.
  */
 function snapshot(vid) {
-
   vid.ctx.drawImage(vid.video, 0, 0, vid.canvas.width, vid.canvas.height);
-  let imageData = vid.ctx.getImageData(0, 0, vid.canvas.width, vid.canvas.height);
-
-  threshold = 100;
-
-  /////  THRESHOLDING  ////////////////////////////////////
-  var d = imageData.data;
-  for (let i = 0; i < d.length; i += 4) {
-    var r = d[i];
-    var g = d[i + 1];
-    var b = d[i + 2];
-    var v = (0.2126 * r + 0.7152 * g + 0.0722 * b >= threshold) ? 255 : 0;
-    d[i] = d[i + 1] = d[i + 2] = v;
-
-
-    vid.ctx.putImageData(imageData, 0, 0);
-
-    return imageData;
-
-  }
-
+  return vid.ctx.getImageData(0, 0, vid.canvas.width, vid.canvas.height);
 }
 
 /** Update the Height and the Width of the display */
-function updateWindowData(width, height) {
-
+function updateWindowData(mainDisplay, width, height) {
   mainDisplay.windowWidth = width;
   mainDisplay.windowHeight = height;
-
 }
-
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 ///////////// DRAWING / DISPLAY METHODS ///////////////
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
-let mod = 0; // Accounts for mirrored axis of image vs projector
-let Ymod = 0;
-let startRad = 75;
-
-function track(m) {
-
-  let e = document.getElementById("tracking-wrapper");
-  e.style.left = m.x;
-  e.style.top = m.y + 15 * VW;
-}
-
-function runMainTimer() {
-  timer++;
-}
-
-
-function calcYear(m) {
-
-  let years = 2052 - 2016 + 1
-  let rot = (360 - m.getRotation());
-  let year = Math.trunc((rot / (360/years)) + 2012);
-  if (year === 2046) {
-    year = 2045;
-  }
-  return year;
-
-}
-
-function changeScenario(scenario) {
-  mainDisplay.setScenario(scenario);
-}
-
-function toggleIAL() {
-  map.toggleIAL();
-}
-
-function showPieChart() {
-
-  if (mainDisplay.activeChart === 'pie') {
-    return;
-  }
-  document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;Energy Generation`;
-
-  mainDisplay.activeChart = 'pie';
-  barChart.hideElement();
-  pieChart.showElement();
-  mainDisplay.chartSound.play();
-}
-
-function showBarChart() {
-
-  {
-    if (mainDisplay.activeChart === 'bar') {
-      return;
-    }
-  }
-  document.getElementById('chartTitle').innerHTML = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;Battery Utilization`;
-  mainDisplay.activeChart = 'bar';
-  pieChart.hideElement();
-  barChart.showElement();
-  mainDisplay.chartSound.play();
-}
-
-
-function hideLayer() {
-  map.hideLayer('dod');
-  map.hideLayer('existing_re');
-  map.hideLayer('parks');
-  map.hideLayer('transmission');
-  map.hideLayer('solar');
-  map.hideLayer('agriculture');
-  map.hideLayer('wind');
-}
-
-function showLayer() {
-  map.showLayer('dod');
-  map.showLayer('existing_re');
-  map.showLayer('parks');
-  map.showLayer('transmission');
-  map.showLayer('solar');
-  map.showLayer('agriculture');
-  map.showLayer('wind');
-}
 
 function convertRadiansToDegrees(angle) {
   return angle * 180 / Math.PI;
@@ -379,33 +189,11 @@ function conertToVW(size) {
   return size / VW;
 }
 
-
 /** Takes and input in pixels are returns it in VH values
  * @param size -> size to convert
  * @return -> Converted value in VH */
-function conertToVH(size) {
+function convertToVH(size) {
   return size / VH;
-}
-
-/* This loads the various layer objects into the layers array*/
-function buildLayers() {
-  layers.push(new SolarLayer());
-  layers.push(new ExistingLayer());
-  layers.push(new DODLayer());
-  layers.push(new ParksLayer());
-  layers.push(new TransmissionLayer());
-  layers.push(new WindLayer());
-  layers.push(new AgricultureLayer());
-  layers.push(new IALLayer());
-}
-
-/**
- * Populates the video array with n number of video input feeds.
- * @param n The number of video elements to create.
- */
-function buildVideoArray(n) {
-  videoArray.push(new VideoElement(0, 22, 50));
-  videoArray.push(new VideoElement(1, 22, 25));
 }
 
 let VW, VH; // WIDTH AND HEIGHT VARIABLES
@@ -425,6 +213,13 @@ function setVW() {
 
 function setVH() {
   VH = window.innerHeight / 100;
+}
+
+function toggleCams() {
+  const cam1 = getElement("canvas1-wrapper");
+  const cam2 = getElement("canvas3-wrapper");
+  (videosVisible) ? hideGroup([cam1, cam2]) : showGroup([cam1, cam2]);
+  videosVisible = !videosVisible;
 }
 
 /*****************************************************************

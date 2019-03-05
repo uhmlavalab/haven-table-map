@@ -1,0 +1,256 @@
+.loading-wrapper>h1 {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 60px;
+  letter-spacing: 12px;
+  padding-left: 12px;
+}
+
+.start-button-wrapper {
+  position: relative;
+  width: 100%;
+  text-align:center;
+
+}
+
+.start-button-wrapper > div {
+  margin: 0 0 0 20px;
+  display: inline-block;
+}
+.start-button {
+  width: 14vw;
+  height: 4vw;
+  border: 2px solid white;
+  text-align: center;
+  display: none;
+  position: relative;
+  transition: background-color 0.2s ease-out;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.start-button:hover>p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.start-button>p {
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  display: block;
+  vertical-align: center;
+  font-size: 24px;
+  margin-top: 1.8vh;
+  font-weight: bold;
+  font-variant: small-caps;
+}
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 128px;
+  height: 128px;
+}
+
+.lds-ellipsis div {
+  position: absolute;
+  top: 54px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+  left: 12px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+  left: 12px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+  left: 52px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+  left: 90px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(28px, 0);
+  }
+}
+
+.cam-text {
+  background-color: black;
+  position: absolute;
+  left: 80vw;
+  width: 18vw;
+  height: 50vh;
+  top: 25vh;
+  color: white;
+  z-index: 2;
+  text-align:center;
+  border: 1px solid white;
+}
+
+
+.setup-details {
+  position:absolute;
+  width: 55%;
+  height: 90%;
+  top: 5%;
+  left: 24vw;
+  border: 1px solid white;
+  overflow-y: scroll;
+}
+.setup-details-title {
+  position:relative;
+  width:100%;
+  text-align:center;
+  color: #FFFFFF;
+  font-size: 18px;
+}
+
+.layer-card {
+  position:relative;
+  width: 95%;
+  height: 100px;
+  margin:auto;
+  border:1px solid white;
+  margin-top: 4px;
+}
+
+.layer-card-img {
+  position:relative;
+  float:left;
+  display:inline-block;
+  width: 15%;
+  height: 80%;
+  top:10%;
+  padding:2px;
+  margin-right: 2%;
+  margin-left: 2%;
+}
+
+.layer-card-color {
+  position:relative;
+  float:left;
+  width: 10%;
+  height: 90%;
+  top: 5%;
+  display:inline-block;
+  border: 1px solid white;
+  color: white;
+}
+
+.layer-card-color > p {
+  width: 100%;
+  text-align:center;
+}
+
+.layer-card-details {
+  width: 30%;
+  height: 90%;
+  border: 1px solid white;
+  margin-left: 5px;
+  float: left;
+  display:inline-block;
+  top: 5%;
+  position: relative;
+}
+
+.layer-card-options {
+  width: 20%;
+  height: 90%;
+  background-color: white;
+  float:left;
+  display:inline-block;
+  top:5%;
+  position: relative;
+}
+
+.layer-card-title {
+  color: white;
+  width: 100%;
+  position:relative;
+  top: 3%;
+  text-align: center;
+}
+.marker-card {
+  color:white;
+  width: 100%;
+  position: relative;
+  height: 50px;
+  border: 1px solid white;
+  margin: 0 0 1% 0;
+}
+
+.marker-card-id {
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 20%;
+  display: inline-block;
+  color: inherit;
+  text-align: center;
+  font-size: 24px;
+  padding-top: 5px;
+}
+.marker-card-button {
+  position: relative;
+  float: left;
+  width: 15%;
+  display:inline-block;
+  border:1px solid white;
+  vertical-align: center;
+  height: 80%;
+  text-align:center;
+  padding: 4px 0 0 0;
+  margin: 0 0 0 10px;
+}
+
+.layer-card-checkbox {
+  height: 30px;
+  width: 30px;
+}
+.layer-check-box-label {
+  color: white;
+  position: relative;
+  float: left;
+  font-size: 30px;
+  display: inline-block;
+  padding: 0 10px 0 0;
+}

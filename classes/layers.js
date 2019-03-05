@@ -1,156 +1,96 @@
 class Layer {
 
-  constructor() {
+  constructor(layerData) {
+
     this.active = false;
     this.iconElement;
+    this.layerLegendElement;
+    this.layerTextElement;
+    this.colorElement;
+    this.colorName = layerData.colorName;
+    this.layerName = layerData.name;
+    this.layerDisplayName = layerData.displayName;
+    this.iconPath = `images/icons/${this.layerName}-icon.png`;
+    this.include = true;
+    this.createFn = layerData.createFn;
+
   }
 
-  updateColor() {
+  createLegendElement() {
 
-      document.getElementById(this.legendColorTag).style.backgroundColor = this.color;
+    this.layerLegendElement = createElement("div", 'legend-card', `${this.layerName}-legend`, getElement('legend'));
+    this.iconElement = createElement('img', 'icon-element', 'icon-element', this.layerLegendElement);
+    this.darkenIcon();
+    setImgSrc(this.iconElement, this.iconPath);
+    this.colorElement = createElement('div', `legend-color`, `${this.layerName}-color`, this.layerLegendElement);
+    this.colorElement.style.backgroundColor = mapLayerColors[this.colorName].legend;
+    this.hideColorElement();
+    this.layerTextElement = createElement("h4", '', '', this.layerLegendElement);
+    setText(this.layerTextElement, this.layerDisplayName);
+  }
+
+  createTrainCard() {
+    let total = mainDisplay.layers.length;
+    if (total < 8) {
+      total = 8;
+    }
+    let width = 70 / total + '%';
+    const margin = 5 /total + '%';
+    mainDisplay.setTrainCardWidth(width);
+
+    const trainCard = createElement('div','layer-train-card', `layer-train-card-${this.layerName}`, getElement('layer-train'));
+    updateElementStyle(trainCard, [{'width': width},{'height': '100%'}, {'margin':margin}]);
+    const trainImg = createElement('img', 'layer-train-img', 'layer-train-img', trainCard);
+    setImgSrc(trainImg, this.iconPath);
+
   }
 
   updateIcon() {
-    document.getElementById(this.iconTag).src = this.iconPath;
+    setImgSrc(this.iconTag, this.iconPath);
+  }
+
+  lightUpLegend() {
+    this.brightenIcon();
+    this.showColorElement();
+  }
+
+  darkenLegend() {
+    this.darkenIcon();
+    this.hideColorElement();
+  }
+
+  getColor() {
+    return mapLayerColors[this.colorName];
+  }
+
+  darkenIcon() {
+    setOpacity(this.iconElement, 0.3);
+  }
+
+  brightenIcon() {
+    setOpacity(this.iconElement, 1);
+  }
+
+  hideColorElement() {
+    updateElementStyle(this.colorElement, [{ 'border-color': 'black' }]);
+    setWidthByPercentage(this.colorElement, 0);
+  }
+
+  showColorElement() {
+    updateElementStyle(this.colorElement, [{ 'border-color': 'white' }]);
+    setWidthByPercentage(this.colorElement, 20);
+  }
+
+  showBorderColor() {
+    const style = `12px solid ${mapLayerColors[mainDisplay.addNext.colorName].legend}`;
+    updateElementStyle(getElement("add-box"), [{ 'border': style }]);
+    updateElementStyle(getElement('layer-train'),[{'background-color': mapLayerColors[mainDisplay.addNext.colorName].legend}]);
+  }
+
+  hideBorderColor() {
+    const style = `12px solid #FFFFFF`;
+    updateElementStyle(getElement("add-box"), [{ 'border': style }]);
+    updateElementStyle(getElement('layer-train'), [{'background-color': 'white'}]);
   }
 }
 
-
-class SolarLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Solar Power";
-    this.iconPath = "images/icons/solar-icon.png";
-    this.iconText = "Solar";
-    this.classTag = "solar";
-    this.legendTag = "Solar Energy";
-    this.legendColorTag = "solar";
-    this.iconTag = "solar-icon";
-    this.color = chartColors.DGPV;
-    this.updateColor();
-    this.updateIcon();
-  }
-
-}
-
-class TransmissionLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Transmission Lines";
-    this.iconPath = "images/icons/transmission-lines.png";
-    this.iconText = "Transmission";
-    this.iconTag = "transmission-icon";
-    this.classTag = "transmission";
-    this.legendTag = "Transmission Lines";
-    this.legendColorTag = "transmission-color";
-    this.color = mapLayerColors.Transmisison.border;
-    this.updateColor();
-    this.updateIcon();
-  }
-
-}
-
-class DODLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Department of Defense Lands";
-    this.iconPath = "images/icons/dod-icon.png";
-    this.iconText = "DOD Land";
-    this.classTag = "dod";
-    this.legendTag = "DOD Land";
-    this.legendColorTag = "dod-color";
-    this.iconTag = "dod-icon";
-    this.color = mapLayerColors.Dod.fill;
-    this.updateColor();
-    this.updateIcon();
-  }
-}
-
-class ParksLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Parks Lands";
-    this.iconPath = "images/icons/park-icon.png";
-    this.iconText = "Park Land";
-    this.classTag = "parks";
-    this.legendTag = "Park Lands";
-    this.legendColorTag = "park-color";
-    this.iconTag = "park-icon";
-    this.color = mapLayerColors.Parks.fill;
-    this.updateColor();
-    this.updateIcon();
-  }
-}
-
-class ExistingLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Existing Renewable Energy";
-    this.iconPath = "images/icons/existing-renewables.png";
-    this.iconText = "Existing";
-    this.classTag = "existing_re";
-    this.legendTag = "Existing";
-    this.legendColorTag = "existing-color";
-    this.iconTag = "existing-icon";
-    this.color = mapLayerColors.Existing_RE.fill;
-    this.updateColor();
-    this.updateIcon();
-  }
-}
-
-class WindLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Wind Energy";
-    this.iconPath = "images/icons/wind-icon.png";
-    this.iconText = "wind";
-    this.classTag = "wind";
-    this.legendTag = "Wind Energy";
-    this.legendColorTag = "wind";
-    this.iconTag = "wind-icon";
-    this.color = mapLayerColors.Wind.fill;
-    this.updateColor();
-    this.updateIcon();
-
-  }
-}
-
-class AgricultureLayer extends Layer {
-
-  constructor() {
-    super();
-    this.layerName = "Agricultural Lands";
-    this.iconPath = "images/icons/agriculture-icon.png";
-    this.iconText = "Ag Lands";
-    this.iconTag = "ag-icon";
-    this.classTag = "agriculture";
-    this.legendTag = "Agriculture";
-    this.legendColorTag = "ag-color";
-    this.color = mapLayerColors.Agriculture.fill;
-    this.updateColor();
-    this.updateIcon();
-  }
-}
-
-  class IALLayer extends Layer {
-
-    constructor() {
-      super();
-      this.layerName = "Important Ag";
-      this.iconPath = "images/icons/pineapple copy.png";
-      this.iconText = "Important Ag";
-      this.iconTag = "ial-icon";
-      this.classTag = "important ag";
-      this.legendTag = "ial";
-      this.legendColorTag = "ial-color";
-      this.color = "#000000";
-      this.updateColor();
-      this.updateIcon();
-    }
-}

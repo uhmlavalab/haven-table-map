@@ -3,9 +3,11 @@
 <head>
   <title>Haven Oahu 3d Map</title>
 
+
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" type="text/css" />
-
+  <link rel="stylesheet" href="css/intro.css" type="text/css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   <script src="javascript/d3.v3.min.js"></script>
 
   <script src="javascript/Chart.min.js"></script>
@@ -65,6 +67,7 @@
         <h3 id="remove-text">Place Map Layer Puck</h3>
         <p id="normal-instructions">Tap the puck in this box to <span id="addRemoveOption">Add</span> the<br/><span id="addLayerOption">Update</span> layer.</p>
       </div>
+      <div id="layer-train" class="layer-train"></div>
 
       <div id="instructions-wrapper">
         <div class="instructions-card">
@@ -72,7 +75,7 @@
             <p>Change Year</p>
           </div>
           <div class="instructions-card">
-              <img src="images/icons/layers-01.png" id="hourglass-icon">
+              <img src="images/icons/layers-01.png" id="layers-icon">
               <p>Add / Remove Map Layer</p>
             </div>
             <div class="instructions-card">
@@ -93,125 +96,7 @@
     </div>
 
     <div id="legend" class="legend">
-      <table class="main-legend-table">
-        <tr>
-          <td class="icon" >
-            <img src="" id="solar-icon">
-          </td>
-          <td class="legend-wrapper" id="solar-legend">
-            <table class="sub-legend-table">
-              <tr>
-              <tr>
-                <td class="legend-color" id="solar"></td>
-                <td class="legend-text" id="solar-text">Solar Energy</td>
-
-              </tr>
-            </table>
-          </td>
-          <td class="icon" >
-            <img src="" id="wind-icon">
-          </td>
-          <td class="legend-wrapper" id="wind-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="wind"></td>
-                <td class="legend-text" id="wind-text">Wind Energy</td>
-
-              </tr>
-            </table>
-          </td>
-
-        </tr>
-
-
-        <tr>
-          <td class="icon" >
-            <img src="" id="existing-icon">
-          </td>
-          <td class="legend-wrapper" id="existing-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="existing-color"></td>
-                <td class="legend-text" id="existing-text">Existing</td>
-              </tr>
-            </table>
-          </td>
-          <td class="icon">
-            <img src="" id="park-icon">
-          </td>
-          <td class="legend-wrapper" id="park-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="park-color"></td>
-                <td class="legend-text" id="park-text">Park Lands</td>
-              </tr>
-            </table>
-          </td>
-
-        </tr>
-
-        <tr>
-
-          <td class="icon">
-            <img src="" id="ag-icon">
-          </td>
-          <td class="legend-wrapper" id="ag-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="ag-color"></td>
-                <td class="legend-text" id="ag-text">AG Lands</td>
-              </tr>
-            </table>
-          </td>
-          <td class="icon">
-            <img src="" id="transmission-icon">
-          </td>
-          <td class="legend-wrapper" id="transmission-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="transmission-color"></td>
-                <td class="legend-text" id="transmission-text">Transmission Lines</td>
-              </tr>
-            </table>
-          </td>
-
-
-        </tr>
-
-        <tr>
-          <td class="icon" id="ial-icon">
-            <img src="images/icons/pineapple copy.png">
-          </td>
-          <td class="legend-wrapper" id="ial-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="ial-color"></td>
-                <td class="legend-text" id="ial-text">Important AG</td>
-              </tr>
-            </table>
-          </td>
-          <td class="icon" >
-            <img src="" id="dod-icon">
-          </td>
-          <td class="legend-wrapper" id="dod-legend">
-            <table class="sub-legend-table">
-              <tr>
-                <td class="legend-color" id="dod-color"></td>
-                <td class="legend-text" id="dod-text">DOD Lands</td>
-              </tr>
-            </table>
-          </td>
-
-        </tr>
-
-
-      </table>
-      </td>
-      </tr>
-
-
-
-      </table>
+      <!-- Legend Created Dynamically -->
     </div>
 
     <div id="largeYear" class="large-year">
@@ -240,6 +125,14 @@
   </div>
 
   <!-- End of the Lower Section -->
+  <script src="./classes/debugData.js"></script>
+  <script src="./javascript/calculator.js"></script>
+  <script src="./javascript/objectSetup.js"></script>
+  <script src="./javascript/defaultData.js"></script>
+  <script src="./javascript/UI.js"></script>
+  <script src="./classes/jobs.js"></script>
+  <script src="./javascript/htmlFunctions.js"></script>
+  <script src="javascript/brain.js"></script>
   <script src="./data/solarGenYearly.js"></script>
   <script src="./data/windGenYearly.js"></script>
   <script src="./data/offshoreWindGenYearly.js"></script>
