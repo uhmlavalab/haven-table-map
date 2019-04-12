@@ -9,7 +9,7 @@ function updateAddRemove() {
     } else {
       return;
     }
-
+  mainDisplay.clickSound.play();
   m.setDirection('none');
   m.job.addRemoveIndex = index;
   updateAddRemoveData(index);
@@ -49,10 +49,12 @@ function changeYear() {
   switch (m.getDirection()) {
     case 'left':
       mainDisplay.decrementYear();
+      mainDisplay.clickSound.play();
       m.setDirection('none');
       break;
     case 'right':
       mainDisplay.incrementYear();
+      mainDisplay.clickSound.play();
       m.setDirection('none');
       break;
     default:
@@ -72,6 +74,7 @@ function changeScenario() {
     let scenario = mainDisplay.curScenario === 'postapril' ? scenarioData[0] : scenarioData[1];
     setText(getElement("scenario-insert"), scenario.text);
     mainDisplay.curScenario = scenario.name;
+    mainDisplay.clickSound.play();
     mainDisplay.updateYearChangeData();
   }
 }
@@ -149,7 +152,7 @@ function updateTrain() {
   let width = mainDisplay.getTrainCardWidth();
   let height = mainDisplay.getTrainHeight();
 
-  _.map(mainDisplay.layers, layer =>updateElementStyle(getElement(`layer-train-card-${layer.layerName}`), [{'width': width}, {'height': height}, {'opacity': 0.7}]));
+  _.map(mainDisplay.layers, layer => updateElementStyle(getElement(`layer-train-card-${layer.layerName}`), [{'width': width}, {'height': height}, {'opacity': 0.7}]));
 
   updateElementStyle(getElement(`layer-train-card-${mainDisplay.addNext.layerName}`), [{'width': activeWidth}, {'height': activeHeight}, {'opacity': 1}]);
 

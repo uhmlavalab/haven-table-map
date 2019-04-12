@@ -32,7 +32,7 @@ class YearChanger extends Job {
 
 class ScenarioChanger extends Job {
   constructor(markerId) {
-    super(markerId, 50);
+    super(markerId, 20);
     this.name = 'Scenario';
     this.myJob = changeScenario;
   }
@@ -41,7 +41,7 @@ class ScenarioChanger extends Job {
 
 class ChartChanger extends Job{
   constructor(markerId) {
-    super(markerId, 50);
+    super(markerId, 20);
     this.name = 'Charts';
     this.myJob = changeChart;
   }

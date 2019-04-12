@@ -81,9 +81,11 @@ class VideoElement {
     _.map(markers, marker => {
       let markerFound = _.find(markerArray, m => marker.id === m.markerId);
       newMarkers.push(markerFound);
+      if (!(mainDisplay.getState() === INITIALIZE)) {
       if(markerFound.getActive() && this.id === 0) {
         markerFound.updatePosition(marker.corners);
       }
+    }
       if (this.id === 1 && mainDisplay.getState() === FULLSCREEN) {
         if (mainDisplay.checkAddTimer()) {
           mainDisplay.addRemoveNextLayer();

@@ -5,6 +5,7 @@ body {
   overflow: hidden;
   font-family: 'Roboto', sans-serif;
 }
+
 .grid {
   position:relative;
 }
@@ -19,6 +20,7 @@ body {
   width: 22vw;
   height: 100vh;
   position: absolute;
+  left: 50vw;
 }
 
 #canvas1-wrapper {

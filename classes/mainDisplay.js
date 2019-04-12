@@ -119,7 +119,6 @@ class MainDisplay {
     let layer = this.addNext;
     if (layer.active) {
       this.removeALayer(layer);
-      this.layerSound.play();
     } else {
       this.addALayer(layer);
     }

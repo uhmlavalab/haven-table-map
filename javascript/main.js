@@ -10,6 +10,7 @@ const WORK_FROM_HOME_MODE = 3;
 
 let markerArray = []; // Array holding all markers used in the operation of the map.
 let videoArray = []; // Array holding video inputs.
+let configArray = [];
 
 let map = null;
 let pieChart = null;
@@ -21,6 +22,8 @@ let debugData = null;
 // Aruco.js marker detector
 let detector;
 let jobs = null;
+
+const subApp = window.open('subApplication/index.html', 'subApp');
 
 /**
  * This method starts the map.  It is called when by the onload funciton
@@ -68,7 +71,7 @@ function setUp() {
   const videoElement2 = videoArray[1].video;
 
   navigator.mediaDevices.enumerateDevices()
-      .then(gotDevices).then(getStream).catch(handleError);
+    .then(gotDevices).then(getStream).catch(handleError);
 
   let videoSources = [];
 
@@ -85,7 +88,7 @@ function setUp() {
 
   function getStream() {
     if (window.stream) {
-      window.stream.getTracks().forEach(function (track) {
+      window.stream.getTracks().forEach(function(track) {
         track.stop();
       });
     }
@@ -144,8 +147,20 @@ function tick() {
         if (videoFeed.id === 1 && mainDisplay.checkAddTimer() || videoFeed.id === 0) {
           let markers = detector.detect(imageData);
           if (markers.length > 0) {
-            videoFeed.updateMarkers(markers);
-            mainDisplay.updateLiveMarkers();
+            if (mainDisplay.getState() === INITIALIZE) {
+
+              _.map(markers, m => {
+                if (!(_.contains(configArray, m.id))) {
+                  configArray.push(m.id);
+                }
+              });
+
+              console.log(configArray);
+            };
+            if (!(mainDisplay.getState() === INITIALIZE)) {
+              videoFeed.updateMarkers(markers);
+              mainDisplay.updateLiveMarkers();
+            }
           }
         }
       }
@@ -218,7 +233,7 @@ function setVH() {
 function toggleCams() {
   const cam1 = getElement("canvas1-wrapper");
   const cam2 = getElement("canvas3-wrapper");
-  (videosVisible) ? hideGroup([cam1, cam2]) : showGroup([cam1, cam2]);
+  (videosVisible) ? hideGroup([cam1, cam2]): showGroup([cam1, cam2]);
   videosVisible = !videosVisible;
 }
 

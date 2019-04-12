@@ -58,7 +58,10 @@ class MapMarker {
   }
 
   initializeCorners() {
-    const emptyCorner = { x: 0, y: 0 };
+    const emptyCorner = {
+      x: 0,
+      y: 0
+    };
     for (let i = 0; i < 4; i++) {
       this.corners.push(emptyCorner);
     }
@@ -296,16 +299,13 @@ class MapMarker {
       return;
     }
     this.job.myJob(this);
-
   }
-
 }
 
 
 /** This function updates the active state of the makers that have been declared*/
 function resetMarkerData(m) {
-
-  m.resetTimer();
-  m.setActive(true);
+    m.resetTimer();
+    m.setActive(true);
 
 }

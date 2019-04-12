@@ -65,9 +65,13 @@ function initialize() {
     mainDisplay.loadSound.play();
     removeChild(loadWrap, getElement('start-button-wrapper'));
     removeChild(initializeWrapper, loadWrap);
-    showElement(camWrap);
-    toggleCams();
-    setupCams();
+    //config();
+    setTimeout(function () {
+      showElement(camWrap);
+      toggleCams();
+      setupCams();
+    }, 100);
+
   }
 
   /** Creates the wrapper that holds the web cam displays */
@@ -216,7 +220,6 @@ function initialize() {
     marker.setJob(job);
   }
 
-
   /** Clears the details window when changing between configuration apps.  i.e. changing from layers to markers */
   function clearDetailsWindow() {
     removeAllChildren(setupDetailsWrapper);
@@ -237,13 +240,14 @@ function initialize() {
       hideAllLayers(); // Hides all layers
       showGroup([getElement('landing-screen-wrapper'), getElement('location-title'), getElement('scenario-title')])
     }
+
     mainDisplay.initializingMarkers = false;
     hideElement(camWrap);
 
     removeChild(getElement("lower-section-wrapper"), initializeWrapper);
     removeChild(camWrap, rightSideWrapper);
 
-    updateElementStyle(getElement("lower-section-wrapper"), [{ 'cursor': 'none' }]);
+    updateElementStyle(getElement("lower-section-wrapper"), [{ 'cursor': 'pointer' }]);
 
   }
 
@@ -263,7 +267,7 @@ function initialize() {
     const skipConfigButtonText = createElement('p', 'initialize-button-text', '', skipConfigButton);
     setText(skipConfigButtonText, 'Skip Configuration');
 
-    beginConfigButton.addEventListener('click', initializeMarkers);
+    beginConfigButton.addEventListener('click', finishIntro);
     skipConfigButton.addEventListener('click', finishIntro);
   }
 
@@ -286,7 +290,23 @@ function initialize() {
   }
 
   function startWithDefaults() {
-    alert('Use Defaults');
+
+    const loader2 = getElement('loading-wrapper-2');
+    let building = true;
+
+    showElement(loader2);
+    mainDisplay.updateLayerArray();
+
+    _.map(defaultMarkerData, m => {
+      assignJob(m.id, m.job);
+    });
+
+
+    setTimeout(function() {
+      hideElement(loader2)
+    }, 5500);
+
+    setTimeout(finishIntro, 5000);
   }
 
   function startInWorkAtHomeMode() {

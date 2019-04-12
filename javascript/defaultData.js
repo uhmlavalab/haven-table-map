@@ -110,3 +110,5 @@ const jobsData = ['Year', 'Scenario', 'Charts', 'Layer'];
 
 const scenarioData = [{'name':'e3genmod', 'text': 'E3'}, {'name':'postapril', 'text':'Post April'}];
 
+const defaultMarkerData = [{'id':3, 'job': 'Year'}, {'id':5, 'job':'Layer'}, {'id': 6, 'job':'Scenario'}, {'id':11, 'job':'Charts'}];
+
