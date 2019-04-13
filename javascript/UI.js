@@ -183,3 +183,24 @@ function reset() {
   updateYear();
   _.map(mainDisplay.layers, layer => mainDisplay.removeALayer(layer));
 }
+
+function screenSaver(on) {
+  let showHide = on ? 'block' : 'none';
+
+  mainDisplay.legend.style.display = showHide;
+  getElement('add-remove-wrapper').style.display = showHide;
+  getElement('layer-train').style.display = showHide;
+  getElement('instructions-wrapper').style.display = showHide;
+  mainDisplay.largeYearDisplay.style.display = showHide;
+
+  let vid = getElement('myVideo');
+  if (showHide === 'block') {
+    showHide === 'none';
+  } else {
+    showHide === 'block';
+  }
+
+  vid.style.display = showHide;
+  mainDisplay.screenSaverMode = !mainDisplay.screenSaverMode;
+
+}

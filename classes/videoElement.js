@@ -90,6 +90,9 @@ class VideoElement {
         if (markerFound.job.name === 'Year') {
           reset();
           return;
+        } else if (markerFound.job.name === 'Scenario') {
+          screenSaver(!mainDisplay.screenSaverMode);
+          return;
         }
         if (mainDisplay.checkAddTimer()) {
           mainDisplay.addRemoveNextLayer();

@@ -16,6 +16,7 @@ class MainDisplay {
     this.changeScenarioActive = false;
     this.initializingMarkers = false;
     this.baseBorderColor = '#FFFFFF';
+    this.screenSaverMode = false;
 
     this.activeChart = null;
 
