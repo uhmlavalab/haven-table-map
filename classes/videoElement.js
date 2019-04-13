@@ -87,6 +87,10 @@ class VideoElement {
       }
     }
       if (this.id === 1 && mainDisplay.getState() === FULLSCREEN) {
+        if (markerFound.job.name === 'Year') {
+          reset();
+          return;
+        }
         if (mainDisplay.checkAddTimer()) {
           mainDisplay.addRemoveNextLayer();
         }

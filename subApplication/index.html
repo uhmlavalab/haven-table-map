@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    test
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel='stylesheet' href="css/style.css" type="text/css" />
+  <title></title>
+</head>
+
+<body>
+  <img src="images/oahu-renewable-background.jpg" class="background-image" />
+  <div id='layer-card' class='layer-card'>
+    <div id="layer-detail" class="layer-detail">EMPTY</div>
+    <div id="layer-detail-image" class="layer-detail-image">
+      <img src="images/pineappleField.jpg" id="layer-card-image"/>
+      <div id="layer-detail-text" class="layer-detail-text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu lectus, faucibus eget feugiat vitae, placerat ac diam. Fusce a cursus mauris. Cras vehicula lorem eget urna commodo, nec cursus nunc facilisis. Morbi urna elit, placerat at placerat
+          id, elementum a nisl. In sollicitudin ipsum ac fermentum tempor. Vestibulum maximus sodales magna, vel molestie purus efficitur non. Nam semper ut tellus ac convallis. Duis molestie luctus nulla, a facilisis mi venenatis non.</p>
+      </div>
+    </div>
+  </div>
+  <div id='year-card' class="year-card">
+    <h1>Displaying Data for Year</h1>
+    <h2>Scenario: <span id="scenario-display"></span></h2>
+    <hr/>
+    <div id="year-display" class="year-display">0000</div>
+  </div>
+  <script src="javascript/sub-main.js"></script>
+</body>
+
 </html>

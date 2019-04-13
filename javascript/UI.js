@@ -4,11 +4,11 @@ function updateAddRemove() {
   if (m.getDirection() === 'left') {
     index = decrementLayerIndex(index);
   } else
-    if (m.getDirection() === 'right') {
-      index = ((index + 1) % mainDisplay.layers.length);
-    } else {
-      return;
-    }
+  if (m.getDirection() === 'right') {
+    index = ((index + 1) % mainDisplay.layers.length);
+  } else {
+    return;
+  }
   mainDisplay.clickSound.play();
   m.setDirection('none');
   m.job.addRemoveIndex = index;
@@ -27,21 +27,26 @@ function updateAddRemoveData(id) {
 
   mainDisplay.addNext = mainDisplay.layers[id];
   setText(
-      mainDisplay.updateText,
-      mainDisplay.addNext.layerDisplayName
+    mainDisplay.updateText,
+    mainDisplay.addNext.layerDisplayName
   );
   setImgSrc(
-      mainDisplay.addRemoveImage,
-      mainDisplay.addNext.iconPath
+    mainDisplay.addRemoveImage,
+    mainDisplay.addNext.iconPath
   )
   let text = mainDisplay.addNext.active ? 'remove' : 'add';
   setText(mainDisplay.addRemoveOptionText, text);
   let style = mainDisplay.addNext.active ? `12px solid ${mapLayerColors[mainDisplay.addNext.colorName].legend}` : `12px solid #FFFFFF`;
   let color = mainDisplay.addNext.active ? mapLayerColors[mainDisplay.addNext.colorName].legend : `#FFFFFF`;
-  updateElementStyle(getElement("add-box"), [{ 'border': style }]);
-  updateElementStyle(getElement("layer-train"), [{ 'background-color': color}]);
+  updateElementStyle(getElement("add-box"), [{
+    'border': style
+  }]);
+  updateElementStyle(getElement("layer-train"), [{
+    'background-color': color
+  }]);
   setText(mainDisplay.addLayerOptionText, mainDisplay.addNext.layerName);
   updateTrain();
+  subApp.subscribeToLayerPosition(mainDisplay.addNext.layerDisplayName, mainDisplay.addNext.iconPath, mainDisplay.addNext.layerName);
 }
 
 function changeYear() {
@@ -59,13 +64,15 @@ function changeYear() {
       break;
     default:
       return;
-
-      updateYear();
   }
+
+
+  updateYear();
 }
 
 function updateYear() {
   setText(mainDisplay.largeYearDisplayText, mainDisplay.curYear);
+  subApp.subscribeToYear(mainDisplay.curYear);
 }
 
 function changeScenario() {
@@ -76,14 +83,15 @@ function changeScenario() {
     mainDisplay.curScenario = scenario.name;
     mainDisplay.clickSound.play();
     mainDisplay.updateYearChangeData();
+    subApp.subscribeToScenarioData(scenario.text);
   }
 }
 
 function changeChart() {
   const m = getMarker(jobs.Charts.assignedMarker);
   if (m.getDirection() !== 'none') {
-    (mainDisplay.getChart() === 0) ? mainDisplay.setChart(1) : mainDisplay.setChart(0);
-    (mainDisplay.getChart() === 0) ? showPieChart() : showBarChart();
+    (mainDisplay.getChart() === 0) ? mainDisplay.setChart(1): mainDisplay.setChart(0);
+    (mainDisplay.getChart() === 0) ? showPieChart(): showBarChart();
   }
 }
 
@@ -152,8 +160,26 @@ function updateTrain() {
   let width = mainDisplay.getTrainCardWidth();
   let height = mainDisplay.getTrainHeight();
 
-  _.map(mainDisplay.layers, layer => updateElementStyle(getElement(`layer-train-card-${layer.layerName}`), [{'width': width}, {'height': height}, {'opacity': 0.7}]));
+  _.map(mainDisplay.layers, layer => updateElementStyle(getElement(`layer-train-card-${layer.layerName}`), [{
+    'width': width
+  }, {
+    'height': height
+  }, {
+    'opacity': 0.7
+  }]));
 
-  updateElementStyle(getElement(`layer-train-card-${mainDisplay.addNext.layerName}`), [{'width': activeWidth}, {'height': activeHeight}, {'opacity': 1}]);
+  updateElementStyle(getElement(`layer-train-card-${mainDisplay.addNext.layerName}`), [{
+    'width': activeWidth
+  }, {
+    'height': activeHeight
+  }, {
+    'opacity': 1
+  }]);
 
+}
+
+function reset() {
+  mainDisplay.curYear = 2016;
+  updateYear();
+  _.map(mainDisplay.layers, layer => mainDisplay.removeALayer(layer));
 }
