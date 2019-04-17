@@ -253,7 +253,7 @@ function subscribeToStartApp(island, extraScreen) {
    if (extraScreen) {
      subApp = window.open('subApplication/index.html', 'subApp');
    }
-   start(island);
+   start(island.id);
 }
 window.onresize = (() => {
   mainDisplay.resizeMap();
