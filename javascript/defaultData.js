@@ -9,7 +9,7 @@ const chartColors = {
   Wind: '#38A6A5',
   Offshore: '#5F4690',
 }
-let island = "bigisland";
+let island = "oahu";
 
 let mapLayerColors = {
   Solar: {
