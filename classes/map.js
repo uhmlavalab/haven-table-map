@@ -1,11 +1,11 @@
 class Map {
 
-  constructor(mapDivId, mapImageUrl, mapImageWidth, mapImageHeight, scale) {
+  constructor(mapDivId, mapImageUrl, mapImageWidth, mapImageHeight, scale, bounds) {
     this.scale = scale;
     this.mapDiv = d3.select(`#${mapDivId}`);
     this.width = mapImageWidth * this.scale;
     this.height = mapImageHeight * this.scale;
-    this.rasterBounds = [[-158.281, 21.710], [-157.647, 21.252]];
+    this.rasterBounds = bounds;
     this.curYear = null;
     this.curScenario = null;
 

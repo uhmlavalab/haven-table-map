@@ -24,6 +24,7 @@ let detector;
 let jobs = null;
 
 let subApp;
+// let island = "bigisland";
 
 /**
  * This method starts the map.  It is called when by the onload funciton
@@ -59,10 +60,13 @@ function setUp() {
   createAllJobs();
   const activeLayers = ['solar', 'wind', 'existing_re', 'parks', 'transmission', 'agriculture', 'ial', 'dod'];
   mainDisplay = new MainDisplay(); // New map
-  map = new Map('mapDiv', '../basemaps/oahu-satellite.png', 3613, 2794, 0.237);
-  pieChart = new GenerationPie('pieChart', '../data/generation.csv', 2020, chartColors);
-  lineChart = new CapacityLine('lineChart', '../data/capacity.csv', 2020, chartColors);
-  barChart = new BatteryBar('barChart', '../data/battery.csv', 2020, chartColors);
+  bigIsleBounds = [[-156.061837, 20.269669], [-154.806713, 18.910580]];
+  oahuBounds = [[-158.281, 21.710], [-157.647, 21.252]];
+console.log(island);
+  map = new Map('mapDiv', '../basemaps/bigisland.png', 3613, 2794, 0.237, bigIsleBounds);
+  pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
+  lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors);
+  barChart = new BatteryBar('barChart', `../data/${island}/battery.csv`, 2020, chartColors);
 
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
