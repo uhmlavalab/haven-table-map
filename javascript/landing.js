@@ -1,5 +1,16 @@
 function start() {
-  const islandArray = ['Oahu', 'Big Island'];
+  const islandArray = [{
+    name: 'Oahu',
+    id: 'oahu',
+  },
+  {
+    name: 'Big Island',
+    id: 'bigisland',
+  },
+  {
+    name: 'Maui',
+    id: 'maui',
+  }];
   runTitleAnimation();
   populateSelectCards(islandArray);
   addThirdScreenSelector();
@@ -17,13 +28,13 @@ function addThirdScreenSelector() {
 function populateSelectCards(islandArray) {
   const selectWrapper = getElement('select-wrapper');
   for (let island of islandArray) {
-    let card = createElement('div', 'select-card', `select-card-${island}`, selectWrapper);
-    let cardImg = createElement('img', 'select-card-image', `select-card-image-${island}`, card);
-    let titleWrapper = createElement('div', 'select-card-title', `select-card-title-${island}`, card);
-    setText(titleWrapper, island);
-    setImgSrc(cardImg, `images/landing-images/${island}.jpg`);
+    let card = createElement('div', 'select-card', `select-card-${island.id}`, selectWrapper);
+    let cardImg = createElement('img', 'select-card-image', `select-card-image-${island.id}`, card);
+    let titleWrapper = createElement('div', 'select-card-title', `select-card-title-${island.id}`, card);
+    setText(titleWrapper, island.name);
+    setImgSrc(cardImg, `images/landing-images/${island.id}.jpg`);
 
-    let startButton = createElement('div', 'start-application-button', `start-button-${island}`, card);
+    let startButton = createElement('div', 'start-application-button', `start-button-${island.id}`, card);
     setText(startButton, 'Start Haven');
 
 
@@ -43,7 +54,7 @@ function populateSelectCards(islandArray) {
 
     startButton.addEventListener('click', () => {
       const mainAppWindow = window.open('application.html', 'mainAppWindow');
-      setTimeout(()=>{
+      setTimeout(() => {
         mainAppWindow.subscribeToStartApp(island, getElement('select-third-screen-checkbox').checked);
       }, 200);
     });
