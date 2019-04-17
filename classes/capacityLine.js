@@ -1,11 +1,12 @@
 
 class CapacityLine {
 
-  constructor(lineDiv, dataUrl, year, colors) {
+  constructor(lineDiv, dataUrl, year, colors, maxValue) {
     this.lineDiv = document.getElementById(lineDiv);;
     this.year = year;
     this.chartData = [];
     this.labels = [];
+    this.maxValue = maxValue;
     const color = colors;
     d3.csv(dataUrl, (data) => {
       this.data = data;
@@ -98,7 +99,7 @@ class CapacityLine {
               fontSize: 14,
               fontStyle: 'bold',
               fontColor: "white",
-              max: 2500
+              max: this.maxValue
             },
             scaleLabel: {
               display: true,

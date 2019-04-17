@@ -2,12 +2,15 @@
 
 const chartColors = {
   DGPV: '#E17C05',
+  DER: '#E17C05',
   PV: '#EDAD08',
   Fossil: '#CC503E',
   Bio: '#73AF48',
   Battery: '#5F4690',
   Wind: '#38A6A5',
   Offshore: '#5F4690',
+  Geothermal: '#ac346a',
+  Hydro: '#5F4690',
 }
 let island = "bigisland";
 
