@@ -91,7 +91,7 @@ class VideoElement {
           reset();
           return;
         } else if (markerFound.job.name === 'Scenario') {
-          screenSaver(!mainDisplay.screenSaverMode);
+          //screenSaver(!mainDisplay.screenSaverMode);
           return;
         }
         if (mainDisplay.checkAddTimer()) {

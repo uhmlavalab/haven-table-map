@@ -1,22 +1,18 @@
 <html>
 
 <head>
-  <script src="javascript/startup.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/landing.css" />
 </head>
 
 <body>
-  <div id="title-wrapper">
-    <h1>Projectable Setup</h1>
-  </div>
-  <div id="island-select">
-    <ul>
-      <li>Oahu</li>
-      <li>Maui County</li>
-      <li>Hawai'i</li>
-    </ul>
-  </div>
-  <div>
-    <h3>Selected Map: <span id="selected-map">none</span></h3>
-    <button id="start-button" onclick="runProgram()">Start Application</button>
+  <div class="title-wrapper" id="title-wrapper"></div>
+  <div class="select-wrapper" id="select-wrapper"></div>
+  <div class="select-third-screen" id="select-third-screen"></div>
+
+  <!--<button id="start-button" onclick="runProgram()">Start Application</button>-->
+  <script src="javascript/htmlFunctions.js"></script>
+  <script src="javascript/landing.js"></script>
 </body>
+
 </html>

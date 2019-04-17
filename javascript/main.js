@@ -23,12 +23,16 @@ let debugData = null;
 let detector;
 let jobs = null;
 
-const subApp = window.open('subApplication/index.html', 'subApp');
+let subApp;
 
 /**
  * This method starts the map.  It is called when by the onload funciton
  */
-function start() {
+
+ /**
+ @param island => 'Big Island' 'Oahu'
+ */
+function start(island) {
   setUp();
   initialize();
   startMap();
@@ -239,7 +243,13 @@ function toggleCams() {
 
 /*****************************************************************
  *******************START THE PROGRAM*****************************/
-window.onload = start;
+function subscribeToStartApp(island, extraScreen) {
+
+   if (extraScreen) {
+     subApp = window.open('subApplication/index.html', 'subApp');
+   }
+   start(island);
+}
 window.onresize = (() => {
   mainDisplay.resizeMap();
 });

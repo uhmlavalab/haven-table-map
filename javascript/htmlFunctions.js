@@ -29,6 +29,10 @@ function setId(e, id) {
   e.id = id;
 }
 
+function setFontSize(e, size) {
+  e.style.fontSize = size;
+}
+
 function appendElement(child, parent) {
   parent.appendChild(child);
 }
