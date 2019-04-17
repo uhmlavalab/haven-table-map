@@ -253,7 +253,7 @@ function subscribeToStartApp(island, extraScreen) {
    if (extraScreen) {
      subApp = window.open('subApplication/index.html', 'subApp');
    }
-   start(island.id);
+   start('oahu');
 }
 window.onresize = (() => {
   mainDisplay.resizeMap();
