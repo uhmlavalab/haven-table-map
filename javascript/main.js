@@ -61,12 +61,19 @@ function setUp() {
   createAllJobs();
   const activeLayers = ['solar', 'wind', 'existing_re', 'parks', 'transmission', 'agriculture', 'ial', 'dod'];
   mainDisplay = new MainDisplay(); // New map
-  bigIsleBounds = [[-156.061837, 20.269669], [-154.806713, 18.910580]];
-  oahuBounds = [[-158.281, 21.710], [-157.647, 21.252]];
-console.log(island);
-  map = new Map('mapDiv', '../basemaps/bigisland.png', 3613, 2794, 0.23, bigIsleBounds);
-  pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
-  lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors);
+
+  if (island == 'bigisland') {
+    let bigIsleBounds = [[-156.061837, 20.269669], [-154.806713, 18.910580]];
+    map = new Map('mapDiv', '../basemaps/bigisland.png', 2179, 2479, 0.275, bigIsleBounds);
+    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 1000);
+    pieChart = new GenerationPie('pieChart', `../data/${island}/generation1.csv`, 2020, chartColors);
+  } else if (island == 'oahu'){
+    let oahuBounds = [[-158.281, 21.710], [-157.647, 21.252]];
+    map = new Map('mapDiv', '../basemaps/oahu.png', 3613, 2794, 0.237, oahuBounds);
+    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 2500);
+    pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
+  }
+
   barChart = new BatteryBar('barChart', `../data/${island}/battery.csv`, 2020, chartColors);
 
   setVW(); // Set Visual Width multiplier

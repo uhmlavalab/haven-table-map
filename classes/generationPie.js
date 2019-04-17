@@ -9,6 +9,7 @@ class GenerationPie {
     this.chartData = null;
     d3.csv(dataUrl, (data) => {
       this.data = data;
+      console.log(data);
       this.createChart();
     });
   }
@@ -30,35 +31,35 @@ class GenerationPie {
       values.push(el.postapril)
     })
     this.ctx = this.pieDiv.getContext('2d');
-    this.myChart = new Chart(this.ctx , {
+    this.myChart = new Chart(this.ctx, {
       type: 'pie',
       options: {
         legend: {
-           display: false,
-           labels: {
-             fontColor: "white",
-             fontStyle: "bold",
-             fontSize: 14,
-           }
-         },
-         responsive: false,
-         plugins: {
-           labels: [{
-             render: 'label',
-             position: 'border',
-             fontSize: 10,
-             overlap: false,
-             fontStyle: 'bold',
-             fontColor: 'white'
-           },
-           {
-             render: 'percentage',
-             fontColor: 'white',
-             fontSize: 8,
-             fontStyle: 'bold',
-             overlap: false,
-           }]
-         },
+          display: false,
+          labels: {
+            fontColor: "white",
+            fontStyle: "bold",
+            fontSize: 14,
+          }
+        },
+        responsive: false,
+        plugins: {
+          labels: [{
+            render: 'label',
+            position: 'border',
+            fontSize: 10,
+            overlap: false,
+            fontStyle: 'bold',
+            fontColor: 'white'
+          },
+          {
+            render: 'percentage',
+            fontColor: 'white',
+            fontSize: 8,
+            fontStyle: 'bold',
+            overlap: false,
+          }]
+        },
       },
       data: {
         labels: labels,
@@ -68,6 +69,7 @@ class GenerationPie {
           backgroundColor: backgroundColors,
           borderColor: [
             'rgba(255,255,255,1)',
+            'rgba(255, 255, 255, 1)',
             'rgba(255, 255, 255, 1)',
             'rgba(255, 255, 255, 1)',
             'rgba(255, 255, 255, 1)',
