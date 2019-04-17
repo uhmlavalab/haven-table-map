@@ -1,5 +1,5 @@
 function start() {
-  const islandArray = ['Oahu', 'Big Island'];
+  const islandArray = ['oahu', 'bigisland'];
   runTitleAnimation();
   populateSelectCards(islandArray);
   addThirdScreenSelector();
@@ -20,7 +20,8 @@ function populateSelectCards(islandArray) {
     let card = createElement('div', 'select-card', `select-card-${island}`, selectWrapper);
     let cardImg = createElement('img', 'select-card-image', `select-card-image-${island}`, card);
     let titleWrapper = createElement('div', 'select-card-title', `select-card-title-${island}`, card);
-    setText(titleWrapper, island);
+    let islandName = (island === 'oahu') ? 'Oahu' : 'Big Island';
+    setText(titleWrapper, islandName);
     setImgSrc(cardImg, `images/landing-images/${island}.jpg`);
 
     let startButton = createElement('div', 'start-application-button', `start-button-${island}`, card);

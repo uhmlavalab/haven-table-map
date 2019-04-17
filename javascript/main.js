@@ -33,7 +33,8 @@ let subApp;
  /**
  @param island => 'Big Island' 'Oahu'
  */
-function start(island) {
+function start(isle) {
+  island = isle;
   setUp();
   initialize();
   startMap();
@@ -163,7 +164,7 @@ function tick() {
                 }
               });
 
-              console.log(configArray);
+              //console.log(configArray);
             };
             if (!(mainDisplay.getState() === INITIALIZE)) {
               videoFeed.updateMarkers(markers);
