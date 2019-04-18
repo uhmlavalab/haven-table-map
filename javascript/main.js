@@ -63,13 +63,18 @@ function setUp() {
   mainDisplay = new MainDisplay(); // New map
 
   if (island == 'bigisland') {
-    let bigIsleBounds = [[-156.061837, 20.269669], [-154.806713, 18.910580]];
+    let bigIsleBounds = [[-156.0618, 20.2696], [-154.8067, 18.9105]];
     map = new Map('mapDiv', '../basemaps/bigisland.png', 2179, 2479, 0.275, bigIsleBounds);
     lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 1000);
     pieChart = new GenerationPie('pieChart', `../data/${island}/generation1.csv`, 2020, chartColors);
   } else if (island == 'oahu'){
     let oahuBounds = [[-158.281, 21.710], [-157.647, 21.252]];
     map = new Map('mapDiv', '../basemaps/oahu.png', 3613, 2794, 0.237, oahuBounds);
+    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 2500);
+    pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
+  } else if (island == 'maui') {
+    let mauiBounds = [[-156.6969, 21.0316], [-155.9788, 20.3738]];
+    map = new Map('mapDiv', '../basemaps/maui.png', 3613, 2794, 0.237, mauiBounds);
     lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 2500);
     pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
   }
