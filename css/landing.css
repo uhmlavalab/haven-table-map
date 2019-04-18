@@ -1,0 +1,103 @@
+body {
+  background-color: rgb(32,37,59);
+    font-family: 'Roboto', sans-serif;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.title-wrapper {
+  width: 50%;
+  left: 25%;
+  top: 5%;
+  position: absolute;
+  font-size: 40px;
+  font-weight: bolder;
+  text-align: center;
+  color: #8291BC;
+}
+
+.title-letter {
+  display: inline-block;
+  position: relative;
+}
+
+.select-wrapper {
+  width: 100%;
+  left: 0%;
+  position: absolute;
+  top: 20%;
+  height: 65%;
+  text-align: center;
+}
+
+.select-card {
+  position: relative;
+  width: 20%;
+  display: inline-block;
+  margin: 5%;
+  background-color: rgba(0,0,0, 0.5);
+}
+
+.select-card-title {
+  width: 100%;
+  height: 15%;
+  top: 40%;
+  position: absolute;
+  background-color: rgba(85,60,79,0.5);
+  color: WHITE;
+  font-size: 34px;
+  padding: 5% 0 0 0;
+  transition: height 0.8s ease-out;
+}
+
+.select-card-image {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: relative;
+}
+
+.select-third-screen {
+  position: absolute;
+  width: 30%;
+  text-align: center;
+  left: 35%;
+  top: 18%;
+}
+
+.select-third-screen-checkbox {
+  height: 20px;
+  width: 20px;
+  background-color: rgba(78,67,71, 1);
+}
+
+.checkbox-label {
+  font-size: 20px;
+  color: rgba(108,98,125,1);
+  position: relative;
+  vertical-align: center;
+  padding: 0 0 5px 5px;
+}
+
+.start-application-button {
+  opacity: 0;
+  position: absolute;
+  z-index: 100;
+  top: 70%;
+  width: 50%;
+  left: 25%;
+  text-align: center;
+  background-color: rgba(33,36,60,0.6);
+  color: WHITE;
+  height: 10%;
+  transition: opacity 0.5s, background-color 0.5s ease-out;
+  padding: 16px 0 0 0;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.start-application-button:hover {
+  background-color: rgba(33,36,60,1);
+}
