@@ -1,3 +1,5 @@
+let videoArray = []; // Array holding video inputs.
+let videoLoop = true;
 function start() {
   const islandArray = [{
       name: 'Oahu',
@@ -44,6 +46,9 @@ function populateSidebar() {
     slideLeft('setup-cams-wrapper');
     setOpacity(getElement('main-buttons-wrapper'), 0);
     showElement(secondaryButtonsWrapper, 1);
+    populateVideoFeeds();
+    createVideoFeeds();
+    setTimeout(runVideos, 500);
   });
 
   const setupMarkersButton = createElement('div', 'sidebar-button', 'setup-markers-button', mainButtonsWrapper);
@@ -64,6 +69,110 @@ function populateSidebar() {
     hideElement(secondaryButtonsWrapper, 1);
   });
 
+}
+
+function populateVideoFeeds() {
+  const camWrapperA = createElement('div', 'cam-feed', 'cam-feed-A', getElement('add-remove-cam-wrapper'));
+  const videoA = createElement('video', 'cam-video-actual', 'video-2', camWrapperA);;
+  videoA.autoplay = 'true';
+  const canvasA = createElement('canvas', 'video-canvas', 'canvas3', camWrapperA);
+    videoA.style.width = 100 + '%';
+  const camWrapperB = createElement('div', 'cam-feed', 'cam-feed-B', getElement('main-cam-wrapper'));
+  const videoB = createElement('video', 'cam-video-actual', 'video', camWrapperB);
+  videoB.autoplay = 'true';
+  const canvasB = createElement('canvas', 'video-canvas', 'canvas', camWrapperB);
+  videoB.style.width = 100 + '%';
+
+}
+function runVideos() {
+
+  const videoElement = videoArray[0].video;
+  const videoElement2 = videoArray[1].video;
+
+  navigator.mediaDevices.enumerateDevices()
+    .then(gotDevices).then(getStream).catch(handleError);
+
+  let videoSources = [];
+
+  function gotDevices(deviceInfos) {
+    for (var i = 0; i !== deviceInfos.length; ++i) {
+      var deviceInfo = deviceInfos[i];
+      if (deviceInfo.kind === 'videoinput') {
+        videoSources.push(deviceInfo.deviceId);
+      } else {
+        console.log('Found one other kind of source/device: ', deviceInfo);
+      }
+    }
+  }
+
+  function getStream() {
+    if (window.stream) {
+      window.stream.getTracks().forEach(function(track) {
+        track.stop();
+      });
+    }
+
+    var constraints = {
+      audio: {
+        //deviceId: {exact: audioSelect.value}
+      },
+      video: {
+        deviceId: {
+          exact: videoSources[0]
+        }
+      }
+    };
+
+    var constraints2 = {
+      audio: {
+        //deviceId: {exact: audioSelect.value}
+      },
+      video: {
+        deviceId: {
+          exact: videoSources[1]
+        }
+      }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(handleError);
+
+    navigator.mediaDevices.getUserMedia(constraints2).then(gotStream2).catch(handleError);
+  }
+
+  function gotStream(stream) {
+    window.stream = stream; // make stream available to console
+    videoElement.srcObject = stream;
+  }
+
+  function gotStream2(stream) {
+    window.stream = stream; // make stream available to console
+    videoElement2.srcObject = stream;
+  }
+
+  function handleError(error) {
+    console.error('Error: ', error);
+  }
+  tick();
+}
+
+/* Detects the Markers and makes the changes in the program */
+function tick() {
+  if (!videoLoop) {
+    return;
+  }
+  requestAnimationFrame(tick);
+}
+
+/**
+ * Creates an image from the video feed so that the app can look for markers.
+ */
+function snapshot(vid) {
+  vid.ctx.drawImage(vid.video, 0, 0, vid.canvas.width, vid.canvas.height);
+  return vid.ctx.getImageData(0, 0, vid.canvas.width, vid.canvas.height);
+}
+
+function createVideoFeeds() {
+  buildVideoArray(2);
 }
 
 function slideRight(elementId) {
@@ -112,12 +221,14 @@ function populateSelectCards(islandArray) {
 
     startButton.addEventListener('click', () => {
       const mainAppWindow = window.open('application.html', 'mainAppWindow');
+      videoLoop = false;
       setTimeout(() => {
         mainAppWindow.subscribeToStartApp(island, getElement('select-third-screen-checkbox').checked);
       }, 200);
     });
   }
 }
+
 
 function runProgram() {
   const mainApp = window.open('application.html', 'mainApp');
@@ -153,6 +264,25 @@ function runTitleAnimation() {
     }, 100);
   }
 
+}
+
+let VW, VH; // WIDTH AND HEIGHT VARIABLES
+
+/******************************************************
+ *********
+ ***  VISUAL WIDTH AND VISUAL HEIGHT FUNCTIONS
+ *********
+ ******************************************************/
+
+/** The map is broken down into VW and VH
+ * Visual width and visual height.  It works just like css
+ * where there are 100 units in each direciton. */
+function setVW() {
+  VW = window.innerWidth / 100;
+}
+
+function setVH() {
+  VH = window.innerHeight / 100;
 }
 
 onload = start;

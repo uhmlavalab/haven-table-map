@@ -204,3 +204,12 @@ function screenSaver(on) {
   mainDisplay.screenSaverMode = !mainDisplay.screenSaverMode;
 
 }
+
+function applyIslandSpecificCss() {
+  getElement('mapDiv').className = `map-${island}`;
+  getElement('legend').className = `legend-${island}`;
+  setText(getElement('island-name'), islandName);
+  getElement('location-title').className = `location-title-${island}`;
+  getElement('scenario-title').className = `scenario-title-${island}`;
+
+}

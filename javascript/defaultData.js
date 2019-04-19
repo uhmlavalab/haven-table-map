@@ -9,10 +9,11 @@ const chartColors = {
   Battery: '#5F4690',
   Wind: '#38A6A5',
   Offshore: '#5F4690',
-  Geothermal: '#ac346a',
+  Geo: '#ac346a',
   Hydro: '#5F4690',
 }
 let island = "bigisland";
+let islandName = "";
 
 let mapLayerColors = {
   Solar: {
@@ -100,7 +101,7 @@ const layerData = [
     name: 'agriculture',
     displayName: 'Ag Lands',
     colorName: 'Agriculture',
-    createFn: () => map.addGeoJsonLayer(`../layers/oahu/agriculture.json`, 'agriculture', null, mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5)
+    createFn: () => map.addGeoJsonLayer(`../layers/${island}/agriculture.json`, 'agriculture', null, mapLayerColors.Agriculture.fill, mapLayerColors.Agriculture.border, 0.5)
 
   },
   {

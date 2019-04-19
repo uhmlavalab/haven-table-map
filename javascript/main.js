@@ -37,6 +37,7 @@ function start(isle) {
   island = isle;
   setUp();
   initialize();
+  applyIslandSpecificCss();
   startMap();
 }
 
@@ -62,24 +63,29 @@ function setUp() {
   const activeLayers = ['solar', 'wind', 'existing_re', 'parks', 'transmission', 'agriculture', 'ial', 'dod'];
   mainDisplay = new MainDisplay(); // New map
 
+  console.log(island);
   if (island == 'bigisland') {
     let bigIsleBounds = [[-156.0618, 20.2696], [-154.8067, 18.9105]];
-    map = new Map('mapDiv', '../basemaps/bigisland.png', 2179, 2479, 0.275, bigIsleBounds);
-    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 1000);
-    pieChart = new GenerationPie('pieChart', `../data/${island}/generation1.csv`, 2020, chartColors);
+    map = new Map('mapDiv', '../basemaps/bigisland.png', 2179, 2479, 0.26, bigIsleBounds);
+    lineChart = new CapacityLine('lineChart', `../data/bigisland/capacity.csv`, 2020, chartColors, 600);
+    pieChart = new GenerationPie('pieChart', `../data/bigisland/generation.csv`, 2020, chartColors);
+    barChart = new BatteryBar('barChart', `../data/bigisland/battery.csv`, 2020, chartColors);
+
   } else if (island == 'oahu'){
     let oahuBounds = [[-158.281, 21.710], [-157.647, 21.252]];
     map = new Map('mapDiv', '../basemaps/oahu.png', 3613, 2794, 0.237, oahuBounds);
-    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 2500);
-    pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
+    lineChart = new CapacityLine('lineChart', `../data/oahu/capacity.csv`, 2020, chartColors, 2500);
+    pieChart = new GenerationPie('pieChart', `../data/oahu/generation.csv`, 2020, chartColors);
+    barChart = new BatteryBar('barChart', `../data/oahu/battery.csv`, 2020, chartColors);
+
   } else if (island == 'maui') {
     let mauiBounds = [[-156.6969, 21.0316], [-155.9788, 20.3738]];
-    map = new Map('mapDiv', '../basemaps/maui.png', 3613, 2794, 0.237, mauiBounds);
-    lineChart = new CapacityLine('lineChart', `../data/${island}/capacity.csv`, 2020, chartColors, 2500);
-    pieChart = new GenerationPie('pieChart', `../data/${island}/generation.csv`, 2020, chartColors);
-  }
+    map = new Map('mapDiv', '../basemaps/maui.png', 3613, 2794, 0.258, mauiBounds);
+    lineChart = new CapacityLine('lineChart', `../data/maui/capacity.csv`, 2020, chartColors, 2500);
+    pieChart = new GenerationPie('pieChart', `../data/maui/generation.csv`, 2020, chartColors);
+    barChart = new BatteryBar('barChart', `../data/maui/battery.csv`, 2020, chartColors);
 
-  barChart = new BatteryBar('barChart', `../data/${island}/battery.csv`, 2020, chartColors);
+  }
 
   setVW(); // Set Visual Width multiplier
   setVH(); // Set Visual Height multiplier
@@ -265,6 +271,7 @@ function subscribeToStartApp(island, extraScreen) {
    if (extraScreen) {
      subApp = window.open('subApplication/index.html', 'subApp');
    }
+   islandName = island.name;
    start(island.id);
 }
 window.onresize = (() => {

@@ -25,7 +25,7 @@
 
 <body>
   <!-- The video -->
-<video autoplay muted loop id="myVideo">
+  <video autoplay muted loop id="myVideo">
   <source src="video/water.mov" type="video/mp4">
 </video>
   <div id="loading-wrapper-2">
@@ -87,8 +87,11 @@
         <p id="normal-instructions">Tap the puck in this box to <span id="addRemoveOption">Add</span> the<br/><span id="addLayerOption">Update</span> layer.</p>
       </div>
       <div id="layer-train" class="layer-train"></div>
+      <div id="largeYear" class="large-year">
+        <h1 id="largeYearText"></h1>
+      </div>
 
-      <div id="instructions-wrapper">
+      <!--  <div id="instructions-wrapper">
         <div class="instructions-card">
             <img src="images/icons/hourglass-01.png" id="hourglass-icon">
             <p>Change Year</p>
@@ -105,31 +108,27 @@
                   <img src="images/icons/scenario-01.png" >
                   <p>Change Scenario</p>
                 </div>
+      </div>-->
+
+
+    </div>
+
+      <div class="change-scenario" id="change-scenario-area">
+        <p id="currentScenarioDisplay"></p>
       </div>
 
+      <div id="legend" class="legend">
+        <!-- Legend Created Dynamically -->
+      </div>
 
-    </div>
-
-    <div class="change-scenario" id="change-scenario-area">
-      <p id="currentScenarioDisplay"></p>
-    </div>
-
-    <div id="legend" class="legend">
-      <!-- Legend Created Dynamically -->
-    </div>
-
-    <div id="largeYear" class="large-year">
-      <h1 id="largeYearText"></h1>
-    </div>
-
-    <div id="location-title">
-      <h1>Oahu, HI<br/>USA</h1>
-    </div>
-    <div id="scenario-title">
-      <h2>Scenario: <span id="scenario-insert">Post April</span></h2>
-    </div>
-    <canvas id="lineChart" width="325" height="325" style="position: absolute; left: calc(100% - 335px);"></canvas>
-    <svg viewBox="0 0 500 500" id="generation-title">
+        <div id="location-title" class="location-title">
+        <h1 id="island-name"></h1>
+      </div>
+      <div id="scenario-title" class="scenario-title">
+        <h2>Scenario: <span id="scenario-insert">Post April</span></h2>
+      </div>
+      <canvas id="lineChart" width="325" height="325" style="position: absolute; left: calc(100% - 335px);"></canvas>
+      <svg viewBox="0 0 500 500" id="generation-title">
       <path id="curve" fill="transparent" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />
       <text width="500">
         <textPath id="chartTitle" xlink:href="#curve" id="generation-title-text">
@@ -139,37 +138,37 @@
         </textPath>
       </text>
     </svg>
-    <canvas id="pieChart" width="200" height="200"></canvas>
-    <canvas id="barChart" width="200" height="200"></canvas>
-  </div>
+      <canvas id="pieChart" width="200" height="200"></canvas>
+      <canvas id="barChart" width="200" height="200"></canvas>
+    </div>
 
 
-  <!-- End of the Lower Section -->
-  <script src="./classes/debugData.js"></script>
-  <script src="./javascript/calculator.js"></script>
-  <script src="./javascript/objectSetup.js"></script>
-  <script src="./javascript/defaultData.js"></script>
-  <script src="./javascript/UI.js"></script>
-  <script src="./classes/jobs.js"></script>
-  <script src="./javascript/htmlFunctions.js"></script>
-  <script src="./javascript/brain.js"></script>
-  <script src="./javascript/config.js"></script>
-  <script src="./data/solarGenYearly.js"></script>
-  <script src="./data/windGenYearly.js"></script>
-  <script src="./data/offshoreWindGenYearly.js"></script>
-  <script src="./classes/ConfigurationBoard.js"></script>
-  <script src="./classes/ConfigurationImage.js"></script>
-  <script src="./classes/sounds.js"></script>
-  <script src="./classes/map.js"></script>
-  <script src="./classes/generationPie.js"></script>
-  <script src="./classes/capacityLine.js"></script>
-  <script src="./classes/batteryBar.js"></script>
-  <script src="./classes/mainDisplay.js"></script>
-  <script src="./classes/layers.js"></script>
-  <script src="./classes/markers.js"></script>
-  <script src="./classes/videoElement.js"></script>
-  <script type="text/javascript" src="javascript/initializeScript.js"></script>
-  <script type="text/javascript" src="javascript/main.js"></script>
+    <!-- End of the Lower Section -->
+    <script src="./classes/debugData.js"></script>
+    <script src="./javascript/calculator.js"></script>
+    <script src="./javascript/objectSetup.js"></script>
+    <script src="./javascript/defaultData.js"></script>
+    <script src="./javascript/UI.js"></script>
+    <script src="./classes/jobs.js"></script>
+    <script src="./javascript/htmlFunctions.js"></script>
+    <script src="./javascript/brain.js"></script>
+    <script src="./javascript/config.js"></script>
+    <script src="./data/oahu/solarGenYearly.js"></script>
+    <script src="./data/oahu/windGenYearly.js"></script>
+    <script src="./data/oahu/offshoreWindGenYearly.js"></script>
+    <script src="./classes/ConfigurationBoard.js"></script>
+    <script src="./classes/ConfigurationImage.js"></script>
+    <script src="./classes/sounds.js"></script>
+    <script src="./classes/map.js"></script>
+    <script src="./classes/generationPie.js"></script>
+    <script src="./classes/capacityLine.js"></script>
+    <script src="./classes/batteryBar.js"></script>
+    <script src="./classes/mainDisplay.js"></script>
+    <script src="./classes/layers.js"></script>
+    <script src="./classes/markers.js"></script>
+    <script src="./classes/videoElement.js"></script>
+    <script type="text/javascript" src="javascript/initializeScript.js"></script>
+    <script type="text/javascript" src="javascript/main.js"></script>
 
 
 </body>

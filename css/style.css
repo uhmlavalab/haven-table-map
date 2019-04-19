@@ -190,7 +190,17 @@ Shows the icons that are currently active
 
 /* Legend explainin the colors on the map.  The colors and table rows
 are added dynamically*/
-.legend {
+.legend-bigisland {
+  left: 76vw;
+  top: 72vh;
+  width: 26vw;
+  position: absolute;
+  display: block;
+  color:#FFFFFF;
+  height:200px;
+}
+
+.legend-oahu {
   left: 27vw;
   top: 2vh;
   width: 26vw;
@@ -200,11 +210,21 @@ are added dynamically*/
   height:200px;
 }
 
+.legend-maui {
+  left: 47vw;
+  top: 2vh;
+  width: 22vw;
+  position: absolute;
+  display: block;
+  color:#FFFFFF;
+  height:260px;
+}
+
 .legend-card {
   width:45%;
   display:inline-block;
   position:relative;
-  height: 40px;
+  height: 36px;
   overflow:hidden;
 }
 .legend-card > img {
@@ -243,17 +263,23 @@ are added dynamically*/
 }
 
 #largeYear {
-  position: absolute;
-  z-index: 1000;
-  left: 56vw;
-  top: 83vh;
-  width: 10vw;
-  color: rgba(255,255,255, 1.0);
+  width:100%;
+  height:100px;
+  top: -44px;
+  background-color: #000000;
+  color: WHITE;
+  font-weight:bolder;
+  position:relative;
+  text-align:center;
+  padding-right: 10px;
   text-align: center;
 }
 
-#largeYear>h1 {
+#largeYear> h1 {
+  top: 10px;
+  position: relative;
   font-size: 65px;
+  z-index: 10000;
 }
 
 #loading {
@@ -267,7 +293,7 @@ are added dynamically*/
   display:none;
 }
 
-#location-title {
+.location-title-oahu {
   position:absolute;
   z-index: 1000;
   left:89vw;
@@ -278,7 +304,49 @@ are added dynamically*/
   display:none;
 }
 
-#scenario-title {
+.location-title-bigisland {
+  position:absolute;
+  z-index: 1000;
+  left:28vw;
+  top:12vh;
+  width:14vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:none;
+}
+
+.location-title-maui {
+  position:absolute;
+  z-index: 1000;
+  left:75vw;
+  top:88vh;
+  width:10vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:none;
+}
+
+.scenario-title-maui {
+  position:absolute;
+  z-index: 1000;
+  left:27vw;
+  top:1vh;
+  width:20vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:none;
+}
+.scenario-title-bigisland {
+  position:absolute;
+  z-index: 1000;
+  left:27vw;
+  top:1vh;
+  width:20vw;
+  color: rgba(255,255,255, 1.0);
+  text-align: center;
+  display:none;
+}
+.scenario-title-oahu {
   position:absolute;
   z-index: 1000;
   left:82vw;
@@ -531,9 +599,29 @@ are added dynamically*/
   border-radius: 50%;
 }
 
-.map {
+.map-oahu {
   left: 29vw;
   top: 3vh;
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  display: block;
+  background-color: black;
+
+}
+.map-maui {
+  left: 26.5vw;
+  top: 4.5vh;
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  display: block;
+  background-color: black;
+}
+
+.map-bigisland {
+  left: 39vw;
+  top: 7vh;
   position: absolute;
   z-index: -1;
   height: 100%;
