@@ -1,19 +1,77 @@
 function start() {
   const islandArray = [{
-    name: 'Oahu',
-    id: 'oahu',
-  },
-  {
-    name: 'Big Island',
-    id: 'bigisland',
-  },
-  {
-    name: 'Maui',
-    id: 'maui',
-  }];
+      name: 'Oahu',
+      id: 'oahu',
+    },
+    {
+      name: 'Big Island',
+      id: 'bigisland',
+    },
+    {
+      name: 'Maui',
+      id: 'maui',
+    }
+  ];
+
   runTitleAnimation();
+  populateSidebar();
   populateSelectCards(islandArray);
+  populateSetupCams();
   addThirdScreenSelector();
+
+}
+
+function populateSetupCams() {
+  const setupCamsWrapper = getElement('setup-cams-wrapper');
+  const addRemoveCamWrapper = createElement('div', 'cam-wrapper', 'add-remove-cam-wrapper', setupCamsWrapper);
+  const mainCamWrapper = createElement('div', 'cam-wrapper', 'main-cam-wrapper', setupCamsWrapper);
+  const addRemoveTitle = createElement('p', 'cam-title', 'add-remove-cam-title', addRemoveCamWrapper);
+  setText(addRemoveTitle, 'Add Remove Camera');
+  const mainTitle = createElement('p', 'cam-title', 'main-cam-title', mainCamWrapper);
+  setText(mainTitle, 'Main Camera');
+}
+
+function populateSidebar() {
+
+  const sidebarWrapper = getElement('sidebar-wrapper');
+  const mainButtonsWrapper = createElement('div', 'main-buttons-wrapper', 'main-buttons-wrapper', sidebarWrapper);
+  const secondaryButtonsWrapper = createElement('div', 'main-buttons-wrapper', 'secondary-buttons-wrapper', sidebarWrapper);
+  const setupCamsButton = createElement('div', 'sidebar-button', 'setup-cam-button', mainButtonsWrapper);
+  setText(setupCamsButton, 'Setup Cameras');
+
+  setupCamsButton.addEventListener('click', () => {
+    slideRight('select-wrapper');
+    slideLeft('setup-cams-wrapper');
+    setOpacity(getElement('main-buttons-wrapper'), 0);
+    showElement(secondaryButtonsWrapper, 1);
+  });
+
+  const setupMarkersButton = createElement('div', 'sidebar-button', 'setup-markers-button', mainButtonsWrapper);
+  setText(setupMarkersButton, 'Setup Markers');
+  const setupLayersButton = createElement('div', 'sidebar-button', 'setup-layers-button', mainButtonsWrapper);
+  setText(setupLayersButton, 'Setup Layers');
+  const calibrateSurfaceButton = createElement('div', 'sidebar-button', 'calibrate-button', mainButtonsWrapper);
+  setText(calibrateSurfaceButton, 'Calibrate Surface');
+
+  const backButton = createElement('div', 'sidebar-button', 'back-button', secondaryButtonsWrapper);
+  hideElement(secondaryButtonsWrapper);
+  setText(backButton, 'Back');
+
+  backButton.addEventListener('click', () => {
+    slideRight('setup-cams-wrapper');
+    slideLeft('select-wrapper');
+    setOpacity(getElement('main-buttons-wrapper'), 1);
+    hideElement(secondaryButtonsWrapper, 1);
+  });
+
+}
+
+function slideRight(elementId) {
+  getElement(elementId).style.left = 120 + '%';
+}
+
+function slideLeft(elementId) {
+  getElement(elementId).style.left = 22 + '%';
 }
 
 function addThirdScreenSelector() {
