@@ -1,6 +1,80 @@
 let videoArray = []; // Array holding video inputs.
 let videoLoop = true;
+let activeElement = '';
+
 function start() {
+
+  let markerArray = [{
+      name: 'Year',
+      markerId: 3,
+      icon: 'images/icons/hourglass.png'
+    }, {
+      name: 'Layer',
+      markerId: 4,
+      icon: 'images/icons/layers-01.png'
+    },
+    {
+      name: 'Chart',
+      markerId: 5,
+      icon: 'images/icons/pie-01.png'
+    },
+    {
+      name: 'Scenario',
+      markerId: 6,
+      icon: 'images/icons/scenario-01.png'
+    }
+  ];
+
+  let layerArray = [{
+      name: 'Solar',
+      tag: 'solar',
+      icon: `images/icons/solar-icon.png`,
+      active: true
+    },
+    {
+      name: 'Wind',
+      tag: 'wind',
+      icon: `images/icons/wind-icon.png`,
+      active: true
+    },
+    {
+      name: 'Transmission Lines',
+      tag: 'transmission',
+      icon: `images/icons/transmission-icon.png`,
+      active: true
+    },
+    {
+      name: 'Parks',
+      tag: 'parks',
+      icon: `images/icons/parks-icon.png`,
+      active: true
+    },
+    {
+      name: 'DOD lands',
+      tag: 'dod',
+      icon: `images/icons/dod-icon.png`,
+      active: true
+    },
+    {
+      name: 'Ag Lands',
+      tag: 'agriculture',
+      icon: `images/icons/agriculture-icon.png`,
+      active: true
+    },
+    {
+      name: 'IAL',
+      tag: 'ial',
+      icon: `images/icons/ial-icon.png`,
+      active: true
+    },
+    {
+      name: 'Existing Renewables',
+      tag: 'existing_re',
+      icon: `images/icons/existing_re-icon.png`,
+      active: true
+    }
+  ];
+
   const islandArray = [{
       name: 'Oahu',
       id: 'oahu',
@@ -19,8 +93,59 @@ function start() {
   populateSidebar();
   populateSelectCards(islandArray);
   populateSetupCams();
+  populateSetupMarkers(markerArray);
+  populateSetupLayers(layerArray);
   addThirdScreenSelector();
 
+}
+
+function populateSetupLayers(layerArray) {
+  const setupLayersWrapper = getElement('setup-layers-wrapper');
+  for (let layer of layerArray) {
+    createLayerCard(layer.name, layer.tag, layer.icon, layer.active, layer);
+  }
+
+  function createLayerCard(name, tag, icon, active, layer) {
+    const card = createElement('div', 'layer-card-wrapper', `layer-card-${name}`, setupLayersWrapper);
+    const image = createElement('img', 'layer-card-image', `layer-card-image-${name}`, card);
+    const title = createElement('p', 'layer-card-text', `layer-card-text-${name}`, card);
+    setText(title, name);
+
+    image.src = icon;
+
+    card.style.backgroundColor = active ? 'rgba(130,145,188, 0.7)' : ' rgba(78, 67, 71, 0.7)';
+
+    const changeLayerButton = createElement('div', 'sidebar-button', `change-layer-button-${name}`, card);
+    changeLayerButton.addEventListener('click', () => {
+      layer.active = !layer.active;
+      card.style.backgroundColor = layer.active ? 'rgba(130,145,188, 0.7)' : ' rgba(78, 67, 71, 0.7)';
+      setText(changeLayerButton, layer.active ? 'Disable Layer' : 'Enable Layer');
+    });
+
+    setText(changeLayerButton, layer.active ? 'Disable Layer' : 'Enable Layer');
+
+  }
+}
+
+function populateSetupMarkers(markerArray) {
+  const setupMarkersWrapper = getElement('setup-markers-wrapper');
+  for (let marker of markerArray) {
+    createMarkerCard(marker.name, marker.markerId, marker.icon);
+  }
+
+  function createMarkerCard(name, id, icon) {
+    const card = createElement('div', 'marker-card-wrapper', `marker-card-${name}`, setupMarkersWrapper);
+    const image = createElement('img', 'marker-card-image', `marker-card-image-${name}`, card);
+    image.src = icon;
+    const leftSide = createElement('div', 'marker-card-wrapper-left', `marker-card-left-${name}`, card);
+    let markerTitle = createElement('p', 'marker-title', `marker-card-title-${name}`, leftSide);
+    setText(markerTitle, `Marker: ${name} Selector`);
+    let markerText = createElement('p', 'marker-title', `marker-card-id-${name}`, leftSide);
+    setText(markerText, `Marker Id: ${id}`);
+
+    const changeMarkerButton = createElement('div', 'sidebar-button', `change-marker-button-${name}`, leftSide);
+    setText(changeMarkerButton, 'Change Marker');
+  }
 }
 
 function populateSetupCams() {
@@ -42,8 +167,9 @@ function populateSidebar() {
   setText(setupCamsButton, 'Setup Cameras');
 
   setupCamsButton.addEventListener('click', () => {
+    activeElement = 'setup-cams-wrapper';
     slideRight('select-wrapper');
-    slideLeft('setup-cams-wrapper');
+    slideLeft(activeElement);
     setOpacity(getElement('main-buttons-wrapper'), 0);
     showElement(secondaryButtonsWrapper, 1);
     populateVideoFeeds();
@@ -53,8 +179,26 @@ function populateSidebar() {
 
   const setupMarkersButton = createElement('div', 'sidebar-button', 'setup-markers-button', mainButtonsWrapper);
   setText(setupMarkersButton, 'Setup Markers');
+
+  setupMarkersButton.addEventListener('click', () => {
+    activeElement = 'setup-markers-wrapper';
+    slideRight('select-wrapper');
+    slideLeft(activeElement);
+    setOpacity(getElement('main-buttons-wrapper'), 0);
+    showElement(secondaryButtonsWrapper, 1);
+  });
+
   const setupLayersButton = createElement('div', 'sidebar-button', 'setup-layers-button', mainButtonsWrapper);
   setText(setupLayersButton, 'Setup Layers');
+
+  setupLayersButton.addEventListener('click', () => {
+    activeElement = 'setup-layers-wrapper';
+    slideRight('select-wrapper');
+    slideLeft(activeElement);
+    setOpacity(getElement('main-buttons-wrapper'), 0);
+    showElement(secondaryButtonsWrapper, 1);
+  });
+
   const calibrateSurfaceButton = createElement('div', 'sidebar-button', 'calibrate-button', mainButtonsWrapper);
   setText(calibrateSurfaceButton, 'Calibrate Surface');
 
@@ -63,11 +207,14 @@ function populateSidebar() {
   setText(backButton, 'Back');
 
   backButton.addEventListener('click', () => {
-    slideRight('setup-cams-wrapper');
+    slideRight(activeElement);
     slideLeft('select-wrapper');
     setOpacity(getElement('main-buttons-wrapper'), 1);
     hideElement(secondaryButtonsWrapper, 1);
   });
+
+  const debugModeButton = createElement('div', 'sidebar-button', 'debug-button', mainButtonsWrapper);
+  setText(debugModeButton, 'Debug Mode');
 
 }
 
@@ -76,7 +223,7 @@ function populateVideoFeeds() {
   const videoA = createElement('video', 'cam-video-actual', 'video-2', camWrapperA);;
   videoA.autoplay = 'true';
   const canvasA = createElement('canvas', 'video-canvas', 'canvas3', camWrapperA);
-    videoA.style.width = 100 + '%';
+  videoA.style.width = 100 + '%';
   const camWrapperB = createElement('div', 'cam-feed', 'cam-feed-B', getElement('main-cam-wrapper'));
   const videoB = createElement('video', 'cam-video-actual', 'video', camWrapperB);
   videoB.autoplay = 'true';
@@ -84,6 +231,7 @@ function populateVideoFeeds() {
   videoB.style.width = 100 + '%';
 
 }
+
 function runVideos() {
 
   const videoElement = videoArray[0].video;
