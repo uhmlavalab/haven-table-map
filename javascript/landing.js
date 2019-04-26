@@ -372,7 +372,7 @@ function populateSelectCards(islandArray) {
       videoLoop = false;
       setTimeout(() => {
         mainAppWindow.subscribeToStartApp(island, getElement('select-third-screen-checkbox').checked);
-      }, 200);
+      }, 400);
     });
   }
 }
