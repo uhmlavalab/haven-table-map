@@ -89,13 +89,13 @@ const layerData = [
     name: 'existing_re',
     displayName: 'Existing Renewables',
     colorName: 'Existing_RE',
-    createFn: () => map.addGeoJsonLayer(`../layers/${island}/existing_re_2.json`, 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5)
+    createFn: () => map.addGeoJsonLayer(`../layers/${island}/existing_re.json`, 'existing_re', null, mapLayerColors.Existing_RE.fill, mapLayerColors.Existing_RE.border, 0.5)
   },
   {
     name: 'wind',
     displayName: 'Wind Energy',
     colorName: 'Wind',
-    createFn: () => map.addGeoJsonLayer(`../layers/${island}/wind_2.json`, 'wind', 2020, mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25)
+    createFn: () => map.addGeoJsonLayer(`../layers/${island}/wind.json`, 'wind', 2020, mapLayerColors.Wind.fill, mapLayerColors.Wind.border, 0.25)
   },
   {
     name: 'agriculture',
@@ -108,11 +108,13 @@ const layerData = [
     name: 'ial',
     displayName: 'Important Ag Lands',
     colorName: 'Ial',
-    createFn: function() {console.log("missing Ial Function")}
-  }];
+    createFn: function () { console.log("missing Ial Function") }
+  }
+];
+
 
 const jobsData = ['Year', 'Scenario', 'Charts', 'Layer'];
 
-const scenarioData = [{'name':'e3genmod', 'text': 'E3'}, {'name':'postapril', 'text':'Post April'}];
+const scenarioData = [{ 'name': 'e3genmod', 'text': 'E3' }, { 'name': 'postapril', 'text': 'Post April' }];
 
-const defaultMarkerData = [{'id':3, 'job': 'Year'}, {'id':5, 'job':'Layer'}, {'id': 6, 'job':'Scenario'}, {'id':11, 'job':'Charts'}];
+const defaultMarkerData = [{ 'id': 3, 'job': 'Year' }, { 'id': 5, 'job': 'Layer' }, { 'id': 6, 'job': 'Scenario' }, { 'id': 11, 'job': 'Charts' }];

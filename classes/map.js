@@ -28,6 +28,8 @@ class Map {
       .attr('width', this.width)
       .attr('height', this.height)
 
+      console.log('Map: ' + island);
+
   }
 
   addGeoJsonLayer(fileUrl, layerName, year, fillColor, lineColor, lineWidth) {
@@ -99,7 +101,7 @@ class Map {
     this.layers['solar'].year = year;
     if (this.layers['solar'].enabled) {
       let solarTotal = 0;
-      solarGenYearly.forEach(el => {
+      parcelYearly[island.toLowerCase()].solar.forEach(el => {
         if (el.year == year) {
           solarTotal = el[scenario];
         }
@@ -115,16 +117,16 @@ class Map {
         else if (solarTotal > 0) {
           d3.select(el.path)
             .style('fill', this.layers['solar'].fillColor)
-            .style('opacity', 0.5)
-            .style('stroke', this.layers['solar'].lineColor)
-            .style('stroke-width', this.layers['solar'].lineWidth + 'px');
+            .style('opacity', 0.75)
+            .style('stroke', 'transparent')
+            .style('stroke-width', 0);
           solarTotal -= el.value;
         } else {
           d3.select(el.path)
-            .style('fill', 'transparent')
-            .style('opacity', 0.5)
-            .style('stroke', this.layers['solar'].lineColor)
-            .style('stroke-width', this.layers['solar'].lineWidth + 'px');
+            .style('fill', this.layers['solar'].fillColor)
+            .style('opacity', 0.25)
+            .style('stroke', 'transparent')
+            .style('stroke-width', 0);
         }
       })
     }
@@ -139,9 +141,10 @@ class Map {
     this.layers['wind'].year = year;
     if (this.layers['wind'].enabled) {
       let windTotal = 0;
-      windGenYearly.forEach(el => {
+      parcelYearly[island.toLowerCase()].wind.forEach(el => {
         if (el.year == year) {
-          windTotal = el[scenario] - 99;
+          // windTotal = el[scenario] - 99;
+          windTotal = el[scenario];
 
         }
       });
@@ -149,16 +152,16 @@ class Map {
         if (windTotal > 0) {
           d3.select(el.path)
             .style('fill', this.layers['wind'].fillColor)
-            .style('opacity', 1.0)
-            .style('stroke', this.layers['wind'].lineColor)
-            .style('stroke-width', this.layers['wind'].lineWidth + 'px');
+            .style('opacity', 0.75)
+            .style('stroke', 'transparent')
+            .style('stroke-width', 0);
             windTotal -= el.value;
         } else {
           d3.select(el.path)
-            .style('fill', 'transparent')
-            .style('opacity', 0.5)
-            .style('stroke', this.layers['wind'].lineColor)
-            .style('stroke-width', this.layers['wind'].lineWidth + 'px');
+            .style('fill', this.layers['wind'].fillColor)
+            .style('opacity', 0.35)
+            .style('stroke', 'transparent')
+            .style('stroke-width', 0);
         }
       })
     }

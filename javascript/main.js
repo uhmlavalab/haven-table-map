@@ -63,7 +63,6 @@ function setUp() {
   const activeLayers = ['solar', 'wind', 'existing_re', 'parks', 'transmission', 'agriculture', 'ial', 'dod'];
   mainDisplay = new MainDisplay(); // New map
 
-  console.log(island);
   if (island == 'bigisland') {
     let bigIsleBounds = [[-156.0618, 20.2696], [-154.8067, 18.9105]];
     map = new Map('mapDiv', '../basemaps/bigisland.png', 2179, 2479, 0.26, bigIsleBounds);
@@ -79,9 +78,9 @@ function setUp() {
     barChart = new BatteryBar('barChart', `../data/oahu/battery.csv`, 2020, chartColors);
 
   } else if (island == 'maui') {
-    let mauiBounds = [[-156.6969, 21.0316], [-155.9788, 20.3738]];
+    let mauiBounds = [[-156.6969, 21.03142], [-155.9788, 20.5746]];
     map = new Map('mapDiv', '../basemaps/maui.png', 3613, 2794, 0.258, mauiBounds);
-    lineChart = new CapacityLine('lineChart', `../data/maui/capacity.csv`, 2020, chartColors, 2500);
+    lineChart = new CapacityLine('lineChart', `../data/maui/capacity.csv`, 2020, chartColors, 500);
     pieChart = new GenerationPie('pieChart', `../data/maui/generation.csv`, 2020, chartColors);
     barChart = new BatteryBar('barChart', `../data/maui/battery.csv`, 2020, chartColors);
 
