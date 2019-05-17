@@ -124,7 +124,7 @@ class Map {
         } else {
           d3.select(el.path)
             .style('fill', this.layers['solar'].fillColor)
-            .style('opacity', 0.25)
+            .style('opacity', 0.15)
             .style('stroke', 'transparent')
             .style('stroke-width', 0);
         }
@@ -159,7 +159,7 @@ class Map {
         } else {
           d3.select(el.path)
             .style('fill', this.layers['wind'].fillColor)
-            .style('opacity', 0.35)
+            .style('opacity', 0.15)
             .style('stroke', 'transparent')
             .style('stroke-width', 0);
         }
@@ -168,6 +168,7 @@ class Map {
   }
 
   toggleLayer(layerName) {
+        if (typeof this.layers[layerName] === 'undefined') return;
     this.layers[layerName].enabled = !this.layers[layerName].enabled;
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
@@ -184,6 +185,8 @@ class Map {
   }
 
   hideLayer(layerName) {
+
+    if (typeof this.layers[layerName] === 'undefined') return;
     this.layers[layerName].enabled = false;
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
@@ -195,6 +198,7 @@ class Map {
   }
 
   showLayer(layerName) {
+        if (typeof this.layers[layerName] === 'undefined') return;
     this.layers[layerName].enabled = true;
     if (layerName == 'solar') {
       this.setSolarParcelsColor(this.layers['solar'].year);
